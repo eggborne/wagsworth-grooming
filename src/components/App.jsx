@@ -5,7 +5,9 @@ import AppointmentList from "./AppointmentList";
 function App(){
   return (
     <div>
-      <Header/>
+      <Header legend={"Wagsworth Grooming Co."}/>
+      <br />
+      <Header legend={"Appointments"}/>
       <AppointmentList/>
     </div>
   );
