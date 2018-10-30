@@ -1,5 +1,11 @@
+const webpack = require('webpack');
+const { resolve } = require('path');
+
+
 module.exports = {
-  entry: './src/index.jsx',
+  entry: [
+    resolve(__dirname, "src", "index.jsx")
+  ],
   module: {
     rules: [
       {
@@ -13,11 +19,13 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: __dirname + '/dist',
+    path: resolve(__dirname, 'build'),
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'app.bundle.js'
   },
   devServer: {
-    contentBase: './dist'
+    // hot: true,
+    contentBase: resolve(__dirname, './'),
+    publicPath: '/'
   }
 };
