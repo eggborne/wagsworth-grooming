@@ -9,7 +9,12 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        loader: "babel-loader",
+        options: {
+          plugins: [
+            "styled-jsx/babel"
+          ]
+        }
       }
     ]
   },
@@ -22,7 +27,6 @@ module.exports = {
     filename: 'app.bundle.js'
   },
   devServer: {
-    // hot: true,
     contentBase: resolve(__dirname, './'),
     publicPath: '/'
   }
