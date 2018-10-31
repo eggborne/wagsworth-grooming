@@ -13,6 +13,7 @@ function Appointment(props){
           background-color: #eee;
         }
       `}</style>
+      <h3>Date: {props.date}</h3>
       <h3>Pet ID: {props.petId}</h3>
       <h3>Time: {props.startTime}</h3>
       <h3>Services:</h3>
@@ -24,6 +25,7 @@ function Appointment(props){
 }
 
 Appointment.propTypes = {
+  date: PropTypes.number,
   petId: PropTypes.number,
   startTime: PropTypes.number,
   services: PropTypes.arrayOf(PropTypes.string),

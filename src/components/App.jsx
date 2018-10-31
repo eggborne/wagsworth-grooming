@@ -26,7 +26,7 @@ function App(){
       <Header legend={'Wagsworth Grooming Co.'}/>
       <div id="padding-container">
         <Switch>
-          <Route exact path='/' component={PetList} />
+          <Route path='/pets' component={PetList} />
           <Route path='/parents' component={ParentList} />
           <Route path='/appointments' component={AppointmentList} />
           <Route path='/newparent' component={NewParentForm} />
