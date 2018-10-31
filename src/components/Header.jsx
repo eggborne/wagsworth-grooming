@@ -11,8 +11,12 @@ function Header(props){
     fontWeight: '2',
     color: '#eee',
     width: '100%',
-    padding: '2% 1% 2% 2%'
+    padding: '2% 1% 2% 2%',
   };
+  if (props.legend === "Wagsworth Grooming Co.") {
+    styles.borderRadius = 0;
+    styles.margin = 0;    
+  }
   return (
     <div style={styles}>
       {props.legend}

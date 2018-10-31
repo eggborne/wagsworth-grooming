@@ -22,7 +22,6 @@ function Pet(props) {
       <h3>Vet clinic ID: {props.veterinarianId}</h3>
       <h3>Parent ID: {props.parentId}</h3>
       <p><em>Notes: {props.notes}</em></p>
-      <hr />
     </div>
   );
 }

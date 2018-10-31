@@ -19,7 +19,6 @@ function Appointment(props){
       <h4>{props.services[0]}</h4>
       <h4>{props.services[1]}</h4>
       <p><em>Notes: {props.notes}</em></p>
-      <hr />
     </div>
   );
 }

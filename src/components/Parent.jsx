@@ -18,7 +18,6 @@ function Parent(props) {
       <h3>Next Appt: {props.nextApptId}</h3>
       <h3>Last Appt: {props.pastApptIds[0]}</h3>
       <p>Notes: <em>{props.notes}</em></p>
-      <hr />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './Header';
 import Parent from './Parent';
 
 var masterParentList = [
@@ -25,6 +26,7 @@ var masterParentList = [
 function ParentList() {
   return (
     <div>
+      <Header legend={'Parents'}/>
       {masterParentList.map((parent, index) =>
         <Parent firstNames={parent.firstNames}
           lastName={parent.lastName}
