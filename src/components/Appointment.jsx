@@ -1,29 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 function Appointment(props){
+  
   return (
-    <div id="header">
-      <h3>{props.parentFirstName[0]} / {props.parentFirstName[1]} {props.parentLastName}</h3>
-      <h3>{props.parentPhone[0]}</h3>
-      <h3>{props.petName}</h3>
-      <h3>{props.petBreed[0]} / {props.petBreed[1]}</h3>
-      <h3>{props.apptTime} {props.apptDate}</h3>
-      <p><em>{props.apptService[0]}</em></p>
-      <p><em>{props.apptService[1]}</em></p>
+    <div>
+      <h3>Pet ID: {props.petId}</h3>
+      <h3>Time: {props.startTime}</h3>
+      <h3>Services:</h3>
+      <h4>{props.services[0]}</h4>
+      <h4>{props.services[1]}</h4>
+      <p><em>Notes: {props.notes}</em></p>
+      <hr />
     </div>
   );
 }
 
 Appointment.propTypes = {
-  parentFirstName: PropTypes.arrayOf(PropTypes.string),
-  parentLastName: PropTypes.string,
-  parentPhone: PropTypes.arrayOf(PropTypes.string),
-  petName: PropTypes.string,
-  petBreed: PropTypes.arrayOf(PropTypes.string),
-  apptTime: PropTypes.string,
-  apptDate: PropTypes.string,
-  apptService: PropTypes.arrayOf(PropTypes.string),
+  petId: PropTypes.number,
+  startTime: PropTypes.number,
+  services: PropTypes.arrayOf(PropTypes.string),
+  notes: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default Appointment;

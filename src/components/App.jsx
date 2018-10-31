@@ -1,14 +1,25 @@
-import React from "react";
-import Header from "./Header";
-import AppointmentList from "./AppointmentList";
+import React from 'react';
+import Header from './Header';
+import AppointmentList from './AppointmentList';
+import ParentList from './ParentList';
+import PetList from './PetList';
 
 function App(){
+  var fontStyles = {
+    fontFamily: 'Playfair Display, serif',
+    fontSize: '1rem'
+  };
   return (
-    <div>
-      <Header legend={"Wagsworth Grooming Co."}/>
+    <div style={fontStyles}>
+      <Header legend={'Wagsworth Grooming Co.'}/>
       <br />
-      <Header legend={"Appointments"}/>
+      <Header legend={'Appointments'}/>
       <AppointmentList/>
+      <br />
+      <Header legend={'Parents'}/>
+      <ParentList/>
+      <Header legend={'Pets'}/>
+      <PetList/>
     </div>
   );
 }

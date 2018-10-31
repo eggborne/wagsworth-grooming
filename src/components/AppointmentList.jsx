@@ -1,18 +1,32 @@
-import React from "react";
-import Appointment from "./Appointment"
+import React from 'react';
+import Appointment from './Appointment';
 
-function AppointmentList(){
+var masterApptList = [
+  {
+    petId: 1,
+    startTime: 1530,
+    services: ['Kennel cut #10', 'Nail filing'],
+    notes: ['Shat on the table twice']
+  },
+  {
+    petId: 2,
+    startTime: 1000,
+    services: ['Flea dip', 'Deluxe ball-washing'],
+    notes: ['Fewer fleas than last time :D']
+  }
+];
+
+function AppointmentList() {
   return (
-    <Appointment
-      parentFirstName={["Deborah","Tyrone"]} 
-      parentLastName="Watkins"
-      parentPhone={["360-867-5309","800-858-0085"]}
-      petName="Megatron"
-      petBreed={["Chihuahua","Pomeranian"]}
-      apptTime="3:30pm"
-      apptDate="Nov. 23"
-      apptService={["Kennel cut #10","Deluxe ball-washing"]}
-      />
+    <div>
+      {masterApptList.map((appt, index) =>
+        <Appointment petId={appt.petId}
+          startTime={appt.startTime}
+          services={appt.services}
+          notes={appt.notes}
+          key={index} />
+      )}
+    </div>
   );
 }
 
