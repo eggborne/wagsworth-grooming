@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 function Parent(props) {
   return (
     <div>
+      <style jsx>{`
+        div {
+          padding: 2.5%;
+        }
+        div:nth-child(2n) {
+          background-color: #eee;
+        }
+      `}</style>
       <h3>{props.firstNames[0]} &amp; {props.firstNames[1]} {props.lastName}</h3>
       <h3>{props.phoneNumbers[0]}</h3>
       <h3>Pets: {props.petIds[0]}, {props.petIds[1]}</h3>

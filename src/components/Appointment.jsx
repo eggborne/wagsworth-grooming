@@ -5,6 +5,14 @@ function Appointment(props){
   
   return (
     <div>
+      <style jsx>{`
+        div {
+          padding: 2.5%;
+        }
+        div:nth-child(2n) {
+          background-color: #eee;
+        }
+      `}</style>
       <h3>Pet ID: {props.petId}</h3>
       <h3>Time: {props.startTime}</h3>
       <h3>Services:</h3>

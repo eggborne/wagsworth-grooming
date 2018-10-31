@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 function Pet(props) {
   return (
     <div>
+      <style jsx>{`
+        div {
+          padding: 2.5%;
+        }
+        div:nth-child(2n) {
+          background-color: #eee;
+        }
+      `}</style>
       <h2>{props.name}</h2>
       <h3>Breed: {props.breed} | Sex: {props.sex}</h3>
       <h3>Size: {props.size} | Weight: {props.weight}</h3>
