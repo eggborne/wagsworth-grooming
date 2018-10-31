@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import SectionHeading from './SectionHeading';
 import Pet from './Pet';
 // import { pathToFileURL } from 'url';
 
@@ -37,7 +37,7 @@ var masterPetList = [
 function PetList() {
   return (
     <div>
-      <Header legend={'Pets'}/>
+      <SectionHeading legend={'Pets'}/>
       {masterPetList.map((pet, index) =>
         <Pet name={pet.name}
           sex={pet.sex}

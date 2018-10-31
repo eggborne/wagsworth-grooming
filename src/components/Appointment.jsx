@@ -8,6 +8,7 @@ function Appointment(props){
       <style jsx>{`
         div {
           padding: 2.5%;
+          background-color: #ddd;
         }
         div:nth-child(2n) {
           background-color: #eee;

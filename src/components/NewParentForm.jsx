@@ -8,18 +8,22 @@ function NewParentForm(){
           margin-top: 2.5%;
           padding: 2.5%;
           box-sizing: border-box;
-          background:#ddd;
-          text-align: center,
+          background:#ded;
+          text-align: center;
           border-radius: 0.5rem
         }
         form {
           width: 100%;
         }
         button {
-          margin: 2%;
+          border-radius: 0.1rem;
+          padding: 2%;
+          margin-top: 2%
         }
         input {
+          width: 40%;
           margin: 1%;
+          padding: 1%;
         }
       `}</style>
       <form>
@@ -39,6 +43,7 @@ function NewParentForm(){
           type='text'
           id='email'
           placeholder='Email'/>
+        <br />
         <button type='submit'>Submit!</button>
       </form>
     </div>

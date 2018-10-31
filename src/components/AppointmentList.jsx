@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import SectionHeading from './SectionHeading';
 import Appointment from './Appointment';
 
 var masterApptList = [
@@ -20,9 +20,10 @@ var masterApptList = [
 ];
 
 function AppointmentList() {
+  
   return (
     <div>
-      <Header legend={'Appointments'}/>
+      <SectionHeading legend={'Appointments'}/>
       {masterApptList.map((appt, index) =>
         <Appointment date={appt.date}
           petId={appt.petId}
