@@ -10,14 +10,18 @@ function Footer(){
           margin: 0;
           box-sizing: border-box;
           background-color: #111;
-          font-family: san-serif;
+          font-family: sans-serif;
           font-size: 0.75rem;
-          color: #eee;
+          color: #ccc;
           width: 100%;
-          padding: 2%;
-          padding-top: 5%;
-          padding-bottom: 5%;
           text-align: center;
+          position: absolute;
+          bottom: -15vmin;
+          height: 15vmin;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
         .underlined {
           text-decoration: underline;

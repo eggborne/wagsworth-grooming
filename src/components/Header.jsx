@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 function Header(props){
   var pageHeaderStyles = {
-    margin: 0,
     boxSizing: 'border-box',
     backgroundColor: '#111',
     fontFamily: 'Tangerine, cursive',

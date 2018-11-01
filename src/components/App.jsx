@@ -7,20 +7,22 @@ import ParentList from './ParentList';
 import PetList from './PetList';
 import NewParentForm from './NewParentForm';
 import { Switch, Route } from 'react-router-dom';
-// const headerLegends = [
-//   'Wagsworth Grooming Co.',
-//   'Appointments',
-//   'Parents',
-//   'Pets'
-// ];
+
 function App(){
-  var fontStyles = {
+  let shorterDimension = null;
+  if (window.screen.availWidth < window.screen.availHeight) {
+    shorterDimension = window.screen.availWidth;
+  } else {
+    shorterDimension = window.screen.availHeight;
+  }
+  var mainStyles = {
     fontFamily: 'Playfair Display, serif',
-    fontSize: '1rem'
+    minHeight: window.screen.availHeight - (shorterDimension*0.15),
+    position: 'relative'
   };
-  var displayTitle = 'Wagsworth Admin';
+  var displayTitle = 'Wagsworth Grooming Co.';
   return (
-    <div style={fontStyles}>
+    <div style={mainStyles}>
       <style jsx>{`
         #padding-container {
           padding: 2%;
