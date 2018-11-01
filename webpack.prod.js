@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: [
     resolve(__dirname, 'src', 'index.jsx')
   ],
@@ -34,11 +34,7 @@ module.exports = {
   },
   output: {
     path: resolve(__dirname, 'build'),
-    publicPath: '/',
+    publicPath: 'https://www.eggborne.com/wagsworth/build/',
     filename: 'app.bundle.js'
-  },
-  devServer: {
-    contentBase: resolve(__dirname, './'),
-    publicPath: '/'
   }
 };
