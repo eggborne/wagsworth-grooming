@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dist": "webpack --mode production",
-    "start": "webpack --mode development && webpack-dev-server --mode development",
+    "start": "webpack && webpack-dev-server",
+    "build": "webpack --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,8 +31,10 @@
     "babel-loader": "^8.0.4",
     "eslint": "^5.8.0",
     "eslint-plugin-react": "^7.11.1",
+    "file-loader": "^2.0.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "url-loader": "^1.1.2",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
