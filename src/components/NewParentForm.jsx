@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class NewParentForm extends React.Component {
   constructor(props) {
@@ -13,7 +14,6 @@ class NewParentForm extends React.Component {
   onParentFormSubmission(event) {
     event.preventDefault();
     this.state.pending = false;
-    console.log('SUBMITTED PARENT FORM. pending = ' + this.state.pending);
   }
 
   render() {
@@ -57,7 +57,7 @@ class NewParentForm extends React.Component {
             id='email'
             placeholder='Email' />
           <br />
-          <button type="submit">Create</button>
+          <Link to="/"><button type="submit">Create</button></Link>
         </form>
       </div>
     );
