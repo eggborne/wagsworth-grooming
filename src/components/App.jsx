@@ -1,29 +1,32 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Intro from './Intro';
+import SplashPage from './SplashPage';
 import AppointmentList from './AppointmentList';
 import ParentList from './ParentList';
 import PetList from './PetList';
-import NewParentForm from './NewParentForm';
+import NewEntryControl from './NewEntryControl';
 import { Switch, Route } from 'react-router-dom';
 
 function App(){
   let shorterDimension = null;
-  if (window.screen.availWidth < window.screen.availHeight) {
-    shorterDimension = window.screen.availWidth;
+  if (window.innerWidth < window.innerHeight) {
+    shorterDimension = window.innerWidth;
   } else {
-    shorterDimension = window.screen.availHeight;
+    shorterDimension = window.innerHeight;
   }
-  var mainStyles = {
-    fontFamily: 'Playfair Display, serif',
-    minHeight: window.screen.availHeight - (shorterDimension*0.15),
-    position: 'relative'
-  };
   var displayTitle = 'Wagsworth Grooming Co.';
+  var heightAdjusted = {
+    minHeight: window.innerHeight - (shorterDimension*0.15)
+  };
   return (
-    <div style={mainStyles}>
+    <div style={heightAdjusted} id="main">
       <style jsx>{`
+        #main {
+          background-color: var(--darkAccent);
+          font-family: Playfair Display; serif;
+          position: relative
+        }
         #padding-container {
           padding: 2%;
         }
@@ -31,11 +34,11 @@ function App(){
       <Header legend={displayTitle}/>
       <div id="padding-container">
         <Switch>
-          <Route exact path='/' component={Intro} />
+          <Route exact path='/' component={SplashPage} />
           <Route path='/pets' component={PetList} />
           <Route path='/parents' component={ParentList} />
           <Route path='/appointments' component={AppointmentList} />
-          <Route path='/newparent' component={NewParentForm} />
+          <Route path='/newentry' component={NewEntryControl} />
         </Switch>
       </div>
       <Footer legend={'footer'}/>

@@ -3,43 +3,40 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 function Header(props){
-  var pageHeaderStyles = {
-    boxSizing: 'border-box',
-    backgroundColor: '#111',
-    fontFamily: 'Tangerine, cursive',
-    fontSize: '3rem',
-    color: '#eee',
-    width: '100%',
-    padding: '2%',
-  };
-  var adminNavStyles = {
-    fontSize: '1rem',
-    fontFamily: 'Playfair Display, serif',
-    width: '100%',
-    color: '#666',
-    display: 'inline-flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#222',
-    padding: '2%',
-  };
   return (
-    <div style={pageHeaderStyles}>
+    <div id="header">
       <style jsx>{`
+        #header {
+          background-color: var(--darkest);
+          color: var(--mainBg);
+          box-sizing: border-box;
+          font-family: Tangerine; cursive;
+          font-size: 3rem;
+          width: 100%;
+          padding: 2%;
+        }
+        #admin-nav-bar {
+          font-size: 1rem;
+          font-family: Playfair Display; serif;
+          width: 100%;
+          color: var(--darkAccent);
+          display: inline-flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #222;
+          padding: 2%;
+        }
         #account-nav {
           font-size: 0.8rem;
         }
-        #logo {
-          color: white;
-        }
       `}</style>
       <Link to="/"><div id="logo">{props.legend}</div></Link>
-      <div style={adminNavStyles} id="admin-nav-bar">
+      <div id="admin-nav-bar">
         <div id="admin-section-nav">
           <Link to="/pets">Pets</Link> | <Link to="/parents">Parents</Link> | <Link to="/appointments">Appointments</Link>
         </div>
         <div id="account-nav">
-          <Link to="/newparent">Register New Parent</Link>
+          <Link to="/newentry"><button className="nav-button">Add new</button></Link>
         </div>
       </div>
     </div>

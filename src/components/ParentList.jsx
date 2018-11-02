@@ -26,6 +26,7 @@ var masterParentList = [
 function ParentList() {
   return (
     <div>
+      
       <SectionHeading legend={'Parents'}/>
       {masterParentList.map((parent, index) =>
         <Parent firstNames={parent.firstNames}

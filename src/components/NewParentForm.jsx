@@ -1,9 +1,25 @@
 import React from 'react';
 
-function NewParentForm(){
-  return (
-    <div>
-      <style jsx>{`
+class NewParentForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      valid: false,
+      pending: true
+    };
+    this.onParentFormSubmission = this.onParentFormSubmission.bind(this);
+  }
+
+  onParentFormSubmission(event) {
+    event.preventDefault();
+    this.state.pending = false;
+    console.log('SUBMITTED PARENT FORM. pending = ' + this.state.pending);
+  }
+
+  render() {
+    return (
+      <div>
+        <style jsx>{`
         div {
           margin-top: 2.5%;
           padding: 2.5%;
@@ -15,39 +31,37 @@ function NewParentForm(){
         form {
           width: 100%;
         }
-        button {
-          border-radius: 0.1rem;
-          padding: 2%;
-          margin-top: 2%
-        }
         input {
           width: 40%;
           margin: 1%;
           padding: 1%;
+          margin-bottom: 5%;
         }
       `}</style>
-      <form>
-        <input
-          type='text'
-          id='first-name'
-          placeholder='First name'/>
-        <input
-          type='text'
-          id='last-name'
-          placeholder='Last name'/>
-        <input
-          type='number'
-          id='phone-number'
-          placeholder='Phone number'/>
-        <input
-          type='text'
-          id='email'
-          placeholder='Email'/>
-        <br />
-        <button type='submit'>Submit!</button>
-      </form>
-    </div>
-  );
+        <h3>New Parent</h3>
+        <form onSubmit={this.onParentFormSubmission}>
+          <input
+            type='text'
+            id='first-name'
+            placeholder='First name' />
+          <input
+            type='text'
+            id='last-name'
+            placeholder='Last name' />
+          <input
+            type='number'
+            id='phone-number'
+            placeholder='Phone number' />
+          <input
+            type='text'
+            id='email'
+            placeholder='Email' />
+          <br />
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    );
+  }
 }
 
 export default NewParentForm;

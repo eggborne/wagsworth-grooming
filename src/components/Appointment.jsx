@@ -8,10 +8,10 @@ function Appointment(props){
       <style jsx>{`
         div {
           padding: 2.5%;
-          background-color: #ddd;
+          background-color: var(--lightBg);
         }
         div:nth-child(2n) {
-          background-color: #eee;
+          background-color: var(--darkBg);
         }
       `}</style>
       <h3>Date: {props.date}</h3>
