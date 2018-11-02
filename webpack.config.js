@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   entry: [
     resolve(__dirname, 'src', 'index.jsx')
   ],

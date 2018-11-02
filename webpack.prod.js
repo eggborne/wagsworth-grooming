@@ -13,7 +13,8 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           plugins: [
-            'styled-jsx/babel'
+            'styled-jsx/babel',
+            ['transform-remove-console', { 'exclude': [ 'error', 'warn'] }]
           ]
         }
       },
