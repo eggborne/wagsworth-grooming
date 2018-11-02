@@ -48,7 +48,7 @@
             "always"
         ],
         "no-console": [
-            1
+            0
         ]
     }
 }
