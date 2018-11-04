@@ -34,8 +34,4 @@ function Footer() {
   );
 }
 
-Footer.propTypes = {
-  legend: PropTypes.string
-};
-
 export default Footer;

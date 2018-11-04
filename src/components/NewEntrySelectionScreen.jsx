@@ -20,6 +20,7 @@ function NewEntrySelectionScreen(props) {
           padding: 1rem;
         }
       `}</style>
+      <button onClick={props.onNewEmployeeSelection}>New Employee</button>
       <button onClick={props.onNewParentSelection}>New Parent</button>
       <button onClick={props.onNewPetSelection}>New Pet</button>
       <button onClick={props.onNewAppointmentSelection}>New Appointment</button>
@@ -29,6 +30,7 @@ function NewEntrySelectionScreen(props) {
 }
 
 NewEntrySelectionScreen.propTypes = {
+  onNewEmployeeSelection: PropTypes.func,
   onNewParentSelection: PropTypes.func,
   onNewPetSelection: PropTypes.func,
   onNewAppointmentSelection: PropTypes.func

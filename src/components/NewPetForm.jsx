@@ -1,19 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class NewPetForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      valid: false,
-      pending: true
-    };
-    this.onPetFormSubmission = this.onPetFormSubmission.bind(this);
+    
+    this.handlePetFormSubmission = this.handlePetFormSubmission.bind(this);
   }
 
-  onPetFormSubmission(event) {
+  handlePetFormSubmission(event) {
     event.preventDefault();
-    this.state.pending = false;
+    console.log(this.firstName.value);
+    console.log(this.lastName.value);
+    console.log(this.phoneNumber.value);
+    console.log(this.email.value);
+    // this.state.pending = false;
   }
 
   render() {
@@ -39,23 +41,27 @@ class NewPetForm extends React.Component {
         }
       `}</style>
         <h3>New Pet</h3>
-        <form onSubmit={this.onPetFormSubmission}>
+        <form onSubmit={this.handlePetFormSubmission}>
           <input
+            ref={input => this.name = input}
             type='text'
-            id='first-name'
-            placeholder='First name' />
+            id='name'
+            placeholder='Name' />
           <input
+            ref={input => this.breed = input}
             type='text'
-            id='last-name'
-            placeholder='Last name' />
-          <input
+            id='breed'
+            placeholder='Breed' />
+          <select
+            ref={input => this.sex = input}
             type='number'
-            id='phone-number'
-            placeholder='Phone number' />
+            id='sex'
+            placeholder='Sex' />
           <input
-            type='text'
-            id='email'
-            placeholder='Email' />
+            ref={input => this.weight = input}
+            type='number'
+            id='weight'
+            placeholder='Weight' />
           <br />
           <Link to="/"><button type="submit">Create</button></Link>
         </form>
@@ -63,5 +69,9 @@ class NewPetForm extends React.Component {
     );
   }
 }
+
+NewPetForm.propTypes = {
+  onPetFormSubmission: PropTypes.func
+};
 
 export default NewPetForm;

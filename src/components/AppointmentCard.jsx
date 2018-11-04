@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Appointment(props){
+function AppointmentCard(props){
   
   return (
     <div>
@@ -25,7 +25,7 @@ function Appointment(props){
   );
 }
 
-Appointment.propTypes = {
+AppointmentCard.propTypes = {
   date: PropTypes.number,
   petId: PropTypes.number,
   startTime: PropTypes.number,
@@ -33,4 +33,4 @@ Appointment.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.string)
 };
 
-export default Appointment;
+export default AppointmentCard;

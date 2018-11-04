@@ -2,20 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 var moment = require('moment');
 
-function NewParentForm(props) {
+function NewEmployeeForm(props) {
   let _firstName = null;
   let _lastName = null;
   let _phoneNumber = null;
   let _email = null;
   let _notes = null;
-  function handleParentFormSubmission(event) {
+  function handleEmployeeFormSubmission(event) {
     event.preventDefault();
     console.log(_firstName.value);
     console.log(_lastName.value);
     console.log(_phoneNumber.value);
     console.log(_email.value);
     console.log(_notes.value);
-    props.onParentFormSubmission({
+    props.onEmployeeFormSubmission({
       firstName: _firstName.value,
       lastName: _lastName.value,
       phoneNumber: _phoneNumber.value,
@@ -26,7 +26,7 @@ function NewParentForm(props) {
       pastApptIds: [],     
       key: 255,
       dateCreated: moment().format()
-    },'parent');
+    },'employee');
   }
 
   return (
@@ -50,8 +50,8 @@ function NewParentForm(props) {
         margin-bottom: 5%;
       }
     `}</style>
-      <h3>New Parent</h3>
-      <form onSubmit={handleParentFormSubmission}>
+      <h3>New Employee</h3>
+      <form onSubmit={handleEmployeeFormSubmission}>
         <input
           ref={(input) => {_firstName = input;}}
           type='text'
@@ -84,8 +84,8 @@ function NewParentForm(props) {
   );
 }
 
-NewParentForm.propTypes = {
-  onParentFormSubmission: PropTypes.func
+NewEmployeeForm.propTypes = {
+  onEmployeeFormSubmission: PropTypes.func
 };
 
-export default NewParentForm;
+export default NewEmployeeForm;

@@ -1,19 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class NewAppointmentForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      valid: false,
-      pending: true
-    };
-    this.onAppointmentFormSubmission = this.onAppointmentFormSubmission.bind(this);
+    
+    this.handleAppointmentFormSubmission = this.handleAppointmentFormSubmission.bind(this);
   }
 
-  onAppointmentFormSubmission(event) {
+  handleAppointmentFormSubmission(event) {
     event.preventDefault();
-    this.state.pending = false;
+    console.log(this.firstName.value);
+    console.log(this.lastName.value);
+    console.log(this.phoneNumber.value);
+    console.log(this.email.value);
   }
 
   render() {
@@ -39,20 +40,24 @@ class NewAppointmentForm extends React.Component {
         }
       `}</style>
         <h3>New Appointment</h3>
-        <form onSubmit={this.onAppointmentFormSubmission}>
+        <form onSubmit={this.handleAppointmentFormSubmission}>
           <input
+            ref={input => this.firstName = input}
             type='text'
             id='first-name'
             placeholder='First name' />
           <input
+            ref={input => this.lastName = input}
             type='text'
             id='last-name'
             placeholder='Last name' />
           <input
+            ref={input => this.phoneNumber = input}
             type='number'
             id='phone-number'
             placeholder='Phone number' />
           <input
+            ref={input => this.email = input}
             type='text'
             id='email'
             placeholder='Email' />
@@ -63,5 +68,9 @@ class NewAppointmentForm extends React.Component {
     );
   }
 }
+
+NewAppointmentForm.propTypes = {
+  onAppointmentFormSubmission: PropTypes.func
+};
 
 export default NewAppointmentForm;

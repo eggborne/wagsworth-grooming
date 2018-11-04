@@ -1,17 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function Header(props){
+function Header(props) {
   return (
     <div id="header">
       <style jsx>{`
+        small {
+          font-size:1.5rem;
+        }
+        #logo {
+          color: var(--mainBg);
+        }
         #header {
           background-color: var(--darkest);
           color: var(--mainBg);
           box-sizing: border-box;
           font-family: Tangerine; cursive;
-          font-size: 3rem;
+          font-size: 2.5rem;
           width: 100%;
           padding: 2%;
         }
@@ -26,25 +31,25 @@ function Header(props){
           background-color: #222;
           padding: 2%;
         }
-        #account-nav {
-          font-size: 0.8rem;
+        .tiny {
+          font-size: 0.6rem;
+          font-family: sans-serif;
+          margin-left: 0.5rem;
         }
       `}</style>
-      <Link to="/"><div id="logo">{props.legend}</div></Link>
+      <Link to="/">
+        <div id="logo">
+          Wagsworth Grooming Co.<br />
+          <small>Administrative Portal <span className='tiny'>v0.1</span></small>
+        </div>
+      </Link>
       <div id="admin-nav-bar">
         <div id="admin-section-nav">
-          <Link to="/pets">Pets</Link> | <Link to="/parents">Parents</Link> | <Link to="/appointments">Appointments</Link>
-        </div>
-        <div id="account-nav">
-          <Link to="/newentry"><button className="nav-button">Add new</button></Link>
+          <Link to="/employees">Employees</Link> | <Link to="/parents">Parents</Link> | <Link to="/pets">Pets</Link> | <Link to="/appointments">Appointments</Link>
         </div>
       </div>
     </div>
   );
 }
-
-Header.propTypes = {
-  legend: PropTypes.string
-};
 
 export default Header;
