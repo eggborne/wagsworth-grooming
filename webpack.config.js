@@ -1,9 +1,13 @@
 const { resolve } = require('path');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: [
     resolve(__dirname, 'src', 'index.jsx')
+  ],
+  plugins: [
+    new MomentLocalesPlugin()
   ],
   module: {
     rules: [
@@ -33,7 +37,7 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: resolve(__dirname, 'build'),
+    path: resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'app.bundle.js'
   },

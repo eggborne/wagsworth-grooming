@@ -1,9 +1,13 @@
 const { resolve } = require('path');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: "production",
   entry: [
     resolve(__dirname, 'src', 'index.jsx')
+  ],
+  plugins: [
+    new MomentLocalesPlugin()
   ],
   module: {
     rules: [
@@ -34,8 +38,8 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: resolve(__dirname, 'build'),
-    publicPath: 'https://www.eggborne.com/wagsworth/build/',
+    path: resolve(__dirname, 'dist'),
+    publicPath: 'https://www.eggborne.com/wagsworth/dist/',
     filename: 'app.bundle.js'
   }
 };
