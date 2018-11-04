@@ -4,7 +4,6 @@ import ParentCard from './ParentCard';
 import PropTypes from 'prop-types';
 import NewEntryForm from './NewEntryForm';
 
-
 class ParentIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -23,8 +22,7 @@ class ParentIndex extends React.Component {
   }
 
   handleSubmittingNewEntry(newEntryObj) {
-    console.log('ParentIndex handling Form submissiogn!');
-    console.log(newEntryObj)
+    console.log('ParentIndex handling Form submission',newEntryObj);
     this.setState({
       newFormRequested: null,
       newEntryToSubmit: newEntryObj
@@ -34,29 +32,29 @@ class ParentIndex extends React.Component {
   render() {
     if (this.state.newFormRequested) {
       return (
-        <NewEntryForm type={this.props.type} 
-        onFormSubmission={this.handleSubmittingNewEntry}
+        <NewEntryForm type={this.props.type}
+          onFormSubmission={this.handleSubmittingNewEntry}
         />
       );
     } else {
       let parentsToDisplay = this.props.parentList;
       return (
         <div>
-        <SectionHeading type={'parent'} 
-          onClickToRequestForm={this.handleEntryFormRequest} />
-        {parentsToDisplay.map((parent, index) =>
-          <ParentCard key={index}
-            firstName={parent.firstName}
-            lastName={parent.lastName}
-            phoneNumber={parent.phoneNumber}
-            email={parent.email}
-            notes={parent.notes}
-            petIds={parent.petIds}
-            upcomingApptIds={parent.upcomingApptIds}
-            pastApptIds={parent.pastApptIds}
-            dateCreated={parent.dateCreated}
-            formattedTimeSince={parent.formattedTimeSince} />
-        )}
+          <SectionHeading type={'parent'}
+            onClickToRequestForm={this.handleEntryFormRequest} />
+          {parentsToDisplay.map((parent, index) =>
+            <ParentCard key={index}
+              firstName={parent.firstName}
+              lastName={parent.lastName}
+              phoneNumber={parent.phoneNumber}
+              email={parent.email}
+              notes={parent.notes}
+              petIds={parent.petIds}
+              upcomingApptIds={parent.upcomingApptIds}
+              pastApptIds={parent.pastApptIds}
+              dateCreated={parent.dateCreated}
+              formattedTimeSince={parent.formattedTimeSince} />
+          )}
         </div>
       );
     }
@@ -66,7 +64,7 @@ class ParentIndex extends React.Component {
 ParentIndex.propTypes = {
   type: PropTypes.string,
   parentList: PropTypes.array,
-  onNewEntryCreation: PropTypes.func
+  onNewEntryCreation: PropTypes.func,
 };
 
 export default ParentIndex;

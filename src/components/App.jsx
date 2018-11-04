@@ -6,7 +6,6 @@ import EmployeeIndex from './EmployeeIndex';
 import AppointmentIndex from './AppointmentIndex';
 import ParentIndex from './ParentIndex';
 import PetIndex from './PetIndex';
-import NewEntryForm from './NewEntryForm';
 import { Switch, Route } from 'react-router-dom';
 var moment = require('moment');
 

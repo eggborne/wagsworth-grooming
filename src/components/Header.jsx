@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Header(props) {
+function Header() {
   return (
     <div id="header">
       <style jsx>{`
