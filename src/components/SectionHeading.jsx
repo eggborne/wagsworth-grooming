@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function SectionHeading(props) {
 
-  let headerText = `${props.type[0].toUpperCase()}${props.type.slice(1,props.type.length)}s`;
+  let headerText = `${props.type[0].toUpperCase()}${props.type.slice(1,props.type.length)}`;
   
   return (
     <div>
