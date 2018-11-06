@@ -19,16 +19,15 @@ function PetCard(props) {
           font-size: 0.75rem;
         }
       `}</style>
-      <h2>{props.name}</h2>
-      
-      <h3>Breed: {displayAssociatedEntries(props.breed)}</h3>
+      <h1>{props.name}</h1>
+      <h3>Breed: {props.breed}</h3>
       <h3>Sex: {props.sex}</h3>
-      <h3>Weight: {props.weight} | Color: {displayAssociatedEntries(props.color)}</h3>
+      <h3>Weight: {props.weight} | Color: {props.color}</h3>
       <h3>DOB: {props.dob}</h3>
       <h3>Vax date: {props.vaccinationDate}</h3>
-      <h3>Vax clinic ID: {props.vaccinationClinicId}</h3>
-      <h3>Vet clinic ID: {props.veterinarianId}</h3>
-      <h3>ParentCard ID: {props.parentId}</h3>
+      <h3>Vax clinic ID: {props.vaccinationClinic}</h3>
+      <h3>Vet clinic ID: {props.veterinarian}</h3>
+      <h3>Parents: <span onClick={() => props.showParent('parents',props.parentId)}>{props.parentId}</span></h3>
       <p><em>Notes: {props.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
       <small>({timeInfo.timeSinceCreated})</small>
@@ -54,16 +53,17 @@ function displayTimeCreatedInfo(dateCreated) {
 PetCard.propTypes = {
   name: PropTypes.string,
   sex: PropTypes.string,
-  breed: PropTypes.arrayOf(PropTypes.string),
-  weight: PropTypes.number,
-  color: PropTypes.arrayOf(PropTypes.string),
-  dob: PropTypes.number,
-  vaccinationDate: PropTypes.number,
-  vaccinationClinicId: PropTypes.number,
-  veterinarianId: PropTypes.number,
-  parentId: PropTypes.number,
+  breed: PropTypes.string,
+  weight: PropTypes.string,
+  color: PropTypes.string,
+  dob: PropTypes.string,
+  vaccinationDate: PropTypes.string,
+  vaccinationClinic: PropTypes.string,
+  veterinarian: PropTypes.string,
+  parentId: PropTypes.string,
   notes: PropTypes.string,
-  dateCreated: PropTypes.string
+  dateCreated: PropTypes.string,
+  showParent: PropTypes.func
 };
 
 export default PetCard;
