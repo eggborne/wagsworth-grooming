@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 var moment = require('moment');
 
 function ParentCard(props) {
-  let timeInfo = displayTimeCreatedInfo(props.dateCreated);
+  let obj = props.entryObject;
+  let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
   return (
     <div>
       <style jsx>{`
@@ -19,12 +20,12 @@ function ParentCard(props) {
           font-size: 0.75rem;
         }
       `}</style>
-      <h3>{props.firstName} {props.lastName}</h3>
-      <h3>{props.phoneNumber}</h3>
-      <h3>Pet IDs: {displayAssociatedEntries(props.petIds)}</h3>
-      <h3>Upcoming Appt IDs: {displayAssociatedEntries(props.upcomingApptIds)}</h3>
-      <h3>Past Appt IDs: {displayAssociatedEntries(props.pastApptIds)}</h3>
-      <p>Notes: <em>{props.notes}</em></p>
+      <h3>{obj.firstName} {obj.lastName}</h3>
+      <h3>{obj.phoneNumber}</h3>
+      <h3>Pet IDs: {displayAssociatedEntries(obj.petIds)}</h3>
+      <h3>Upcoming Appt IDs: {displayAssociatedEntries(obj.upcomingApptIds)}</h3>
+      <h3>Past Appt IDs: {displayAssociatedEntries(obj.pastApptIds)}</h3>
+      <p>Notes: <em>{obj.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
       <small>({timeInfo.timeSinceCreated})</small>
     </div>
@@ -47,17 +48,7 @@ function displayTimeCreatedInfo(dateCreated) {
 }
 
 ParentCard.propTypes = {
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  address: PropTypes.string,
-  email: PropTypes.string,
-  phoneNumber: PropTypes.string,
-  petIds: PropTypes.arrayOf(PropTypes.number),
-  upcomingApptIds: PropTypes.arrayOf(PropTypes.number),
-  pastApptIds: PropTypes.arrayOf(PropTypes.number),
-  notes: PropTypes.string,
-  formattedTimeSince: PropTypes.string,
-  dateCreated: PropTypes.string
+  entryObject: PropTypes.object,
 };
 
 export default ParentCard;

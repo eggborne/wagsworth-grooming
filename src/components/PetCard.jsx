@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 var moment = require('moment');
 
 function PetCard(props) {
-  let timeInfo = displayTimeCreatedInfo(props.dateCreated);
+  let obj = props.entryObject;
+  let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
   return (
     <div>
       <style jsx>{`
@@ -19,29 +20,29 @@ function PetCard(props) {
           font-size: 0.75rem;
         }
       `}</style>
-      <h1>{props.name}</h1>
-      <h3>Breed: {props.breed}</h3>
-      <h3>Sex: {props.sex}</h3>
-      <h3>Weight: {props.weight} | Color: {props.color}</h3>
-      <h3>DOB: {props.dob}</h3>
-      <h3>Vax date: {props.vaccinationDate}</h3>
-      <h3>Vax clinic ID: {props.vaccinationClinic}</h3>
-      <h3>Vet clinic ID: {props.veterinarian}</h3>
-      <h3>Parents: <span onClick={() => props.showParent('parents',props.parent)}>{props.parent}</span></h3>
-      <p><em>Notes: {props.notes}</em></p>
+      <h1>{obj.name}</h1>
+      <h3>Breed: {obj.breed}</h3>
+      <h3>Sex: {obj.sex}</h3>
+      <h3>Weight: {obj.weight} | Color: {obj.color}</h3>
+      <h3>DOB: {obj.dob}</h3>
+      <h3>Vax date: {obj.vaccinationDate}</h3>
+      <h3>Vax clinic ID: {obj.vaccinationClinic}</h3>
+      <h3>Vet clinic ID: {obj.veterinarian}</h3>
+      <h3>Parents: <a href={'./#/parents'}>{props.printParentLink('parents',obj.parent)}</a></h3>
+      <p><em>Notes: {obj.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
       <small>({timeInfo.timeSinceCreated})</small>
     </div>
   );
 }
 
-function displayAssociatedEntries(propArr) {
-  let arr = [];
-  propArr.forEach((id) => {
-    arr.push(id);
-  });
-  return arr.join(' / ');
-}
+// function displayAssociatedEntries(propArr) {
+//   let arr = [];
+//   propArr.forEach((id) => {
+//     arr.push(id);
+//   });
+//   return arr.join(' / ');
+// }
 
 function displayTimeCreatedInfo(dateCreated) {
   return {
@@ -51,19 +52,8 @@ function displayTimeCreatedInfo(dateCreated) {
 }
 
 PetCard.propTypes = {
-  name: PropTypes.string,
-  sex: PropTypes.string,
-  breed: PropTypes.string,
-  weight: PropTypes.string,
-  color: PropTypes.string,
-  dob: PropTypes.string,
-  vaccinationDate: PropTypes.string,
-  vaccinationClinic: PropTypes.string,
-  veterinarian: PropTypes.string,
-  parent: PropTypes.string,
-  notes: PropTypes.string,
-  dateCreated: PropTypes.string,
-  showParent: PropTypes.func
+  entryObject: PropTypes.object,
+  printParentLink: PropTypes.func
 };
 
 export default PetCard;

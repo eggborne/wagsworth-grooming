@@ -2,9 +2,10 @@ import React from 'react';
 import SectionHeading from './SectionHeading';
 import ParentCard from './ParentCard';
 import PetCard from './PetCard';
-import PropTypes from 'prop-types';
 import NewParentForm from './NewParentForm';
 import NewPetForm from './NewPetForm';
+import SplashPage from './SplashPage';
+import PropTypes from 'prop-types';
 var uuid = require('uuid/v1');
 var moment = require('moment');
 
@@ -27,6 +28,18 @@ let phonyKeys = [
     nsecs: 7500
   })
 ];
+
+let cardStyle = `div {
+  padding: 2.5%;
+  background-color: var(--lightBg);
+}
+div:nth-child(2n) {
+  background-color: var(--darkBg);
+}
+small {
+  font-family: sans-serif;
+  font-size: 0.75rem;
+}`;
 
 class ListIndex extends React.Component {
   constructor(props) {
@@ -114,7 +127,7 @@ class ListIndex extends React.Component {
     };
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
-    this.retrieveEntry = this.retrieveEntry.bind(this);
+    this.printEntryLink = this.printEntryLink.bind(this);
   }
 
   handleEntryFormRequest() {
@@ -124,7 +137,6 @@ class ListIndex extends React.Component {
   }
 
   handleSubmittingNewEntry(newEntryObj) {
-    console.log('Form submission', newEntryObj);
     newEntryObj.key = newEntryObj.id = uuid();
     let newList = Object.assign({}, this.state.displayList);
     newList[this.props.type][newEntryObj.id] = newEntryObj;
@@ -134,13 +146,19 @@ class ListIndex extends React.Component {
     });
   }
 
-  retrieveEntry(type, key) {
-    console.log(type,key);
-    let output = this.state.displayList[type][key];
+  printEntryLink(type, key) {
+    let output;
+    if (key) {
+      let entryObj = this.state.displayList[type][key];
+      output = `${entryObj.firstName} ${entryObj.lastName}`;
+    } else {
+      output = 'Your Mama';
+    }
     return output;
   }
 
   render() {
+    window.scrollTo(0, 0);
     if (this.state.newFormRequested) {
       if (this.props.type === 'parents') {
         return (
@@ -163,24 +181,18 @@ class ListIndex extends React.Component {
       } else {
         entriesToDisplay = Object.values(listObj).reverse();
       }
-      if (this.props.type === 'parents') {
+      if (this.props.type === 'splash') {
+        return (
+          <SplashPage />
+        );
+      } else if (this.props.type === 'parents') {
         return (
           <div>
             <SectionHeading type={'parents'}
               onClickToRequestForm={this.handleEntryFormRequest} />
             {entriesToDisplay.map((entry) =>
               <ParentCard key={entry.id}
-                id={entry.id}
-                firstName={entry.firstName}
-                lastName={entry.lastName}
-                phoneNumber={entry.phoneNumber}
-                email={entry.email}
-                notes={entry.notes}
-                petIds={entry.petIds}
-                upcomingApptIds={entry.upcomingApptIds}
-                pastApptIds={entry.pastApptIds}
-                dateCreated={entry.dateCreated}
-                formattedTimeSince={entry.formattedTimeSince} />
+                entryObject={entry} />
             )}
           </div>
         );
@@ -191,19 +203,8 @@ class ListIndex extends React.Component {
               onClickToRequestForm={this.handleEntryFormRequest} />
             {entriesToDisplay.map((entry) =>
               <PetCard key={entry.id}
-                id={entry.id}
-                name={entry.name}
-                breed={entry.breed}
-                sex={entry.sex}
-                weight={entry.weight.toString()}
-                color={entry.color}
-                dob={entry.dob.toString()}
-                vaccinationDate={entry.vaccinationDate.toString()}
-                vaccinationClinic={entry.vaccinationClinic.toString()}
-                veterinarian={entry.veterinarian.toString()}
-                notes={entry.notes}
-                parent={entry.parent}
-                showParent={this.retrieveEntry} />
+                entryObject={entry}
+                printParentLink={this.printEntryLink} />
             )}
           </div>
         );
