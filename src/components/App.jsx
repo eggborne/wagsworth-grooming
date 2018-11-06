@@ -2,10 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import SplashPage from './SplashPage';
-import EmployeeIndex from './EmployeeIndex';
-import AppointmentIndex from './AppointmentIndex';
-import ParentIndex from './ParentIndex';
-import PetIndex from './PetIndex';
+import ListIndex from './ListIndex';
 import { Switch, Route } from 'react-router-dom';
 var moment = require('moment');
 
@@ -23,7 +20,7 @@ class App extends React.Component {
           phoneNumber: '360-867-5309',
           petIds: [1, 2],
           upcomingApptIds: [4],
-          pastApptIds: [1,4],
+          pastApptIds: [1, 4],
           notes: 'Kind of snooty',
           schedule: 'TBD',
           formattedTimeSince: '',
@@ -34,83 +31,12 @@ class App extends React.Component {
           lastName: 'Johnson',
           phoneNumber: '360-936-5589',
           petIds: [3],
-          upcomingApptIds: [5,6],
-          pastApptIds: [2,3],
+          upcomingApptIds: [5, 6],
+          pastApptIds: [2, 3],
           notes: 'Fabulous tipper',
           schedule: 'TBD',
           formattedTimeSince: '',
           dateCreated: '1963-07-04'
-        }
-      ],
-      masterParentList: [
-        {
-          firstName: 'Deborah',
-          lastName: 'Watkins',
-          phoneNumber: '360-867-5309',
-          petIds: [1, 2],
-          upcomingApptIds: [4],
-          pastApptIds: [1,4],
-          notes: 'Kind of snooty',
-          formattedTimeSince: '(not user-created)',
-          dateCreated: '2018-10-31'
-        },
-        {
-          firstName: 'Marcus',
-          lastName: 'Wellington',
-          phoneNumber: '360-936-5589',
-          petIds: [3],
-          upcomingApptIds: [5,6],
-          pastApptIds: [2,3],
-          notes: 'Fabulous tipper',
-          formattedTimeSince: '(not user-created)',
-          dateCreated: '2018-06-18'
-        }
-      ],
-      masterPetList: [
-        {
-          name: 'Megatron',
-          sex: 'M',
-          breed: ['Chihuahua', 'Pomeranian'],
-          weight: 9,
-          color: ['Black', 'Brown'],
-          dob: 11092008,
-          vaccinationDate: 6042018,
-          vaccinationClinicId: 0,
-          veterinarianId: 0,
-          parentId: 1,
-          notes: 'A good boy :)',
-          formattedTimeSince: '(not user-created)',
-          dateCreated: '2016-06-18'
-        },
-        {
-          name: 'Cheddar Cheese',
-          sex: 'F',
-          breed: ['Beagle'],
-          weight: 9,
-          color: ['White', 'Gold'],
-          dob: 8241980,
-          vaccinationDate: 8092018,
-          vaccinationClinicId: 1,
-          veterinarianId: 1,
-          parentId: 1,
-          notes: 'Slobbers',
-          formattedTimeSince: '(not user-created)',
-          dateCreated: moment()
-        },
-        {
-          name: 'Bob',
-          sex: 'M',
-          breed: ['Pitbull', 'Terrier'],
-          weight: 65,
-          color: ['White'],
-          dob: 12251999,
-          vaccinationDate: 10312008,
-          vaccinationClinicId: 2,
-          veterinarianId: 1,
-          parentId: 2,
-          notes: 'Sensitive pads',
-          formattedTimeSince: '(not user-created)',
-          dateCreated: moment()
         }
       ],
       masterAppointmentList: [
@@ -121,7 +47,7 @@ class App extends React.Component {
           services: ['Kennel cut #10', 'Nail filing'],
           notes: ['Shat on the table twice'],
           formattedTimeSince: '(not user-created)',
-          dateCreated: moment()
+          dateCreated: moment().format()
         },
         {
           date: 11092017,
@@ -130,29 +56,18 @@ class App extends React.Component {
           services: ['Flea dip', 'Deluxe ball-washing'],
           notes: ['Fewer fleas than last time :D'],
           formattedTimeSince: '(not user-created)',
-          dateCreated: moment()
+          dateCreated: moment().format()
         }
       ]
     };
-    this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
     this.updateTimeSinceEntriesCreated = this.updateTimeSinceEntriesCreated.bind(this);
   }
 
-  handleSubmittingNewEntry(newEntryObj, type) {
-    let listName = `master${type[0].toUpperCase() + type.slice(1, type.length)}List`;
-    let newList = this.state[listName].slice();
-    newEntryObj.formattedTimeSince = moment(newEntryObj.dateCreated).fromNow(true);
-    newList.unshift(newEntryObj);
-    this.setState({
-      [listName]: newList,
-    });
-  }
-
   componentDidMount() {
-    this.timeSinceEntryCreatedTimer = setInterval(() =>
-      this.updateTimeSinceEntriesCreated(), 
-    60000
-    );
+    // this.timeSinceEntryCreatedTimer = setInterval(() =>
+    // this.updateTimeSinceEntriesCreated(), 
+    // 60000
+    // );
   }
 
   componentWillUnmount() {
@@ -181,8 +96,9 @@ class App extends React.Component {
   }
 
   updateTimeSinceEntriesCreated() {
+    console.log('updating times');
     let parsedPath = window.location.hash.split('#/').pop();
-    if (['employees','parents','pets','appointments'].indexOf(parsedPath) > -1) {
+    if (['employees', 'parents', 'pets', 'appointments'].indexOf(parsedPath) > -1) {
       let listShowing = `master${parsedPath[0].toUpperCase()}${parsedPath.slice(1, -1)}List`;
       let updatedList = this.state[listShowing].slice();
       updatedList.forEach((entry) => {
@@ -221,10 +137,10 @@ class App extends React.Component {
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' component={SplashPage} />
-            <Route path='/parents' render={() => <ParentIndex type={'parent'} parentList={this.state.masterParentList} onNewEntryCreation={this.handleSubmittingNewEntry} />} />
-            <Route path='/pets' render={() => <PetIndex petList={this.state.masterPetList} />} />
-            <Route path='/appointments' render={() => <AppointmentIndex appointmentList={this.state.masterAppointmentList} />} />
-            <Route path='/employees' render={() => <EmployeeIndex employeeList={this.state.masterEmployeeList} />} />
+            <Route path='/parents' render={() => <ListIndex type={'parents'} />} />
+            <Route path='/pets' render={() => <ListIndex type={'pets'} />} />
+            <Route path='/appointments' render={() => <ListIndex type={'appointments'} />} />
+            <Route path='/employees' render={() => <ListIndex type={'employees'} />} />
           </Switch>
         </div>
         <Footer />
