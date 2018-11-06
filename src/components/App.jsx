@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import SplashPage from './SplashPage';
 import ListIndex from './ListIndex';
 import { Switch, Route } from 'react-router-dom';
 var moment = require('moment');
@@ -71,7 +70,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.timeSinceEntryCreatedTimer);
+    // clearInterval(this.timeSinceEntryCreatedTimer);
   }
 
   UNSAFE_componentWillMount() {
@@ -136,7 +135,7 @@ class App extends React.Component {
         <Header type={displayTitle} />
         <div id='padding-container'>
           <Switch>
-            <Route exact path='/' component={SplashPage} />
+            <Route exact path='/' render={() => <ListIndex type={'splash'} />} />
             <Route path='/parents' render={() => <ListIndex type={'parents'} />} />
             <Route path='/pets' render={() => <ListIndex type={'pets'} />} />
             <Route path='/appointments' render={() => <ListIndex type={'appointments'} />} />
