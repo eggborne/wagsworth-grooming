@@ -3,30 +3,26 @@ import PropTypes from 'prop-types';
 var moment = require('moment');
 
 function NewParentForm(props) {
+
   let _firstName = null;
   let _lastName = null;
   let _phoneNumber = null;
   let _email = null;
   let _notes = null;
+  
   function handleParentFormSubmission(event) {
     event.preventDefault();
-    console.log(_firstName.value);
-    console.log(_lastName.value);
-    console.log(_phoneNumber.value);
-    console.log(_email.value);
-    console.log(_notes.value);
-    props.onParentFormSubmission({
+    props.onFormSubmission({
       firstName: _firstName.value,
       lastName: _lastName.value,
       phoneNumber: _phoneNumber.value,
       email: _email.value,
       notes: _notes.value,
-      petIds: [12],     
+      petIds: [],     
       upcomingApptIds: [],     
       pastApptIds: [],     
-      key: 255,
       dateCreated: moment().format()
-    },'parent');
+    },props.type);
   }
 
   return (
@@ -50,7 +46,7 @@ function NewParentForm(props) {
         margin-bottom: 5%;
       }
     `}</style>
-      <h3>New Parent</h3>
+      <h3>New {props.type[0].toUpperCase()}{props.type.slice(1,props.type.length-1)}</h3>
       <form onSubmit={handleParentFormSubmission}>
         <input
           ref={(input) => {_firstName = input;}}
@@ -85,7 +81,8 @@ function NewParentForm(props) {
 }
 
 NewParentForm.propTypes = {
-  onParentFormSubmission: PropTypes.func
+  type: PropTypes.string,
+  onFormSubmission: PropTypes.func,
 };
 
 export default NewParentForm;
