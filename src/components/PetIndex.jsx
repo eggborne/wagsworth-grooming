@@ -17,9 +17,9 @@ function PetIndex(props) {
           color={pet.color}
           dob={pet.dob}
           vaccinationDate={pet.vaccinationDate}
-          vaccinationClinicId={pet.vaccinationClinicId}
-          veterinarianId={pet.veterinarianId}
-          parentId={pet.parentId}
+          vaccinationClinic={pet.vaccinationClinic}
+          veterinarian={pet.veterinarian}
+          parent={pet.parent}
           key={index} />
       )}
     </div>

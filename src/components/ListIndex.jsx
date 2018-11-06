@@ -72,7 +72,7 @@ class ListIndex extends React.Component {
             vaccinationDate: 6042018,
             vaccinationClinic: 0,
             veterinarian: 0,
-            parentId: phonyKeys[0],
+            parent: phonyKeys[0],
             notes: 'A good boy :)',
             formattedTimeSince: '(not user-created)',
             dateCreated: '2016-06-18'
@@ -88,7 +88,7 @@ class ListIndex extends React.Component {
             vaccinationDate: 8092018,
             vaccinationClinic: 1,
             veterinarian: 1,
-            parentId: phonyKeys[0],
+            parent: phonyKeys[0],
             notes: 'Slobbers',
             formattedTimeSince: '(not user-created)',
             dateCreated: moment().format()
@@ -104,7 +104,7 @@ class ListIndex extends React.Component {
             vaccinationDate: 10312008,
             vaccinationClinic: 2,
             veterinarian: 1,
-            parentId: phonyKeys[1],
+            parent: phonyKeys[1],
             notes: 'Sensitive pads',
             formattedTimeSince: '(not user-created)',
             dateCreated: moment().format()
@@ -202,7 +202,7 @@ class ListIndex extends React.Component {
                 vaccinationClinic={entry.vaccinationClinic.toString()}
                 veterinarian={entry.veterinarian.toString()}
                 notes={entry.notes}
-                parentId={entry.parentId}
+                parent={entry.parent}
                 showParent={this.retrieveEntry} />
             )}
           </div>
