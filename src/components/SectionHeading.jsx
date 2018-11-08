@@ -30,7 +30,7 @@ function SectionHeading(props) {
         }
       `}</style>
       {headerText}
-      <button onClick={props.onClickToRequestForm}>Add new</button>
+      <button onClick={() => props.onClickToRequestForm(props.type)}>Add new</button>
     </div>
   );
 }

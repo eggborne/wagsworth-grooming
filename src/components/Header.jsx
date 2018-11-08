@@ -1,14 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function Header() {
+function Header(props) {
   return (
     <div id="header">
       <style jsx>{`
-        small {
-          font-size:1.5rem;
-        }
-        #logo {
+        #logo, .tiny {
           color: var(--mainBg);
         }
         #header {
@@ -34,14 +32,14 @@ function Header() {
         .tiny {
           font-size: 0.6rem;
           font-family: sans-serif;
-          margin-left: 0.5rem;
+          margin-top: 0.25rem;
         }
       `}</style>
       <Link to="/">
         <div id="logo">
-          Wagsworth Grooming Co.<br />
-          <small>Administrative Portal <span className='tiny'>v0.1</span></small>
+          {props.displayTitle}
         </div>
+        <div className='tiny'>Administrative Portal v0.1</div>
       </Link>
       <div id="admin-nav-bar">
         <div id="admin-section-nav">
@@ -51,5 +49,9 @@ function Header() {
     </div>
   );
 }
+
+Header.propTypes = {
+  displayTitle: PropTypes.string,
+};
 
 export default Header;

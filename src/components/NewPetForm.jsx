@@ -17,19 +17,6 @@ function NewPetForm(props) {
   
   function handlePetFormSubmission(event) {
     event.preventDefault();
-    console.log(`NewPetForm submitting ${props.type} ${{
-      name: _name.value,
-      sex: _sex.value,
-      breed: _breed.value,
-      weight: _weight.value,
-      color: _color.value,
-      dob: _dob.value,
-      notes: _notes.value,
-      vaccinationDate: _vaccinationDate.value,
-      vaccinationClinic: _vaccinationClinic.value,
-      veterinarian: _veterinarian.value,
-      dateCreated: moment().format()
-    }}`);
     props.onFormSubmission({
       name: _name.value,
       sex: _sex.value,
@@ -40,39 +27,21 @@ function NewPetForm(props) {
       vaccinationDate: _vaccinationDate.value,
       vaccinationClinic: _vaccinationClinic.value,
       veterinarian: _veterinarian.value,
-      dateCreated: moment().format()
+      dateCreated: moment().format(),
+      notes: _notes.value
     },props.type);
   }
 
   return (
-    <div>
-      <style jsx>{`
-      div {
-        margin-top: 2.5%;
-        padding: 2.5%;
-        box-sizing: border-box;
-        background:#ded;
-        text-align: center;
-        border-radius: 0.5rem
-      }
-      form {
-        width: 100%;
-      }
-      input {
-        width: 40%;
-        margin: 1%;
-        padding: 1%;
-        margin-bottom: 5%;
-      }
-    `}</style>
+    <div style={props.style.div}>
       <h3>New {props.type[0].toUpperCase()}{props.type.slice(1,props.type.length-1)}</h3>
-      <form onSubmit={handlePetFormSubmission}>
-        <input
+      <form  style={props.style.form} onSubmit={handlePetFormSubmission}>
+        <input style={props.style.input}
           ref={(input) => {_name = input;}}
           type='text'
           id='name'
           placeholder='Name' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_breed = input;}}
           type='text'
           id='breed'
@@ -95,27 +64,27 @@ function NewPetForm(props) {
           <option value='Brown'>Brown</option>
           <option value='Grey'>Grey</option>
         </select>
-        <input
+        <input style={props.style.input}
           ref={(input) => {_weight = input;}}
           type='number'
           id='weight'
           placeholder='Weight' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_dob = input;}}
           type='text'
           id='dob'
           placeholder='Date of Birth' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_vaccinationDate = input;}}
           type='number'
           id='vaccination-date'
           placeholder='Vaccination Date' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_vaccinationClinic = input;}}
           type='text'
           id='vaccination-clinic-id'
           placeholder='Vaccination Clinic' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_veterinarian = input;}}
           type='text'
           id='veterinary-clinic'
@@ -133,6 +102,7 @@ function NewPetForm(props) {
 }
 
 NewPetForm.propTypes = {
+  style: PropTypes.object,
   type: PropTypes.string,
   onFormSubmission: PropTypes.func,
 };

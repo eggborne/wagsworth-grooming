@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 var moment = require('moment');
 
 function NewEmployeeForm(props) {
+
   let _firstName = null;
   let _lastName = null;
   let _phoneNumber = null;
@@ -10,64 +11,39 @@ function NewEmployeeForm(props) {
   let _notes = null;
   function handleEmployeeFormSubmission(event) {
     event.preventDefault();
-    console.log(_firstName.value);
-    console.log(_lastName.value);
-    console.log(_phoneNumber.value);
-    console.log(_email.value);
-    console.log(_notes.value);
-    props.onEmployeeFormSubmission({
+    props.onFormSubmission({
       firstName: _firstName.value,
       lastName: _lastName.value,
       phoneNumber: _phoneNumber.value,
       email: _email.value,
       notes: _notes.value,
-      petIds: [12],     
+      petIds: [],     
       upcomingApptIds: [],     
       pastApptIds: [],     
-      key: 255,
       dateCreated: moment().format()
-    },'employee');
+    },props.type);
   }
 
   return (
-    <div>
-      <style jsx>{`
-      div {
-        margin-top: 2.5%;
-        padding: 2.5%;
-        box-sizing: border-box;
-        background:#ded;
-        text-align: center;
-        border-radius: 0.5rem
-      }
-      form {
-        width: 100%;
-      }
-      input {
-        width: 40%;
-        margin: 1%;
-        padding: 1%;
-        margin-bottom: 5%;
-      }
-    `}</style>
-      <h3>New Employee</h3>
-      <form onSubmit={handleEmployeeFormSubmission}>
-        <input
+    <div style={props.style.div}>
+      <h3>New {props.type[0].toUpperCase()}{props.type.slice(1,props.type.length-1)}</h3>
+      <form  style={props.style.form} onSubmit={handleEmployeeFormSubmission}>
+        <input style={props.style.input}
           ref={(input) => {_firstName = input;}}
           type='text'
           id='first-name'
           placeholder='First name' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_lastName = input;}}
           type='text'
           id='last-name'
           placeholder='Last name' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_phoneNumber = input;}}
           type='number'
           id='phone-number'
           placeholder='Phone number' />
-        <input
+        <input style={props.style.input}
           ref={(input) => {_email = input;}}
           type='text'
           id='email'
@@ -85,7 +61,9 @@ function NewEmployeeForm(props) {
 }
 
 NewEmployeeForm.propTypes = {
-  onEmployeeFormSubmission: PropTypes.func
+  style: PropTypes.object,
+  type: PropTypes.string,
+  onFormSubmission: PropTypes.func
 };
 
 export default NewEmployeeForm;

@@ -19,6 +19,9 @@ function ParentCard(props) {
           font-family: sans-serif;
           font-size: 0.75rem;
         }
+        a {
+          color: blue;
+        }
       `}</style>
       <h3>{obj.firstName} {obj.lastName}</h3>
       <h3>{obj.phoneNumber}</h3>
@@ -27,7 +30,8 @@ function ParentCard(props) {
       <h3>Past Appt IDs: {displayAssociatedEntries(obj.pastApptIds)}</h3>
       <p>Notes: <em>{obj.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
-      <small>({timeInfo.timeSinceCreated})</small>
+      <small>({timeInfo.timeSinceCreated})</small><br />
+      <small>Unique ID: {obj.id}</small>
     </div>
   );
 }

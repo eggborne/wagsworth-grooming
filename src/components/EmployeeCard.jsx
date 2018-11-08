@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 var moment = require('moment');
 
 function EmployeeCard(props) {
-  let timeInfo = displayTimeCreatedInfo(props.dateCreated);
+  let obj = props.entryObject;
+  let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
   return (
     <div>
       <style jsx>{`
@@ -18,30 +19,32 @@ function EmployeeCard(props) {
           font-family: sans-serif;
           font-size: 0.75rem;
         }
+        a {
+          color: blue;
+        }
       `}</style>
-      <h3>{props.firstName} {props.lastName}</h3>
-      <h3>{props.phoneNumber}</h3>
-      <h3>Schedule: {props.schedule}</h3>
-      <h3>Pet IDs: {displayAssociatedEntries('pet',props.petIds)}</h3>
-      <h3>Upcoming Appt IDs: {displayAssociatedEntries('upcomingAppt',props.upcomingApptIds)}</h3>
-      <h3>Past Appt IDs: {displayAssociatedEntries('pastAppt',props.pastApptIds)}</h3>
-      <p>Notes: <em>{props.notes}</em></p>
+      <h3>{obj.firstName} {obj.lastName}</h3>
+      <h3>{obj.phoneNumber}</h3>
+      <h3>Schedule: {obj.schedule}</h3>
+      <h3>Upcoming Appt IDs: {displayAssociatedEntries(obj.upcomingApptIds)}</h3>
+      <h3>Past Appt IDs: {displayAssociatedEntries(obj.pastApptIds)}</h3>
+      <p>Notes: <em>{obj.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
-      <small>({timeInfo.timeSinceCreated})</small>
+      <small>({timeInfo.timeSinceCreated})</small><br />
+      <small>Unique ID: {obj.id}</small>
     </div>
   );
 }
 
-function displayAssociatedEntries(type,propArr) {
+function displayAssociatedEntries(propArr) {
   let arr = [];
   propArr.forEach((id) => {
     arr.push(id);
   });
-  return arr;
+  return arr.join(' / ');
 }
 
 function displayTimeCreatedInfo(dateCreated) {
-  // return dateCreated.from(moment(), true);
   return {
     dateCreated: moment(dateCreated).format('MMMM Do YYYY'),
     timeSinceCreated: moment(dateCreated).from(moment(), false)
@@ -49,18 +52,7 @@ function displayTimeCreatedInfo(dateCreated) {
 }
 
 EmployeeCard.propTypes = {
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  schedule: PropTypes.string,
-  address: PropTypes.string,
-  email: PropTypes.string,
-  phoneNumber: PropTypes.string,
-  petIds: PropTypes.arrayOf(PropTypes.number),
-  upcomingApptIds: PropTypes.arrayOf(PropTypes.number),
-  pastApptIds: PropTypes.arrayOf(PropTypes.number),
-  notes: PropTypes.string,
-  formattedTimeSince: PropTypes.string,
-  dateCreated: PropTypes.string
+  entryObject: PropTypes.object,
 };
 
 export default EmployeeCard;

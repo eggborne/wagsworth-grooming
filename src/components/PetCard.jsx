@@ -19,6 +19,9 @@ function PetCard(props) {
           font-family: sans-serif;
           font-size: 0.75rem;
         }
+        a {
+          color: blue;
+        }
       `}</style>
       <h1>{obj.name}</h1>
       <h3>Breed: {obj.breed}</h3>
@@ -28,10 +31,11 @@ function PetCard(props) {
       <h3>Vax date: {obj.vaccinationDate}</h3>
       <h3>Vax clinic ID: {obj.vaccinationClinic}</h3>
       <h3>Vet clinic ID: {obj.veterinarian}</h3>
-      <h3>Parents: <a href={'./#/parents'}>{props.printParentLink('parents',obj.parent)}</a></h3>
-      <p><em>Notes: {obj.notes}</em></p>
+      <h3>Parents: <a href={'./#/parents'}>{props.printAssociatedEntryLink('parents',obj.parent)}</a></h3>
+      <p>Notes: <em>{obj.notes}</em></p>
       <small>Created {timeInfo.dateCreated}</small><br />
-      <small>({timeInfo.timeSinceCreated})</small>
+      <small>({timeInfo.timeSinceCreated})</small><br />
+      <small>Unique ID: {obj.id}</small>
     </div>
   );
 }
@@ -53,7 +57,7 @@ function displayTimeCreatedInfo(dateCreated) {
 
 PetCard.propTypes = {
   entryObject: PropTypes.object,
-  printParentLink: PropTypes.func
+  printAssociatedEntryLink: PropTypes.func
 };
 
 export default PetCard;

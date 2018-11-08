@@ -6,18 +6,22 @@ function SplashPage() {
     <div>
       <style jsx>{`
         div {
-          padding: 0;
+          padding: 2%;
+          margin:1.5%;
           text-align: center;
+          border-radius: 0.5rem;
+          background-color: var(--mainBg);
         }
         img {
           width: 60vmin;
-          border: 1px solid black;
+          border: 1px solid #333;
           border-radius: 4%;
-          box-shadow: 0px 0px 4px 2px #444;
-          margin: 1rem;
+          box-shadow: 0px 0px 4px 2px #666;
+          margin: 10%;
+          margin-top: 5%;
         }
       `}</style>
-      <h2>Look at this goddamned dog</h2>
+      <h1>Look at this dog</h1>
       <img src={headerImage}/>
     </div>
   );
