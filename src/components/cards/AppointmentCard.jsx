@@ -6,7 +6,7 @@ function AppointmentCard(props){
   let obj = props.entryObject;
   let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
   return (
-    <div>
+    <div style={props.style.div}>
       <style jsx>{`
         div {
           padding: 2.5%;
@@ -23,10 +23,10 @@ function AppointmentCard(props){
           color: blue;
         }
       `}</style>
-      <h3>Employee: <a href={'./#/employees'}>{props.printAssociatedEntryLink('employees',obj.employee)}</a></h3>
-      <h3>Pet ID: {obj.petId}</h3>
-      <h3>Date: {obj.date}</h3>
-      <h3>Time: {obj.startTime}</h3>
+      <h2>{moment(obj.date).format('MMM. DD, YYYY')} | {props.convertTime(obj.startTime)}</h2>
+      <h3>Employee: <a href={'./#/employees'}>{props.printAssociatedEntryLink('employees',obj.employeeId)}</a></h3>
+      <h3>Pet: <a href={'./#/pets'}>{props.printAssociatedEntryLink('pets',obj.petId)}</a></h3>
+      <h3>Parent: <a href={'./#/parents'}>{props.printAssociatedEntryLink('parents',obj.parentId)}</a></h3>
       <h3>Services:</h3>
       <ul>
         {obj.services.map((service, index) =>
@@ -34,9 +34,9 @@ function AppointmentCard(props){
         )}
       </ul>
       <p>Notes: <em>{obj.notes}</em></p>
-      <small>Created {timeInfo.dateCreated}</small><br />
-      <small>({timeInfo.timeSinceCreated})</small><br />
-      <small>Unique ID: {obj.id}</small>
+      <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
+      <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
+      <small style={props.style.small}>Unique ID: {obj.id}</small>
     </div>
   );
 }
@@ -49,7 +49,9 @@ function displayTimeCreatedInfo(dateCreated) {
 }
 
 AppointmentCard.propTypes = {
+  style: PropTypes.object,
   entryObject: PropTypes.object,
+  convertTime: PropTypes.func,
   printAssociatedEntryLink: PropTypes.func
 };
 

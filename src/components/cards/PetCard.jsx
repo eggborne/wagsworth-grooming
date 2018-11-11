@@ -6,47 +6,40 @@ function PetCard(props) {
   let obj = props.entryObject;
   let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
   return (
-    <div>
+    <div style={props.style.div}>
       <style jsx>{`
-        div {
-          padding: 2.5%;
-          background-color: var(--lightBg);
-        }
         div:nth-child(2n) {
           background-color: var(--darkBg);
-        }
-        small {
-          font-family: sans-serif;
-          font-size: 0.75rem;
         }
         a {
           color: blue;
         }
       `}</style>
-      <h1>{obj.name}</h1>
-      <h3>Breed: {obj.breed}</h3>
+      <h2>{obj.name} <a href='./#/parents'>{props.printAssociatedEntryLink('parents',obj.parent)}</a></h2>
+      <h3>Breed:</h3>
+      <ul>
+        {obj.breed.map((breed, i) => 
+          <li key={i}>{breed}</li>
+        )}
+      </ul>
       <h3>Sex: {obj.sex}</h3>
       <h3>Weight: {obj.weight} | Color: {obj.color}</h3>
       <h3>DOB: {obj.dob}</h3>
       <h3>Vax date: {obj.vaccinationDate}</h3>
-      <h3>Vax clinic ID: {obj.vaccinationClinic}</h3>
-      <h3>Vet clinic ID: {obj.veterinarian}</h3>
-      <h3>Parents: <a href={'./#/parents'}>{props.printAssociatedEntryLink('parents',obj.parent)}</a></h3>
-      <p>Notes: <em>{obj.notes}</em></p>
-      <small>Created {timeInfo.dateCreated}</small><br />
-      <small>({timeInfo.timeSinceCreated})</small><br />
-      <small>Unique ID: {obj.id}</small>
+      <h3>Vax clinic: {obj.vaccinationClinic}</h3>
+      <h3>Vet clinic: {obj.veterinarian}</h3>
+      <h3>Notes:</h3>
+      <ul>
+        {obj.notes.map((note, index) =>
+          <li key={index}>{note}</li>
+        )}
+      </ul>
+      <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
+      <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
+      <small style={props.style.small}>Unique ID: {obj.id}</small>
     </div>
   );
 }
-
-// function displayAssociatedEntries(propArr) {
-//   let arr = [];
-//   propArr.forEach((id) => {
-//     arr.push(id);
-//   });
-//   return arr.join(' / ');
-// }
 
 function displayTimeCreatedInfo(dateCreated) {
   return {
@@ -56,6 +49,7 @@ function displayTimeCreatedInfo(dateCreated) {
 }
 
 PetCard.propTypes = {
+  style: PropTypes.object,
   entryObject: PropTypes.object,
   printAssociatedEntryLink: PropTypes.func
 };
