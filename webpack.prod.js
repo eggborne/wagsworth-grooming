@@ -1,13 +1,11 @@
 const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: "production",
   entry: [
     resolve(__dirname, 'src', 'index.jsx')
-  ],
-  plugins: [
-    new MomentLocalesPlugin()
   ],
   module: {
     rules: [
@@ -34,6 +32,18 @@ module.exports = {
       }
     ]
   },
+
+  devtool: '',
+
+  plugins: [
+    new MomentLocalesPlugin(),
+    new HtmlWebpackPlugin({
+      template:'template.ejs',
+      appMountId: 'react-app-root',
+      title: 'Wagsworth Grooming Co.',
+      filename: resolve(__dirname, "./", "index.html"),
+    }),
+  ],
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
