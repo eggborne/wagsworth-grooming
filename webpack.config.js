@@ -1,22 +1,26 @@
+const webpack = require('webpack');
 const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server',
     resolve(__dirname, 'src', 'index.jsx')
   ],
-  plugins: [
-    new MomentLocalesPlugin()
-  ],
+  
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         options: {
           plugins: [
+            'react-hot-loader/babel',
             'styled-jsx/babel'
           ]
         }
@@ -33,16 +37,34 @@ module.exports = {
       }
     ]
   },
+
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new MomentLocalesPlugin(),
+    new HtmlWebpackPlugin({
+      template:'template.ejs',
+      appMountId: 'react-app-root',
+      title: 'Wagsworth Grooming Co.',
+      filename: resolve(__dirname, "dist", "index.html"),
+    }),
+  ],
+  
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
+
+  devtool: '#source-map',
+
   output: {
+    filename: 'app.bundle.js',
     path: resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: 'app.bundle.js'
+    publicPath: '/'
   },
+
   devServer: {
-    contentBase: resolve(__dirname, './'),
+    hot: true,
+    contentBase: resolve(__dirname, 'dist'),
     publicPath: '/'
   }
 };
