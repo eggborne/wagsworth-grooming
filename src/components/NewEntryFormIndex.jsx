@@ -1,8 +1,8 @@
 import React from 'react';
-import NewParentForm from './NewParentForm';
-import NewPetForm from './NewPetForm';
-import NewAppointmentForm from './NewAppointmentForm';
-import NewEmployeeForm from './NewEmployeeForm';
+import NewParentForm from './forms/NewParentForm';
+import NewPetForm from './forms/NewPetForm';
+import NewAppointmentForm from './forms/NewAppointmentForm';
+import NewEmployeeForm from './forms/NewEmployeeForm';
 import PropTypes from 'prop-types';
 
 const formComponentNames = {
@@ -19,32 +19,57 @@ const formStyle = {
     boxSizing: 'border-box',
     background: '#ded',
     textAlign: 'center',
-    borderRadius: '0.5rem'
+    borderRadius: '0.5rem',
+    border: '2px solid grey',
   },
   form: {
-    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    alignContent: 'center'
   },
   input: {
-    width: '40%',
-    margin: '1%',
-    padding: '1%',
-    marginBottom: '5%'
+    padding: '0.5rem',
+    fontSize: '1.25rem',
+    margin: '0.5rem',
+  },
+  formButtonInput: {
+    padding: '0.5rem',
+    fontSize: '1.25rem',
+    margin: '0.5rem',
+    width: '80%'
+  },
+  formButtonRow: {
+    display: 'inline-flex',
+    justifyContent: 'space-between',
+    // flexWrap: 'wrap'
+  },
+  button: {
+    borderRadius: '0',
+    margin: '0.5rem',
+  },
+  createButton: {
+    padding: '1rem'
   }
+
 };
 
 function NewEntryFormIndex(props) {
-  let FormToShow = formComponentNames[props.type];
+  let formType = props.type;
+  let FormToShow = formComponentNames[formType];
   return (
     <FormToShow style={formStyle}
-      type={props.type}
-      onFormSubmission={props.onFormSubmission} />
+      type={formType}
+      onFormSubmission={props.onFormSubmission}
+      lists={props.lists} />
   );
 }
 
 NewEntryFormIndex.propTypes = {
-  style: PropTypes.string,
   type: PropTypes.string,
   onFormSubmission: PropTypes.func,
+  lists: PropTypes.object
 };
 
 export default NewEntryFormIndex;
