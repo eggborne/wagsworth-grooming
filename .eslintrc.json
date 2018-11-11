@@ -23,6 +23,14 @@
     "plugins": [
         "react"
     ],
+    "overrides": [
+        {
+            "files": [ "App.jsx" ],
+            "rules": {
+                "no-undef": 0
+            }
+        }
+    ],
     "rules": {
         "react/jsx-handler-names": 2,
         "react/require-render-return": 2,
