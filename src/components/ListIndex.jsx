@@ -1,16 +1,11 @@
 import React from 'react';
 import SectionHeading from './SectionHeading';
-import ParentCard from './ParentCard';
-import PetCard from './PetCard';
-import AppointmentCard from './AppointmentCard';
-import EmployeeCard from './EmployeeCard';
-import NewParentForm from './NewParentForm';
-import NewPetForm from './NewPetForm';
-import NewAppointmentForm from './NewAppointmentForm';
-import NewEmployeeForm from './NewEmployeeForm';
+import ParentCard from './cards/ParentCard';
+import PetCard from './cards/PetCard';
+import AppointmentCard from './cards/AppointmentCard';
+import EmployeeCard from './cards/EmployeeCard';
 import SplashPage from './SplashPage';
 import PropTypes from 'prop-types';
-import NewEntryFormIndex from './NewEntryFormIndex';
 var moment = require('moment');
 
 const componentNames = {
@@ -19,11 +14,20 @@ const componentNames = {
   pets: PetCard,
   appointments: AppointmentCard,
   employees: EmployeeCard,
-  forms: {
-    parents: NewParentForm,
-    pets: NewPetForm,
-    appointments: NewAppointmentForm,
-    employees: NewEmployeeForm,
+};
+
+const cardStyle = {
+  div: {
+    padding: '2.5%',
+    backgroundColor: 'var(--lightBg)',
+    borderRadius: '0.5rem',
+    border: '1px solid grey',
+    marginTop: '2%',
+    marginBottom: '2%'
+  },
+  small: {
+    fontFamily: 'sans-serif',
+    fontSize: '0.75rem'
   }
 };
 
@@ -31,30 +35,49 @@ class ListIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
-    };
 
+    };
+    if (this.props.section !== 'splashPage') {
+      this.props.handleUpdateListFromDB(this.props.section);
+    }
   }
 
   componentDidMount() {
-    
     if (this.props.section !== 'splashPage') {
       this.updateTimeSinceEntriesCreated();
     }
-    // this.timeSinceEntryCreatedTimer = setInterval(() =>
-    //   this.updateTimeSinceEntriesCreated(), 
-    //   1000
-    // );
   }
 
   componentWillUnmount() {
     // clearInterval(this.timeSinceEntryCreatedTimer);
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+
+  }
+  convertTime(military) {
+    var ampm = 'am';
+    var hour = military.slice(0, 2);
+
+    var min = military.slice(3, 5);
+    if (min.length === 1) {
+      min += '0';
+    }
+    if (hour === '00') {
+      hour = '12';
+    }
+    if (parseInt(hour) > 12) {
+      hour = (parseInt(hour) - 12).toString();
+      ampm = 'pm';
+    }
+    if (hour[0] == '0') {
+      hour = hour[1];
+    }
+    return `${hour}:${min} ${ampm}`;
+  }
 
   updateTimeSinceEntriesCreated() {
-    let list = this.props.displayList;
+    let list = this.props.lists[this.props.section];
     let updatedList = Object.entries(Object.assign({}, list));
     updatedList.forEach((entry) => {
       entry.formattedTimeSince = moment(entry.dateCreated).fromNow(true);
@@ -66,34 +89,39 @@ class ListIndex extends React.Component {
 
   render() {
     const sec = this.props.section;
-    let ComponentName;
     if (sec === 'splashPage') {
       return (
         <SplashPage />
       );
-    } else if (this.props.newFormRequested) {
-      window.scrollTo(0, 0);
-      return (
-        <NewEntryFormIndex type={this.props.newFormRequested}
-          onFormSubmission={this.props.onHandleSubmittingNewEntry} />
-      );
     } else {
       window.scrollTo(0, 0);
-      ComponentName = componentNames[sec];
-      let listObj = this.props.displayList;
+      let ComponentName = componentNames[sec];
+      let listObj = this.props.lists[this.props.section];
       let entriesToDisplay;
       if (!listObj) {
         entriesToDisplay = [];
       } else {
-        entriesToDisplay = Object.values(listObj).reverse();
+        entriesToDisplay = Object.values(listObj);
+        if (this.props.section === 'appointments') {
+          entriesToDisplay.map((entry) => {
+            if (this.props.lists.pets[entry.petId]) {
+              let pet = this.props.lists.pets[entry.petId];
+              entry.parentId = pet.parent;
+            }
+          });
+        }
+        
       }
       return (
         <div>
           <SectionHeading type={sec}
-            onClickToRequestForm={this.props.onHandleEntryFormRequest} />
+            onRequestNewEntryForm={this.props.onRequestNewEntryForm}
+            onClickToUpdateList={this.props.handleUpdateListFromDB} />
           {entriesToDisplay.map((entry) =>
             <ComponentName key={entry.id}
+              style={cardStyle}
               entryObject={entry}
+              convertTime={this.convertTime}
               printAssociatedEntryLink={this.props.printEntryLink} />
           )}
         </div>
@@ -103,11 +131,12 @@ class ListIndex extends React.Component {
 }
 
 ListIndex.propTypes = {
+  lists: PropTypes.object,
   section: PropTypes.string,
-  displayList: PropTypes.object,
+  handleUpdateListFromDB: PropTypes.func,
   printEntryLink: PropTypes.func,
-  onHandleEntryFormRequest: PropTypes.func,
-  onHandleSubmittingNewEntry: PropTypes.func,
+  onRequestNewEntryForm: PropTypes.func,
+  onSubmitNewEntryForm: PropTypes.func,
   newFormRequested: PropTypes.string
 };
 
