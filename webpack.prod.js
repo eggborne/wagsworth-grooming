@@ -41,6 +41,7 @@ module.exports = {
       template:'template.ejs',
       appMountId: 'react-app-root',
       title: 'Wagsworth Grooming Co.',
+      favicon: './src/assets/images/favicon.png',
       filename: resolve(__dirname, "./", "index.html"),
     }),
   ],
