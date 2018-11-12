@@ -52,12 +52,21 @@ const entryAttributes = {
   ]
 };
 
+let shorterDimension = null;
+if (window.innerWidth < window.innerHeight) {
+  shorterDimension = window.innerWidth;
+} else {
+  shorterDimension = window.innerHeight;
+}
+const displayTitle = 'Wagsworth Grooming Co.';
+
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       newFormRequested: null,
+      menuSummoned: false,
       lists: {
         employees: {},
         parents: {},
@@ -73,6 +82,8 @@ class App extends React.Component {
     this.getEntryById = this.getEntryById.bind(this);
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
+    this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
+    
   }
 
   addToLocalList(listType, newEntryArray) {
@@ -214,6 +225,13 @@ class App extends React.Component {
     return output;
   }
 
+  handleHamburgerClick(event) {
+    event.preventDefault();
+    this.setState({
+      menuSummoned: !this.state.menuSummoned
+    });
+  }
+
   handleEntryFormRequest(type) {
     this.setState({
       newFormRequested: type
@@ -226,16 +244,18 @@ class App extends React.Component {
   }
 
   render() {
-    let shorterDimension = null;
-    if (window.innerWidth < window.innerHeight) {
-      shorterDimension = window.innerWidth;
-    } else {
-      shorterDimension = window.innerHeight;
-    }
-    const displayTitle = 'Wagsworth Grooming Co.';
     var heightAdjusted = {
       minHeight: window.innerHeight - (shorterDimension * 0.15)
     };
+    let hamburgerMenu;
+    let headerMenuSymbol;
+    if (this.state.menuSummoned) {
+      hamburgerMenu = <big>MENU SUMMONED!</big>;
+      headerMenuSymbol = 'close';
+    } else {
+      hamburgerMenu = null;
+      headerMenuSymbol = 'menu';
+    }
     return (
       <div style={heightAdjusted} id='main'>
         <style jsx>{`
@@ -248,7 +268,9 @@ class App extends React.Component {
             padding: 2%;
           }
         `}</style>
-        <Header displayTitle={displayTitle} />
+        <Header displayTitle={displayTitle}
+          onClickHamburger={this.handleHamburgerClick}
+          menuSymbol={headerMenuSymbol}/>
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
@@ -284,6 +306,7 @@ class App extends React.Component {
               onFormSubmission={this.handleSubmittingNewEntry}
               lists={this.state.lists} />} />
           </Switch>
+          {hamburgerMenu}
         </div>
         <Footer />
       </div>
