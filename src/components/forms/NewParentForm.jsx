@@ -18,11 +18,11 @@ function NewParentForm(props) {
     if (num.length <= 3) {
       output = `(${num})`;
     } else if (num.length <= 6) {
-      output = `(${num.slice(0,3)})-${num.slice(3,num.length)}`;
+      output = `(${num.slice(0, 3)})-${num.slice(3, num.length)}`;
     } else if (num.length <= 10) {
-      output = `(${num.slice(0,3)})-${num.slice(3,6)}-${num.slice(6,num.length)}`;
+      output = `(${num.slice(0, 3)})-${num.slice(3, 6)}-${num.slice(6, num.length)}`;
     } else {
-      output = `(${num.slice(0,3)})-${num.slice(3,6)}-${num.slice(6,10)}`;
+      output = `(${num.slice(0, 3)})-${num.slice(3, 6)}-${num.slice(6, 10)}`;
     }
     document.getElementById('phone-numbers').value = output;
   }
