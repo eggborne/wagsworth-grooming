@@ -2,12 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function Header(props) {
+function Header(props) {  
   return (
     <div id="header">
       <style jsx>{`
+        .material-icons {
+          font-size:2.5rem;
+        }
+        #top-row {
+          width:100%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: space-between;
+        }
         #logo, .tiny {
           color: var(--mainBg);
+        }
+        #hamburger {
+          text-align: center;
+          width: 16vmin;
+          height: 16vmin;
+          background-color: #191919;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
         #header {
           background-color: var(--darkest);
@@ -30,17 +48,23 @@ function Header(props) {
           padding: 2%;
         }
         .tiny {
+          text-align: right;
           font-size: 0.6rem;
           font-family: sans-serif;
           margin-top: 0.25rem;
         }
       `}</style>
-      <Link to="/">
-        <div id="logo">
-          {props.displayTitle}
+      <div id='top-row'>
+        <Link to="/">
+          <div id="logo">
+            {props.displayTitle}
+          </div>
+          <div className='tiny'>Administrative Portal v0.1</div>
+        </Link>
+        <div onClick={props.onClickHamburger} id='hamburger'>
+          <i className="material-icons"><big>{props.menuSymbol}</big></i>
         </div>
-        <div className='tiny'>Administrative Portal v0.1</div>
-      </Link>
+      </div>
       <div id="admin-nav-bar">
         <div id="admin-section-nav">
           <Link to="/employees">Employees</Link> | <Link to="/parents">Parents</Link> | <Link to="/pets">Pets</Link> | <Link to="/appointments">Appointments</Link>
@@ -51,7 +75,9 @@ function Header(props) {
 }
 
 Header.propTypes = {
+  menuSymbol: PropTypes.string,
   displayTitle: PropTypes.string,
+  onClickHamburger: PropTypes.func
 };
 
 export default Header;
