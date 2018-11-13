@@ -8,17 +8,32 @@ class Header extends React.Component {
     super(props);
     this.state = {
       searchTerm: '',
-      searchList: 'parents',
+      searchList: null,
     };
 
     this.changeSearchList = this.changeSearchList.bind(this);
     this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
     this.toggleMenuItemOn = this.toggleMenuItemOn.bind(this);
+    this.handleSearchFocus = this.handleSearchFocus.bind(this);
+    this.handleHomeClick = this.handleHomeClick.bind(this);
 
   }
 
   componentDidMount() {
 
+  }
+
+  highlightSection(section) {
+    Array.from(document.getElementsByName('search-type')).map((searchType) => {
+      if (searchType.value === section) {
+        searchType.checked = true;
+        searchType.nextSibling.style.color = 'var(--mainBg)';
+        searchType.nextSibling.style.backgroundColor = 'var(--dark)';
+      } else {
+        searchType.nextSibling.style.color = 'var(--darkAccent)';
+        searchType.nextSibling.style.backgroundColor = '#191919';
+      }
+    });
   }
 
   changeSearchList(newList) {
@@ -31,6 +46,11 @@ class Header extends React.Component {
         searchType.checked = true;
       }
     });
+    this.props.onSwitchSectionView(this.state.searchList);
+    this.setState({
+      searchList: newList
+    });
+    this.highlightSection(newList);
   }
 
   toggleMenuItemOn(newItem) {
@@ -42,14 +62,12 @@ class Header extends React.Component {
       }
     });
     let newList = newItem.replace('MenuArea', 's');
+    // trigger App.handleSwitchSectionView to record last selected section
+    this.props.onSwitchSectionView(this.state.searchList);
     this.setState({
       searchList: newList
     });
-    Array.from(document.getElementsByName('search-type')).map((searchType) => {
-      if (searchType.value === newList) {
-        searchType.checked = true;
-      }
-    });
+    this.highlightSection(newList);
   }
 
   handleSearchTermChange() {
@@ -65,30 +83,29 @@ class Header extends React.Component {
     });
   }
 
-  render() {
-    let menuItemStyle = {
-      backgroundColor: 'none',
-      padding: '0.5rem',
-      borderRadius: '0.5rem',
-      paddingRight: '0.75rem',
-    };
-    let menuStyle = {
-      height: '0',
-    };
-    let displayListNav;
-    if (this.props.menuSymbol === 'close') {
-      displayListNav = 'block';
-      menuStyle.height = '100%';
-    } else {
-      displayListNav = 'none';
-      menuStyle.height = '0';
+  handleHomeClick() {
+    this.toggleMenuItemOn('');
+  }
+
+  handleSearchFocus() {
+    if (!this.state.searchList) {
+      this.toggleMenuItemOn('parents');
     }
+  }
+
+  render() {
+    let menuVis;
+    let searchVis;
     let optionsList = [];
-    let hambHeight;
     if (this.props.menuSymbol === 'menu') {
-      hambHeight = '14vmin';
+      menuVis = 'none';
     } else {
-      hambHeight = '20vmin';
+      menuVis = 'block';
+    }
+    if (this.state.searchList === 'employees') {
+      searchVis = 'none';
+    } else {
+      searchVis = 'block';
     }
 
     if (this.state.searchList === 'parents') {
@@ -112,10 +129,11 @@ class Header extends React.Component {
       <div id="header">
         <style jsx>{`
           .material-icons {
-            font-size: 2rem;
+            font-size: 1.5rem;
           }
           #hamburger-icon {
             font-size:2.5rem;
+            align-self: center;
           }
           #top-row {
             width:100%;
@@ -126,51 +144,51 @@ class Header extends React.Component {
           #logo, .tiny {
             color: var(--mainBg);
           }
+          .mainMenuItem {
+            background-color: transparent;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            padding-right: 0.75rem;
+            height: 25%;
+            transition: background 500ms ease;
+          }
           #hamburger {
-            position: absolute;
-            right: 2%;
-            top: 0;
             text-align: center;
-            width: 16vmin;
-            height: ${hambHeight};
+            width: 18vmin;
+            height: 18vmin;
             background-color: #191919;
             display: inline-flex;
-            align-items: flex-start;
             justify-content: center;
-            margin-top: 2%;
-            margin-right: 2%;
-            z-index: 0;
           }
           #header {
             background-color: var(--darkest);
             color: var(--mainBg);
-            box-sizing: border-box;
             font-family: Tangerine; cursive;
             font-size: 2.5rem;
-            width: 100%;
             padding: 2%;
+            display: flex;
+            flex-direction: column;
           }
-          #admin-nav-bar {
+          #admin-search-form {
             font-size: 1rem;
             font-family: Playfair Display; serif;
             width: 100%;
             color: var(--darkAccent);
             display: flex;
-            justify-content: space-around;
             align-items: center;
             padding: 2%;
             flex-wrap: wrap;
+            display: ${searchVis}
           }
-          #admin-section-nav {
+          #list-nav-items {
             font-size: 2rem;
             font-family: Tangerine; cursive;
             text-align: right;
             width: 100%;
-            display: ${displayListNav};
             background-color: #191919;
-            margin-top: 0.5rem;
-            padding: 1rem;
-            z-index: 1;
+            padding: 2%;
+            transition: all 400ms ease;
+            display: ${menuVis}
           }
           .tiny {
             text-align: right;
@@ -178,77 +196,113 @@ class Header extends React.Component {
             font-family: sans-serif;
             margin-top: 0.25rem;
           }
-          #search {
-            width:80%;
-            height: 2rem;
+          #search-area {
+            width: 100%;
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+            display: inline-flex;
+            align-items: stretch;
+            justify-content: space-between;
+          }
+          #search-input {
+            width:75%;
             font-size: 1.5rem;
             padding-left: 0.5rem;
-            margin-right: 0.25rem;
-            margin-top: 0.25rem;
-            margin-bottom: 0.25rem;
+            border-radius: 2px;
+            flex-basis: auto;
           }
-          #search-area {
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-around;
+          #search-button {
+            width: 20%;
+            border-radius: 2px;
+            padding: 0.5rem;
+            font-size: 1rem;
           }
           #search-options {
-            width:80%;
-            align-items: center;
+            width:90%;
+            max-width: 300px;
+            margin-top: 0.5rem;
             display: inline-flex;
             justify-content: space-between;
-            margin-top: 0.25rem;
+            justify-items: center;
+            align-items: center;
+          }
+          #search-options > div {
+            color: #191919;
+          }
+          .search-list-tab {
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+          }
+          .search-list-tab > div {
+            box-sizing: border-box;
+            background-color: #191919;
+            border-radius: 0.5rem;
+            font-family: Helvetica;
+            text-shadow: 1px 1px 1px black;
+            transition: all 400ms ease;
+            padding: 0.5rem;
+          }
+          input[type=radio] {
+            margin: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.25rem;
+            display: none;
           }
           #employeeMenuArea {
-            opacity: 0.5;
+            opacity: 0.6;
           }
-          button {
-            border-radius: 2px;
-            padding: 0;
-          }
+          
         `}</style>
+
         <div id='top-row'>
-          <Link to="/">
-            <div id="logo">
-              {this.props.displayTitle}
-            </div>
-            <div className='tiny'>Administrative Portal v0.1</div>
-          </Link>
-          <div onClick={this.props.onClickHamburger} id='hamburger'>
+          <div onClick={this.handleHomeClick}>
+            <Link to="/">
+              <div id="logo">
+                {this.props.displayTitle}
+              </div>
+              <div className='tiny'>Administrative Portal v0.1</div>
+            </Link>
+          </div>
+          <div onClick={() => this.props.onClickHamburger(event,this.state.searchList)} id='hamburger'>
             <i id="hamburger-icon" className="material-icons"><big>{this.props.menuSymbol}</big></i>
           </div>
         </div>
-        <div id="admin-nav-bar">
-          <div id="admin-section-nav">
-            <div style={menuStyle}>
-              <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')} style={menuItemStyle}><Link to="/employees">Employees</Link></div>
-              <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')} style={menuItemStyle}><Link to="/parents">Parents</Link></div>
-              <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')} style={menuItemStyle}><Link to="/pets">Pets</Link></div>
-              <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')} style={menuItemStyle}><Link to="/appointments">Appointments</Link></div>
-            </div>
+
+        <div id="list-nav-items">
+          <div id='menu'>
+            <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')}><Link to="/employees">Employees</Link></div>
+            <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')}><Link to="/parents">Parents</Link></div>
+            <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')}><Link to="/pets">Pets</Link></div>
+            <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')}><Link to="/appointments">Appointments</Link></div>
           </div>
+        </div>
+
+        <div id="admin-search-form">
           <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
             <div id="search-area">
               <input
+                onFocus={this.handleSearchFocus}
                 onChange={this.handleSearchTermChange}
                 list='found-entries'
                 autoComplete='off'
                 type='text'
                 placeholder='Search...'
-                id='search' />
+                id='search-input' />
               <datalist id='found-entries'>
                 {suggestOptions}
               </datalist>
-              <button type="submit"><i className="material-icons">search</i></button>
+              <button id="search-button" type="submit"><i className="material-icons">search</i></button>
             </div>
             <div id='search-options'>
-              <div onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input>Parents</div>
-              <div onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input>Pets</div>
-              <div onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input>Appointments</div>
+              <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div><Link to="/parents">Parents</Link></div></div>
+              <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input><div><Link to="/pets">Pets</Link></div></div>
+              <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input><div><Link to="/appointments">Appointments</Link></div></div>
             </div>
           </form>
         </div>
+
       </div>
     );
   }
@@ -259,6 +313,7 @@ Header.propTypes = {
   displayTitle: PropTypes.string,
   onClickHamburger: PropTypes.func,
   onSubmitSearch: PropTypes.func,
+  onSwitchSectionView: PropTypes.func,
   lists: PropTypes.object
 };
 
