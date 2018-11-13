@@ -28,6 +28,12 @@ function PetCard(props) {
       <h3>Vax date: {obj.vaccinationDate}</h3>
       <h3>Vax clinic: {obj.vaccinationClinic}</h3>
       <h3>Vet clinic: {obj.veterinarian}</h3>
+      <h3>Appointments: </h3>
+      <ul>
+        {obj.appointments.map((appt, index) =>
+          <li key={index}><big><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',obj.appointments[index])}</a></big></li>
+        )}
+      </ul>
       <h3>Notes:</h3>
       <ul>
         {obj.notes.map((note, index) =>

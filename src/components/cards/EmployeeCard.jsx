@@ -20,8 +20,12 @@ function EmployeeCard(props) {
       <h3>{obj.phoneNumbers}</h3>
       <h3>{obj.email}</h3>
       <h3>Schedule: {obj.schedule}</h3>
-      <h3>Upcoming Appt IDs: {displayAssociatedEntries(obj.upcomingApptIds)}</h3>
-      <h3>Past Appt IDs: {displayAssociatedEntries(obj.pastApptIds)}</h3>
+      <h3>Appointments: </h3>
+      <ul>
+        {obj.appointments.map((appt, index) =>
+          <li key={index}><big><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',obj.appointments[index])}</a></big></li>
+        )}
+      </ul>
       <h3>Notes:</h3>
       <ul>
         {obj.notes.map((note, index) =>
@@ -33,14 +37,6 @@ function EmployeeCard(props) {
       <small style={props.style.small}>Unique ID: {obj.id}</small>
     </div>
   );
-}
-
-function displayAssociatedEntries(propArr) {
-  let arr = [];
-  propArr.forEach((id) => {
-    arr.push(id);
-  });
-  return arr.join(' / ');
 }
 
 function displayTimeCreatedInfo(dateCreated) {
