@@ -31,6 +31,7 @@ const cardStyle = {
   }
 };
 
+
 class ListIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +50,7 @@ class ListIndex extends React.Component {
   }
 
   componentWillUnmount() {
+
     // clearInterval(this.timeSinceEntryCreatedTimer);
   }
 
@@ -88,6 +90,16 @@ class ListIndex extends React.Component {
   }
 
   render() {
+    setTimeout(() => {
+      document.getElementById('main-list').style.transition = 'none';
+      document.getElementById('main-list').style.transform = 'translateX(100vw)';
+      document.getElementById('main-list').style.opacity = '0';
+    }, 0);
+    setTimeout(() => {
+      document.getElementById('main-list').style.transition = 'all 400ms ease';
+      document.getElementById('main-list').style.transform = 'translateX(0)';
+      document.getElementById('main-list').style.opacity = '1';
+    }, 100);
     const sec = this.props.section;
     if (sec === 'splashPage') {
       return (
@@ -110,10 +122,17 @@ class ListIndex extends React.Component {
             }
           });
         }
-        
+
       }
       return (
-        <div>
+        <div id='main-list' >
+          <style jsx>{`
+            #main-list {
+              position: relative;
+              transform: translateX(100vw);
+              transition: all 300ms ease;
+            }
+          `}</style>
           <SectionHeading type={sec}
             onRequestNewEntryForm={this.props.onRequestNewEntryForm}
             onClickToUpdateList={this.props.handleUpdateListFromDB} />
