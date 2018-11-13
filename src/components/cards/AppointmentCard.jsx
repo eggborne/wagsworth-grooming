@@ -25,15 +25,20 @@ function AppointmentCard(props){
       `}</style>
       <h2>{moment(obj.date).format('MMM. DD, YYYY')} | {props.convertTime(obj.startTime)}</h2>
       <h3>Employee: <a href={'./#/employees'}>{props.printAssociatedEntryLink('employees',obj.employeeId)}</a></h3>
-      <h3>Pet: <a href={'./#/pets'}>{props.printAssociatedEntryLink('pets',obj.petId)}</a></h3>
       <h3>Parent: <a href={'./#/parents'}>{props.printAssociatedEntryLink('parents',obj.parentId)}</a></h3>
+      <h3>Pet: <a href={'./#/pets'}>{props.printAssociatedEntryLink('pets',obj.petId)}</a></h3>
       <h3>Services:</h3>
       <ul>
         {obj.services.map((service, index) =>
           <li key={index}>{service}</li>
         )}
       </ul>
-      <p>Notes: <em>{obj.notes}</em></p>
+      <h3>Notes:</h3>
+      <ul>
+        {obj.notes.map((note, index) =>
+          <li key={index}>{note}</li>
+        )}
+      </ul>
       <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
       <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
       <small style={props.style.small}>Unique ID: {obj.id}</small>
