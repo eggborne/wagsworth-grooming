@@ -13,25 +13,14 @@ function SectionHeading(props) {
           font-size: 2.25rem;
           color: #eee;
           width: 100%;
-          padding: 3%;
+          padding: 2%;
           display: inline-flex;
-          justify-content: space-between;
           align-items: center;
-          justify-items: center;
         }
         button {
-          padding: 0.4rem;
           font-size: 0.8rem;
-          height: 80%;
           border-radius: 0.4rem;
-        }
-        #lbl {
-          justify-self: flex-start;
-          padding: 0;
-        }
-        #btns {
-          justify-self: flex-end;
-          padding: 0;
+          margin: 0.2rem;
         }
       `}</style>
       <div id='lbl'>{headerText}</div>
