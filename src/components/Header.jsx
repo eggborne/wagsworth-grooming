@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { relative } from 'path';
 
 class Header extends React.Component {
 
@@ -18,8 +17,8 @@ class Header extends React.Component {
 
   }
 
-  componentDidMount() { 
-    console.log('Header mounted ------------------ HEADER');
+  componentDidMount() {
+
   }
 
   changeSearchList(newList) {
@@ -27,7 +26,7 @@ class Header extends React.Component {
       searchList: newList
     });
     // check correct radio button
-    Array.from(document.getElementsByName('search-type')).map((searchType, i) => {
+    Array.from(document.getElementsByName('search-type')).map((searchType) => {
       if (searchType.value === newList) {
         searchType.checked = true;
       }
@@ -35,18 +34,18 @@ class Header extends React.Component {
   }
 
   toggleMenuItemOn(newItem) {
-    Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem, i) => {
+    Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem) => {
       if (menuItem.id === newItem) {
         menuItem.style.backgroundColor = '#222';
       } else {
         menuItem.style.backgroundColor = 'transparent';
       }
     });
-    let newList = newItem.replace('MenuArea', 's')
+    let newList = newItem.replace('MenuArea', 's');
     this.setState({
       searchList: newList
-    })
-    Array.from(document.getElementsByName('search-type')).map((searchType, i) => {
+    });
+    Array.from(document.getElementsByName('search-type')).map((searchType) => {
       if (searchType.value === newList) {
         searchType.checked = true;
       }
@@ -72,10 +71,10 @@ class Header extends React.Component {
       padding: '0.5rem',
       borderRadius: '0.5rem',
       paddingRight: '0.75rem',
-    }
+    };
     let menuStyle = {
       height: '0',
-    }
+    };
     let displayListNav;
     if (this.props.menuSymbol === 'close') {
       displayListNav = 'block';
@@ -223,11 +222,11 @@ class Header extends React.Component {
         <div id="admin-nav-bar">
           <div id="admin-section-nav">
             <div style={menuStyle}>
-            <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')} style={menuItemStyle}><Link to="/employees">Employees</Link></div>
-            <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')} style={menuItemStyle}><Link to="/parents">Parents</Link></div>
-            <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')} style={menuItemStyle}><Link to="/pets">Pets</Link></div>
-            <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')} style={menuItemStyle}><Link to="/appointments">Appointments</Link></div>
-          </div>
+              <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')} style={menuItemStyle}><Link to="/employees">Employees</Link></div>
+              <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')} style={menuItemStyle}><Link to="/parents">Parents</Link></div>
+              <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')} style={menuItemStyle}><Link to="/pets">Pets</Link></div>
+              <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')} style={menuItemStyle}><Link to="/appointments">Appointments</Link></div>
+            </div>
           </div>
           <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
             <div id="search-area">
