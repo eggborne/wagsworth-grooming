@@ -72,6 +72,9 @@ class Header extends React.Component {
       <div id="header">
         <style jsx>{`
           .material-icons {
+            font-size: 2rem;
+          }
+          #hamburger-icon {
             font-size:2.5rem;
           }
           #top-row {
@@ -107,16 +110,16 @@ class Header extends React.Component {
             width: 100%;
             color: var(--darkAccent);
             display: inline-flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            background-color: #222;
             padding: 2%;
             flex-wrap: wrap;
           }
           #admin-section-nav {
             display: ${displayListNav};
-            margin-top: 2rem;
-            margin-bottom: 2rem;
+            background-color: #222;
+            margin-top: 1rem;
+            padding: 1rem;
           }
           .tiny {
             text-align: right;
@@ -125,23 +128,28 @@ class Header extends React.Component {
             margin-top: 0.25rem;
           }
           #search {
+            width:80%;
             height: 2rem;
             font-size: 1.5rem;
             padding-left: 0.5rem;
             margin-right: 0.25rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
           }
           #search-area {
             display: inline-flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-around;
           }
           #search-options {
-            width:85%;
+            width:80%;
             align-items: center;
             display: inline-flex;
             justify-content: space-between;
+            margin-top: 0.25rem;
           }
           button {
+            border-radius: 2px;
             padding: 0;
           }
         `}</style>
@@ -153,7 +161,7 @@ class Header extends React.Component {
             <div className='tiny'>Administrative Portal v0.1</div>
           </Link>
           <div onClick={this.props.onClickHamburger} id='hamburger'>
-            <i className="material-icons"><big>{this.props.menuSymbol}</big></i>
+            <i id="hamburger-icon" className="material-icons"><big>{this.props.menuSymbol}</big></i>
           </div>
         </div>
         <div id="admin-nav-bar">
