@@ -3,11 +3,11 @@ import headerImage from '../assets/images/titlepic.jpg';
 
 function SplashPage() {
   setTimeout(() => {
-    document.getElementById('logo-img').style.opacity = 1,
-    document.getElementById('logo-msg').style.opacity = 1,
-    document.getElementById('logo-img').style.transform = 'scale(1)'
-    document.getElementById('logo-msg').style.transform = 'scale(1)'
-  },5)
+    document.getElementById('logo-img').style.opacity = 1;
+    document.getElementById('logo-msg').style.opacity = 1;
+    document.getElementById('logo-img').style.transform = 'scale(1)';
+    document.getElementById('logo-msg').style.transform = 'scale(1)';
+  }, 5);
   return (
     <div>
       <style jsx>{`
@@ -35,7 +35,7 @@ function SplashPage() {
         }
       `}</style>
       <div id='logo-msg'><h1>Look at this dog</h1></div>
-      <img id='logo-img' src={headerImage}/>
+      <img id='logo-img' src={headerImage} />
     </div>
   );
 }
