@@ -141,6 +141,34 @@ class App extends React.Component {
 
   }
 
+  printEntryLink(type, key, end) {
+    console.log('printing type key', type, key);
+    let output;
+    if (key && this.state.lists[type][key]) {
+      let entryObj = this.state.lists[type][key];
+      if (type==='employees') {
+        output = `${entryObj.firstName} ${entryObj.lastName}`;
+      } else if (type === 'pets') {
+        output = `${entryObj.name} ${this.printEntryLink('parents', entryObj.parent, true)}`;
+      } else if (type === 'parents') {
+        output = `${entryObj.lastName}`;
+      } else if (type === 'appointments') {
+        output = `${entryObj.date} - ${this.printEntryLink('pets', entryObj.petId, true)}`;
+      }
+    } else {
+      if (key) {
+        (`${key} NOT in local ${type} list!`);
+        if (!end) {
+          this.getEntryById(type, key, end);
+          return;
+        }
+      } else {
+        output = 'No id passed';
+      }
+    }
+    return output;
+  }
+
   getEntryById(listType, id) {
     new Promise(
       (resolve) => {
@@ -247,11 +275,11 @@ class App extends React.Component {
     // return promise;
   }
 
-  componentDidMount() { 
-    this.getList('employees');
-    this.getList('parents');
-    this.getList('pets');
-    this.getList('appointments');
+  componentDidMount() {
+    // this.getList('employees');
+    // this.getList('parents');
+    // this.getList('pets');
+    // this.getList('appointments');
 
     // this.getEntryById('parents','f134ae10-e3d9-11e8-8982-5fccabf17114')
   }
@@ -261,32 +289,6 @@ class App extends React.Component {
   shouldComponentUpdate() { return true; }
   UNSAFE_componentWillUpdate() { }
   componentDidUpdate() { }
-
-  printEntryLink(type, key) {
-    let output;
-    if (key && this.state.lists[type][key]) {
-      let entryObj = this.state.lists[type][key];
-      if (type==='employees') {
-        output = `${entryObj.firstName} ${entryObj.lastName}`;
-      } else if (type === 'pets') {
-        output = `${entryObj.name} ${this.printEntryLink('parents', entryObj.parent)}`;
-      } else if (type === 'parents') {
-        output = `${entryObj.lastName}`;
-      } else if (type === 'appointments') {
-        output = `${entryObj.date} - ${this.printEntryLink('pets', entryObj.petId)}`;
-      }
-    } else {
-      
-      if (key) {
-        (`${key} NOT in local ${type} list!`);
-        this.getEntryById(type, key);
-        return;
-      } else {
-        output = 'No id passed';
-      }
-    }
-    return output;
-  }
 
   handleHamburgerClick(event) {
     event.preventDefault();
