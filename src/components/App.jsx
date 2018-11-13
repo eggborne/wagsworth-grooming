@@ -142,7 +142,7 @@ class App extends React.Component {
   }
 
   printEntryLink(type, key, end) {
-    console.log('printing type key', type, key);
+    // console.log('printing type key', type, key);
     let output;
     if (key && this.state.lists[type][key]) {
       let entryObj = this.state.lists[type][key];
