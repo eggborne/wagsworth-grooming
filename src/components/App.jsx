@@ -67,6 +67,7 @@ class App extends React.Component {
     this.state = {
       newFormRequested: null,
       menuSummoned: false,
+      lastSectionSelected: null,
       lists: {
         employees: {},
         parents: {},
@@ -84,6 +85,7 @@ class App extends React.Component {
     this.getEntryByPetName = this.getEntryByPetName.bind(this);
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
+    this.handleSwitchSectionView = this.handleSwitchSectionView.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
     
@@ -109,7 +111,6 @@ class App extends React.Component {
       newLists[listType][entryObject.id] = entryObject;
       
     });
-      
     this.setState({
       lists: newLists,
     });
@@ -142,7 +143,6 @@ class App extends React.Component {
   }
 
   printEntryLink(type, key, end) {
-    // console.log('printing type key', type, key);
     let output;
     if (key && this.state.lists[type][key]) {
       let entryObj = this.state.lists[type][key];
@@ -290,10 +290,11 @@ class App extends React.Component {
   UNSAFE_componentWillUpdate() { }
   componentDidUpdate() { }
 
-  handleHamburgerClick(event) {
+  handleHamburgerClick(event, section) {
     event.preventDefault();
     this.setState({
-      menuSummoned: !this.state.menuSummoned
+      menuSummoned: !this.state.menuSummoned,
+      lastSectionSelected: section
     });
   }
 
@@ -320,6 +321,12 @@ class App extends React.Component {
     this.saveNewEntryToDatabase(type, newEntryObj);
   }
 
+  handleSwitchSectionView(oldSection) {
+    this.setState({
+      lastSectionSelected: oldSection
+    });
+  }
+
   render() {
     var heightAdjusted = {
       minHeight: window.innerHeight - (shorterDimension * 0.15)
@@ -335,7 +342,7 @@ class App extends React.Component {
       <div style={heightAdjusted} id='main'>
         <style jsx>{`
           #main {
-            background-color: white;
+            background-color: var(--mainBg);
             font-family: Playfair Display; serif;
             position: relative
           }
@@ -346,12 +353,14 @@ class App extends React.Component {
         <Header displayTitle={displayTitle}
           onClickHamburger={this.handleHamburgerClick}
           onSubmitSearch={this.handleSubmitSearch}
+          onSwitchSectionView={this.handleSwitchSectionView}
           menuSymbol={headerMenuSymbol}
           lists={this.state.lists} />
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
             <Route path='/parents' render={() => <ListIndex section={'parents'}
+              lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               printEntryLink={this.printEntryLink}
@@ -359,6 +368,7 @@ class App extends React.Component {
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/pets' render={() => <ListIndex section={'pets'}
+              lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               printEntryLink={this.printEntryLink}
@@ -366,6 +376,7 @@ class App extends React.Component {
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/appointments' render={() => <ListIndex section={'appointments'}
+              lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               printEntryLink={this.printEntryLink}
@@ -373,6 +384,7 @@ class App extends React.Component {
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/employees' render={() => <ListIndex section={'employees'}
+              lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               printEntryLink={this.printEntryLink}
