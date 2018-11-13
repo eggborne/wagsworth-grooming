@@ -80,9 +80,12 @@ class App extends React.Component {
     this.saveNewEntryToDatabase = this.saveNewEntryToDatabase.bind(this);
     this.getList = this.getList.bind(this);
     this.getEntryById = this.getEntryById.bind(this);
+    this.getEntryByLastName = this.getEntryByLastName.bind(this);
+    this.getEntryByPetName = this.getEntryByPetName.bind(this);
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
+    this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
     
   }
 
@@ -91,6 +94,7 @@ class App extends React.Component {
     let newLists = Object.assign({}, origLists);
 
     newEntryArray.forEach((entryObject) => {
+      // convert strings to arrays if needed
       for (let prop in entryObject) {
         let val = entryObject[prop];
         if (val[0] === '[') {
@@ -101,9 +105,11 @@ class App extends React.Component {
         }
         entryObject[prop] = val;
       }
+      // record entry as id:entry
       newLists[listType][entryObject.id] = entryObject;
+      
     });
-
+      
     this.setState({
       lists: newLists,
     });
@@ -161,6 +167,61 @@ class App extends React.Component {
     });
   }
 
+  getEntryByLastName(listType, lastName) {
+    new Promise(
+      (resolve) => {
+        $.ajax({
+          type: 'get',
+          url: 'https://www.eggborne.com/scripts/getentrybylastname.php',
+          data: {
+            listType: listType,
+            lastName: lastName,
+          },
+          success: (response) => {
+            if (response) {
+              let newEntryObj = JSON.parse(response);
+              resolve([listType, newEntryObj]);
+            }
+          },
+          error: function () {
+            
+          }
+        });
+      }
+    ).then((val) => {
+      this.addToLocalList(val[0], [val[1]]);
+    }).catch(() => {
+      
+    });
+  }
+  getEntryByPetName(listType, petName) {
+    new Promise(
+      (resolve) => {
+        $.ajax({
+          type: 'get',
+          url: 'https://www.eggborne.com/scripts/getentrybypetname.php',
+          data: {
+            listType: listType,
+            petName: petName,
+          },
+          success: (response) => {
+            if (response) {
+              let newEntryObj = JSON.parse(response);
+              resolve([listType, newEntryObj]);
+            }
+          },
+          error: function () {
+            
+          }
+        });
+      }
+    ).then((val) => {
+      this.addToLocalList(val[0], [val[1]]);
+    }).catch(() => {
+      
+    });
+  }
+  
   getList(listType, start, limit) {
     new Promise(
       (resolve) => {
@@ -187,10 +248,10 @@ class App extends React.Component {
   }
 
   componentDidMount() { 
-    // this.getList('employees');
-    // this.getList('parents');
-    // this.getList('pets');
-    // this.getList('appointments');
+    this.getList('employees');
+    this.getList('parents');
+    this.getList('pets');
+    this.getList('appointments');
 
     // this.getEntryById('parents','f134ae10-e3d9-11e8-8982-5fccabf17114')
   }
@@ -208,14 +269,16 @@ class App extends React.Component {
       if (type==='employees') {
         output = `${entryObj.firstName} ${entryObj.lastName}`;
       } else if (type === 'pets') {
-        output = `${entryObj.name}`;
+        output = `${entryObj.name} ${this.printEntryLink('parents', entryObj.parent)}`;
       } else if (type === 'parents') {
         output = `${entryObj.lastName}`;
+      } else if (type === 'appointments') {
+        output = `${entryObj.date} - ${this.printEntryLink('pets', entryObj.petId)}`;
       }
     } else {
       
       if (key) {
-        console.log(`${key} NOT in local ${type} list!`);
+        (`${key} NOT in local ${type} list!`);
         this.getEntryById(type, key);
         return;
       } else {
@@ -230,6 +293,18 @@ class App extends React.Component {
     this.setState({
       menuSummoned: !this.state.menuSummoned
     });
+  }
+
+  handleSubmitSearch(event, searchTerm, searchList) {
+    event.preventDefault();
+    searchTerm = searchTerm.split(' ');
+    if (searchList === 'parents') {
+      this.getEntryByLastName(searchList, searchTerm[0]);
+    } else if (searchList === 'pets') {
+      this.getEntryByPetName(searchList, searchTerm[0]);
+    } else if (searchList === 'appointments') {
+      // stuff
+    }
   }
 
   handleEntryFormRequest(type) {
@@ -250,10 +325,8 @@ class App extends React.Component {
     let hamburgerMenu;
     let headerMenuSymbol;
     if (this.state.menuSummoned) {
-      hamburgerMenu = <big>MENU SUMMONED!</big>;
       headerMenuSymbol = 'close';
     } else {
-      hamburgerMenu = null;
       headerMenuSymbol = 'menu';
     }
     return (
@@ -270,7 +343,9 @@ class App extends React.Component {
         `}</style>
         <Header displayTitle={displayTitle}
           onClickHamburger={this.handleHamburgerClick}
-          menuSymbol={headerMenuSymbol}/>
+          onSubmitSearch={this.handleSubmitSearch}
+          menuSymbol={headerMenuSymbol}
+          lists={this.state.lists} />
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
