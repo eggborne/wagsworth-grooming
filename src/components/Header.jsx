@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { relative } from 'path';
 
 class Header extends React.Component {
 
@@ -17,9 +18,19 @@ class Header extends React.Component {
 
   }
 
+  componentDidMount() { 
+    console.log('Header mounted ------------------ HEADER');
+  }
+
   changeSearchList(newList) {
     this.setState({
       searchList: newList
+    });
+    // check correct radio button
+    Array.from(document.getElementsByName('search-type')).map((searchType, i) => {
+      if (searchType.value === newList) {
+        searchType.checked = true;
+      }
     });
   }
 
@@ -60,22 +71,18 @@ class Header extends React.Component {
       backgroundColor: 'none',
       padding: '0.5rem',
       borderRadius: '0.5rem',
-      paddingRight: '0.75rem'
+      paddingRight: '0.75rem',
     }
-    let barContents;
+    let menuStyle = {
+      height: '0',
+    }
     let displayListNav;
     if (this.props.menuSymbol === 'close') {
       displayListNav = 'block';
-      barContents =
-        <div>
-          <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')} style={menuItemStyle}><Link to="/employees">Employees</Link></div>
-          <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')} style={menuItemStyle}><Link to="/parents">Parents</Link></div>
-          <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')} style={menuItemStyle}><Link to="/pets">Pets</Link></div>
-          <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')} style={menuItemStyle}><Link to="/appointments">Appointments</Link></div>
-        </div>;
+      menuStyle.height = '100%';
     } else {
       displayListNav = 'none';
-      barContents = '';
+      menuStyle.height = '0';
     }
     let optionsList = [];
     let hambHeight;
@@ -194,6 +201,9 @@ class Header extends React.Component {
             justify-content: space-between;
             margin-top: 0.25rem;
           }
+          #employeeMenuArea {
+            opacity: 0.5;
+          }
           button {
             border-radius: 2px;
             padding: 0;
@@ -212,7 +222,12 @@ class Header extends React.Component {
         </div>
         <div id="admin-nav-bar">
           <div id="admin-section-nav">
-            {barContents}
+            <div style={menuStyle}>
+            <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')} style={menuItemStyle}><Link to="/employees">Employees</Link></div>
+            <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')} style={menuItemStyle}><Link to="/parents">Parents</Link></div>
+            <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')} style={menuItemStyle}><Link to="/pets">Pets</Link></div>
+            <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')} style={menuItemStyle}><Link to="/appointments">Appointments</Link></div>
+          </div>
           </div>
           <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
             <div id="search-area">
@@ -229,9 +244,9 @@ class Header extends React.Component {
               <button type="submit"><i className="material-icons">search</i></button>
             </div>
             <div id='search-options'>
-              <div><input defaultChecked onClick={() => this.changeSearchList('parents')} type='radio' name='search-type' value='parents'></input>Parents</div>
-              <div><input onClick={() => this.changeSearchList('pets')} type='radio' name='search-type' value='pets'></input>Pets</div>
-              <div><input onClick={() => this.changeSearchList('appointments')} type='radio' name='search-type' value='appointments'></input>Appointments</div>
+              <div onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input>Parents</div>
+              <div onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input>Pets</div>
+              <div onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input>Appointments</div>
             </div>
           </form>
         </div>
