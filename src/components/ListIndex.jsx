@@ -6,7 +6,7 @@ import AppointmentCard from './cards/AppointmentCard';
 import EmployeeCard from './cards/EmployeeCard';
 import SplashPage from './SplashPage';
 import PropTypes from 'prop-types';
-var moment = require('moment');
+// var moment = require('moment');
 
 const componentNames = {
   splashPage: SplashPage,
@@ -36,17 +36,35 @@ class ListIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      
     };
     if (this.props.section !== 'splashPage') {
       this.props.handleUpdateListFromDB(this.props.section);
     }
+    this.slideIn = this.slideIn.bind(this);
   }
 
   componentDidMount() {
     if (this.props.section !== 'splashPage') {
       this.updateTimeSinceEntriesCreated();
     }
+    
+  }
+
+  slideIn(speed,delay) {
+    setTimeout(() => {
+      if (document.getElementById('main-list')) {
+        document.getElementById('main-list').style.transition = 'none';
+        document.getElementById('main-list').style.transform = 'translateX(20vw)';
+        document.getElementById('main-list').style.opacity = '0';
+      
+        setTimeout(() => {
+          document.getElementById('main-list').style.transition = `all ${speed}ms ease`;
+          document.getElementById('main-list').style.transform = 'translateX(0)';
+          document.getElementById('main-list').style.opacity = '1';
+        }, delay);
+      }
+    }, 0);
   }
 
   componentWillUnmount() {
@@ -79,27 +97,20 @@ class ListIndex extends React.Component {
   }
 
   updateTimeSinceEntriesCreated() {
-    let list = this.props.lists[this.props.section];
-    let updatedList = Object.entries(Object.assign({}, list));
-    updatedList.forEach((entry) => {
-      entry.formattedTimeSince = moment(entry.dateCreated).fromNow(true);
-    });
-    this.setState({
-      [this.props.section]: updatedList
-    });
+    // let list = this.props.lists[this.props.section];
+    // let updatedList = Object.entries(Object.assign({}, list));
+    // updatedList.forEach((entry) => {
+    //   entry.formattedTimeSince = moment(entry.dateCreated).fromNow(true);
+    // });
+    // this.setState({
+    //   [this.props.section]: updatedList
+    // });
   }
 
   render() {
-    setTimeout(() => {
-      document.getElementById('main-list').style.transition = 'none';
-      document.getElementById('main-list').style.transform = 'translateX(100vw)';
-      document.getElementById('main-list').style.opacity = '0';
-    }, 0);
-    setTimeout(() => {
-      document.getElementById('main-list').style.transition = 'all 400ms ease';
-      document.getElementById('main-list').style.transform = 'translateX(0)';
-      document.getElementById('main-list').style.opacity = '1';
-    }, 100);
+    if (this.props.section !== this.props.lastSectionSelected) {
+      this.slideIn(200, 100);
+    }
     const sec = this.props.section;
     if (sec === 'splashPage') {
       return (
@@ -128,9 +139,8 @@ class ListIndex extends React.Component {
         <div id='main-list' >
           <style jsx>{`
             #main-list {
-              position: relative;
-              transform: translateX(100vw);
-              transition: all 300ms ease;
+              opacity: 0;
+              transition: all 600ms ease;
             }
           `}</style>
           <SectionHeading type={sec}
@@ -152,6 +162,7 @@ class ListIndex extends React.Component {
 ListIndex.propTypes = {
   lists: PropTypes.object,
   section: PropTypes.string,
+  lastSectionSelected: PropTypes.string,
   handleUpdateListFromDB: PropTypes.func,
   printEntryLink: PropTypes.func,
   onRequestNewEntryForm: PropTypes.func,
