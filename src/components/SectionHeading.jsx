@@ -2,14 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function SectionHeading(props) {
-  let headerText = `${props.type[0].toUpperCase()}${props.type.slice(1,props.type.length)}`;
+  // let headerText = `${props.type[0].toUpperCase()}${props.type.slice(1,props.type.length)}`;
+  let headerText = '';
+  let radius;
+  if (props.type === 'employees') {
+    radius = '0.5rem';
+  } else {
+    radius = '0rem 0.5rem 0.5rem 0.5rem';
+  }
   return (
     <div>
       <style jsx>{`
         div {
+          box-sizing:border-box;
           border-radius: 0.5rem;
           background-color: var(--dark);
-          text-shadow: 1px 1px 1px black;
           font-family: Tangerine, cursive;
           font-size: 2.25rem;
           color: var(--mainBg);
@@ -17,6 +24,7 @@ function SectionHeading(props) {
           padding: 2%;
           display: inline-flex;
           align-items: center;
+          border-radius: ${radius};
         }
         #btns {
           display: inline-flex;
