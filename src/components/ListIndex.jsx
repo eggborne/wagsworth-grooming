@@ -48,16 +48,16 @@ class ListIndex extends React.Component {
     if (this.props.section !== 'splashPage') {
       this.updateTimeSinceEntriesCreated();
     }
-    
+
   }
 
-  slideIn(speed,delay) {
+  slideIn(speed, delay) {
     setTimeout(() => {
       if (document.getElementById('main-list')) {
         document.getElementById('main-list').style.transition = 'none';
         document.getElementById('main-list').style.transform = 'translateX(20vw)';
         document.getElementById('main-list').style.opacity = '0';
-      
+
         setTimeout(() => {
           document.getElementById('main-list').style.transition = `all ${speed}ms ease`;
           document.getElementById('main-list').style.transform = 'translateX(0)';
@@ -136,23 +136,26 @@ class ListIndex extends React.Component {
 
       }
       return (
-        <div id='main-list' >
+        <div>
           <style jsx>{`
             #main-list {
               opacity: 0;
               transition: all 600ms ease;
+              
             }
           `}</style>
           <SectionHeading type={sec}
             onRequestNewEntryForm={this.props.onRequestNewEntryForm}
             onClickToUpdateList={this.props.handleUpdateListFromDB} />
-          {entriesToDisplay.map((entry) =>
-            <ComponentName key={entry.id}
-              style={cardStyle}
-              entryObject={entry}
-              convertTime={this.convertTime}
-              printAssociatedEntryLink={this.props.printEntryLink} />
-          )}
+          <div id='main-list'>
+            {entriesToDisplay.map((entry) =>
+              <ComponentName key={entry.id}
+                style={cardStyle}
+                entryObject={entry}
+                convertTime={this.convertTime}
+                printAssociatedEntryLink={this.props.printEntryLink} />
+            )}
+          </div>
         </div>
       );
     }
