@@ -15,6 +15,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
@@ -48,6 +55,11 @@ module.exports = {
       title: 'Wagsworth Grooming Co.',
       favicon: './src/assets/images/favicon.png',
       filename: resolve(__dirname, "dist", "index.html"),
+      meta: {
+        'viewport': 'width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no',
+        'mobile-web-app-capable': 'yes',
+        'theme-color': '#111'
+      }
     }),
   ],
   
