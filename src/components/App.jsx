@@ -1,3 +1,4 @@
+import style from '../css/styles.css';
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
@@ -290,8 +291,20 @@ class App extends React.Component {
   UNSAFE_componentWillUpdate() { }
   componentDidUpdate() { }
 
-  handleHamburgerClick(event, section) {
-    event.preventDefault();
+  handleHamburgerClick(event, section, skipFade) {
+    if (event) {
+      event.preventDefault();
+    }
+    let newOpacity = 0;
+    let hamburgerStyle = document.getElementById('hamburger-container').style;
+    if (!skipFade) {
+      if (hamburgerStyle.opacity == 0) {
+        newOpacity = 1;
+      }
+      setTimeout(() => {
+        hamburgerStyle.opacity = newOpacity;
+      });
+    }
     this.setState({
       menuSummoned: !this.state.menuSummoned,
       lastSectionSelected: section
@@ -347,13 +360,15 @@ class App extends React.Component {
             position: relative
           }
           #padding-container {
-            padding: 2%;
+            padding: 3%;
+            padding-top: 0;
           }
         `}</style>
         <Header displayTitle={displayTitle}
           onClickHamburger={this.handleHamburgerClick}
           onSubmitSearch={this.handleSubmitSearch}
           onSwitchSectionView={this.handleSwitchSectionView}
+          printEntryLink={this.printEntryLink}
           menuSymbol={headerMenuSymbol}
           lists={this.state.lists} />
         <div id='padding-container'>
