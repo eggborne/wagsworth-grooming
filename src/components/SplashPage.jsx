@@ -2,12 +2,17 @@ import React from 'react';
 import headerImage from '../assets/images/titlepic.jpg';
 
 function SplashPage() {
+  
   setTimeout(() => {
-    document.getElementById('logo-img').style.opacity = 1;
-    document.getElementById('logo-msg').style.opacity = 1;
-    document.getElementById('logo-img').style.transform = 'scale(1)';
-    document.getElementById('logo-msg').style.transform = 'scale(1)';
-  }, 5);
+    let logoImg = document.getElementById('logo-img');
+    if (logoImg) {
+      logoImg.style.opacity = 1;
+      document.getElementById('logo-msg').style.opacity = 1;
+      logoImg.style.transform = 'scale(1)';
+      document.getElementById('logo-msg').style.transform = 'scale(1)';
+    }
+  }, 10);
+  
   return (
     <div>
       <style jsx>{`
@@ -22,7 +27,6 @@ function SplashPage() {
           width: 60vmin;
           border: 1px solid #333;
           border-radius: 4%;
-          box-shadow: 0px 0px 4px 2px #666;
           margin: 10%;
           margin-top: 5%;
           opacity: 0;
