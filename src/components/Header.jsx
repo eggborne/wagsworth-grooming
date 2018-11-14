@@ -31,7 +31,7 @@ class Header extends React.Component {
         searchType.nextSibling.style.backgroundColor = 'var(--dark)';
       } else {
         searchType.nextSibling.style.color = 'var(--darkAccent)';
-        searchType.nextSibling.style.backgroundColor = '#191919';
+        searchType.nextSibling.style.backgroundColor = 'var(--light)';
       }
     });
   }
@@ -46,14 +46,20 @@ class Header extends React.Component {
         searchType.checked = true;
       }
     });
+    // tell App.jsx what the previous section was
     this.props.onSwitchSectionView(this.state.searchList);
     this.setState({
       searchList: newList
     });
     this.highlightSection(newList);
+    if (newList) {
+      document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
+    } else {
+      document.getElementById('search-input').placeholder = 'Search...';
+    }
   }
 
-  toggleMenuItemOn(newItem) {
+  toggleMenuItemOn(newItem, noHamburger) {
     Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem) => {
       if (menuItem.id === newItem) {
         menuItem.style.backgroundColor = '#222';
@@ -68,6 +74,17 @@ class Header extends React.Component {
       searchList: newList
     });
     this.highlightSection(newList);
+    document.getElementById('hamburger-container').style.opacity = 0;
+    if (!noHamburger) {
+      setTimeout(() => {
+        this.props.onClickHamburger(false, newList, true);
+      }, 200);
+    }
+    if (newList) {
+      document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
+    } else {
+      document.getElementById('search-input').placeholder = 'Search...';
+    }
   }
 
   handleSearchTermChange() {
@@ -84,16 +101,18 @@ class Header extends React.Component {
   }
 
   handleHomeClick() {
-    this.toggleMenuItemOn('');
+    this.toggleMenuItemOn('', true);
   }
 
   handleSearchFocus() {
     if (!this.state.searchList) {
-      this.toggleMenuItemOn('parents');
+      this.toggleMenuItemOn('parents', true);
+      window.location = '/#/parents';
     }
   }
 
   render() {
+    let currentSearchList = this.state.searchList;
     let menuVis;
     let searchVis;
     let optionsList = [];
@@ -102,22 +121,35 @@ class Header extends React.Component {
     } else {
       menuVis = 'block';
     }
-    if (this.state.searchList === 'employees') {
+    if (currentSearchList === 'employees') {
       searchVis = 'none';
     } else {
       searchVis = 'block';
     }
 
-    if (this.state.searchList === 'parents') {
-      let parentList = Object.entries(this.props.lists[this.state.searchList]);
+    // fill autosuggest list
+    if (currentSearchList === 'parents') {
+      let parentList = Object.entries(this.props.lists[currentSearchList]);
       parentList.map((parent) => {
-        optionsList.push(parent[1].lastName);
+        optionsList.push(`${parent[1].lastName}, ${parent[1].firstNames.join(' & ')}`);
       });
-    } else if (this.state.searchList === 'pets') {
-      let petList = Object.entries(this.props.lists[this.state.searchList]);
+    } else if (currentSearchList === 'pets') {
+      let petList = Object.entries(this.props.lists[currentSearchList]);
       petList.map((pet) => {
-        optionsList.push(pet[1].name);
+        let petName = pet[1].name;
+        let petLastName = this.props.printEntryLink('parents', pet[1].parent, true);
+        optionsList.push(`${petName} ${petLastName}`);
       });
+    } else if (currentSearchList === 'appointments') {
+      let apptList = Object.entries(this.props.lists[currentSearchList]);
+      apptList.map((appt) => {
+        let apptDate = appt[1].date;
+        let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
+        let apptServices = appt[1].services.join(', ');
+        optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
+      });
+    } else if (currentSearchList === 'splashPage') {
+      document.getElementById('search-input').placeholder = 'Search...';
     }
 
     let suggestOptions =
@@ -136,13 +168,11 @@ class Header extends React.Component {
             align-self: center;
           }
           #top-row {
+            background-color: var(--darkest);
             width:100%;
             display: inline-flex;
             align-items: center;
             justify-content: space-between;
-          }
-          #logo, .tiny {
-            color: var(--mainBg);
           }
           .mainMenuItem {
             background-color: transparent;
@@ -150,7 +180,7 @@ class Header extends React.Component {
             border-radius: 0.5rem;
             padding-right: 0.75rem;
             height: 25%;
-            transition: background 500ms ease;
+            // transition: background 300ms ease;
           }
           #hamburger {
             text-align: center;
@@ -161,34 +191,34 @@ class Header extends React.Component {
             justify-content: center;
           }
           #header {
-            background-color: var(--darkest);
+            background-image: linear-gradient(var(--darkest) 8rem, var(--mainBg));
             color: var(--mainBg);
             font-family: Tangerine; cursive;
             font-size: 2.5rem;
-            padding: 2%;
+            padding: 3% 3% 0 3%;
             display: flex;
             flex-direction: column;
           }
           #admin-search-form {
-            font-size: 1rem;
             font-family: Playfair Display; serif;
             width: 100%;
             color: var(--darkAccent);
             display: flex;
             align-items: center;
-            padding: 2%;
             flex-wrap: wrap;
-            display: ${searchVis}
+            display: ${searchVis};
           }
-          #list-nav-items {
+          #hamburger-container {
+            box-sizing:border-box;
             font-size: 2rem;
             font-family: Tangerine; cursive;
             text-align: right;
             width: 100%;
-            background-color: #191919;
             padding: 2%;
+            background-color: rgba(25, 25, 25, 1) ;
+            display: ${menuVis};
             transition: all 400ms ease;
-            display: ${menuVis}
+            opacity: 0;
           }
           .tiny {
             text-align: right;
@@ -199,17 +229,16 @@ class Header extends React.Component {
           #search-area {
             width: 100%;
             margin-top: 0.5rem;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0;
             display: inline-flex;
             align-items: stretch;
             justify-content: space-between;
           }
           #search-input {
             width:75%;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             padding-left: 0.5rem;
             border-radius: 2px;
-            flex-basis: auto;
           }
           #search-button {
             width: 20%;
@@ -222,24 +251,18 @@ class Header extends React.Component {
             max-width: 300px;
             margin-top: 0.5rem;
             display: inline-flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             justify-items: center;
             align-items: center;
           }
-          #search-options > div {
-            color: #191919;
-          }
           .search-list-tab {
             font-size: 1.2rem;
-            display: inline-flex;
-            align-items: center;
+            margin-right: 0.5rem;
           }
           .search-list-tab > div {
-            box-sizing: border-box;
-            background-color: #191919;
-            border-radius: 0.5rem;
+            background-color: var(--light);
+            border-radius: 0.5rem 0.5rem 0rem 0rem;
             font-family: Helvetica;
-            text-shadow: 1px 1px 1px black;
             transition: all 400ms ease;
             padding: 0.5rem;
           }
@@ -250,10 +273,6 @@ class Header extends React.Component {
             margin-right: 0.25rem;
             display: none;
           }
-          #employeeMenuArea {
-            opacity: 0.6;
-          }
-          
         `}</style>
 
         <div id='top-row'>
@@ -265,44 +284,42 @@ class Header extends React.Component {
               <div className='tiny'>Administrative Portal v0.1</div>
             </Link>
           </div>
-          <div onClick={() => this.props.onClickHamburger(event,this.state.searchList)} id='hamburger'>
+          <div onClick={() => this.props.onClickHamburger(event, this.state.searchList)} id='hamburger'>
             <i id="hamburger-icon" className="material-icons"><big>{this.props.menuSymbol}</big></i>
           </div>
         </div>
-
-        <div id="list-nav-items">
-          <div id='menu'>
+        <div id='lower-rows'>
+          <div id="hamburger-container">
             <div className='mainMenuItem' id='employeeMenuArea' onClick={() => this.toggleMenuItemOn('employeeMenuArea')}><Link to="/employees">Employees</Link></div>
             <div className='mainMenuItem' id='parentMenuArea' onClick={() => this.toggleMenuItemOn('parentMenuArea')}><Link to="/parents">Parents</Link></div>
             <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')}><Link to="/pets">Pets</Link></div>
             <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')}><Link to="/appointments">Appointments</Link></div>
           </div>
-        </div>
 
-        <div id="admin-search-form">
-          <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
-            <div id="search-area">
-              <input
-                onFocus={this.handleSearchFocus}
-                onChange={this.handleSearchTermChange}
-                list='found-entries'
-                autoComplete='off'
-                type='text'
-                placeholder='Search...'
-                id='search-input' />
-              <datalist id='found-entries'>
-                {suggestOptions}
-              </datalist>
-              <button id="search-button" type="submit"><i className="material-icons">search</i></button>
-            </div>
-            <div id='search-options'>
-              <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div><Link to="/parents">Parents</Link></div></div>
-              <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input><div><Link to="/pets">Pets</Link></div></div>
-              <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input><div><Link to="/appointments">Appointments</Link></div></div>
-            </div>
-          </form>
+          <div id="admin-search-form">
+            <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
+              <div id="search-area">
+                <input
+                  onFocus={this.handleSearchFocus}
+                  onChange={this.handleSearchTermChange}
+                  list='found-entries'
+                  autoComplete='off'
+                  type='text'
+                  placeholder='Search...'
+                  id='search-input' />
+                <datalist id='found-entries'>
+                  {suggestOptions}
+                </datalist>
+                <button id="search-button" type="submit"><i className="material-icons">search</i></button>
+              </div>
+              <div id='search-options'>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div><Link to="/parents">Parents</Link></div></div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input><div><Link to="/pets">Pets</Link></div></div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input><div><Link to="/appointments">Appointments</Link></div></div>
+              </div>
+            </form>
+          </div>
         </div>
-
       </div>
     );
   }
@@ -314,6 +331,7 @@ Header.propTypes = {
   onClickHamburger: PropTypes.func,
   onSubmitSearch: PropTypes.func,
   onSwitchSectionView: PropTypes.func,
+  printEntryLink: PropTypes.func,
   lists: PropTypes.object
 };
 
