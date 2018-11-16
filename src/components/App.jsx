@@ -7,6 +7,22 @@ import NewEntryFormIndex from './NewEntryFormIndex';
 var uuid = require('uuid/v1');
 var moment = require('moment');
 import { Switch, Route } from 'react-router-dom';
+import axios from 'axios';
+
+let calls = 0;
+
+const getListingByParam = (listType, paramName, param) =>
+  axios({
+    method: 'get',
+    url: `https://www.eggborne.com/scripts/getentryby${paramName.toLowerCase()}.php`,
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded',
+    },
+    params: {
+      listType: listType,
+      [paramName]: param,
+    }
+  });
 
 const entryAttributes = {
   pets: [
@@ -53,6 +69,12 @@ const entryAttributes = {
   ]
 };
 
+const sectionSearchParams = {
+  parents: 'lastName',
+  pets: 'name',
+  appointments: 'lastName'
+};
+
 let shorterDimension = null;
 if (window.innerWidth < window.innerHeight) {
   shorterDimension = window.innerWidth;
@@ -74,51 +96,29 @@ class App extends React.Component {
         parents: {},
         pets: {},
         appointments: {}
+      },
+      displayLists: {
+        employees: {},
+        parents: {},
+        pets: {},
+        appointments: {}
       }
     };
 
     this.printEntryLink = this.printEntryLink.bind(this);
     this.addToLocalList = this.addToLocalList.bind(this);
+    this.addToDisplayList = this.addToDisplayList.bind(this);
     this.saveNewEntryToDatabase = this.saveNewEntryToDatabase.bind(this);
     this.getList = this.getList.bind(this);
-    this.getEntryById = this.getEntryById.bind(this);
-    this.getEntryByLastName = this.getEntryByLastName.bind(this);
-    this.getEntryByPetName = this.getEntryByPetName.bind(this);
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
     this.handleSwitchSectionView = this.handleSwitchSectionView.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
-    
-  }
-
-  addToLocalList(listType, newEntryArray) {
-    let origLists = this.state.lists;
-    let newLists = Object.assign({}, origLists);
-
-    newEntryArray.forEach((entryObject) => {
-      // convert strings to arrays if needed
-      for (let prop in entryObject) {
-        let val = entryObject[prop];
-        if (val[0] === '[') {
-          val = val.slice(1, val.length - 1);
-          val = val.split(',');
-        } else if (val.length === 0) {
-          val = [];
-        }
-        entryObject[prop] = val;
-      }
-      // record entry as id:entry
-      newLists[listType][entryObject.id] = entryObject;
-      
-    });
-    this.setState({
-      lists: newLists,
-    });
   }
 
   saveNewEntryToDatabase(tableName, newEntryObj) {
-    
+
     let dataObj = {
       tableName: tableName,
       uniqueId: uuid(),
@@ -137,7 +137,7 @@ class App extends React.Component {
         this.getList(tableName);
       },
       error: () => {
-        
+
       }
     });
 
@@ -147,7 +147,7 @@ class App extends React.Component {
     let output;
     if (key && this.state.lists[type][key]) {
       let entryObj = this.state.lists[type][key];
-      if (type==='employees') {
+      if (type === 'employees') {
         output = `${entryObj.firstName} ${entryObj.lastName}`;
       } else if (type === 'pets') {
         output = `${entryObj.name} ${this.printEntryLink('parents', entryObj.parent, true)}`;
@@ -158,100 +158,28 @@ class App extends React.Component {
       }
     } else {
       if (key) {
-        (`${key} NOT in local ${type} list!`);
         if (!end) {
-          this.getEntryById(type, key, end);
+          getListingByParam(type, 'id', key).then((response) => {
+            this.addToDisplayList(type, response.data);
+            calls++;
+          });
           return;
         }
       } else {
         output = 'No id passed';
       }
     }
-    return output;
+    if (output) {
+      return output;
+    } else {
+      return 'loading...';
+    }
   }
 
-  getEntryById(listType, id) {
-    new Promise(
-      (resolve) => {
-        $.ajax({
-          type: 'get',
-          url: 'https://www.eggborne.com/scripts/getentrybyid.php',
-          data: {
-            listType: listType,
-            id: id,
-          },
-          success: (response) => {
-            let newEntryObj = JSON.parse(response);
-            resolve([listType,newEntryObj]);
-          },
-          error: function () {
-            
-          }
-        });
-      }
-    ).then((val) => {
-      this.addToLocalList(val[0], [val[1]]);
-    }).catch(() => {
-      
-    });
-  }
-
-  getEntryByLastName(listType, lastName) {
-    new Promise(
-      (resolve) => {
-        $.ajax({
-          type: 'get',
-          url: 'https://www.eggborne.com/scripts/getentrybylastname.php',
-          data: {
-            listType: listType,
-            lastName: lastName,
-          },
-          success: (response) => {
-            if (response) {
-              let newEntryObj = JSON.parse(response);
-              resolve([listType, newEntryObj]);
-            }
-          },
-          error: function () {
-            
-          }
-        });
-      }
-    ).then((val) => {
-      this.addToLocalList(val[0], [val[1]]);
-    }).catch(() => {
-      
-    });
-  }
-  getEntryByPetName(listType, petName) {
-    new Promise(
-      (resolve) => {
-        $.ajax({
-          type: 'get',
-          url: 'https://www.eggborne.com/scripts/getentrybypetname.php',
-          data: {
-            listType: listType,
-            petName: petName,
-          },
-          success: (response) => {
-            if (response) {
-              let newEntryObj = JSON.parse(response);
-              resolve([listType, newEntryObj]);
-            }
-          },
-          error: function () {
-            
-          }
-        });
-      }
-    ).then((val) => {
-      this.addToLocalList(val[0], [val[1]]);
-    }).catch(() => {
-      
-    });
-  }
-  
-  getList(listType, start, limit) {
+  getList(event, listType, start, limit) {
+    if (event) {
+      event.preventDefault();
+    }
     new Promise(
       (resolve) => {
         $.ajax({
@@ -264,25 +192,73 @@ class App extends React.Component {
           },
           success: (response) => {
             let newEntryArray = JSON.parse(response);
-            resolve([listType,newEntryArray]);
+            resolve([listType, newEntryArray]);
           }
         });
       }
     ).then((val) => {
       this.addToLocalList(val[0], val[1]);
     }).catch(() => {
-      
+
     });
     // return promise;
   }
 
-  componentDidMount() {
-    // this.getList('employees');
-    // this.getList('parents');
-    // this.getList('pets');
-    // this.getList('appointments');
+  addToLocalList(listType, newEntryInput) {
+    // let newLists = { ...this.state.lists }; // eslint doesn't like it
+    let newLists = Object.assign({}, this.state.lists);
+    for (let prop in newEntryInput) {
+      let val = newEntryInput[prop];
+      // check if it's a stringified array
+      if (val[0] === '[') {
+        // make it a real one
+        val = val.slice(1, val.length - 1);
+        val = val.split(',');
+      } else if (val.length === 0) {
+        val = [];
+      }
+      newEntryInput[prop] = val;
+    }
+    // record entry as id:entry
 
-    // this.getEntryById('parents','f134ae10-e3d9-11e8-8982-5fccabf17114')
+
+    // why does this change the actual state??
+    newLists[listType][newEntryInput.id] = newEntryInput;
+
+    // this.setState({
+    //   lists: newLists,
+    // });
+  }
+
+  addToDisplayList(listType, newEntryObj, replace) {
+    if (!this.state.lists[listType][newEntryObj.id]) {
+      console.warn(`adding ${newEntryObj} to ${listType} list, but also local list because it was not there`);
+      this.addToLocalList(listType, newEntryObj);
+    }
+    let newLists = Object.assign({}, this.state.displayLists);
+    for (let prop in newEntryObj) {
+      let val = newEntryObj[prop];
+      // check if it's a stringified array
+      if (val[0] === '[') {
+        // make it a real one
+        val = val.slice(1, val.length - 1);
+        val = val.split(',');
+      } else if (val.length === 0) {
+        val = [];
+      }
+      newEntryObj[prop] = val;
+    }
+    if (replace) {
+      newLists[listType] = {};
+    }
+    newLists[listType][newEntryObj.id] = newEntryObj;
+    this.setState({
+      displayLists: newLists,
+    });
+  }
+
+  componentDidMount() {
+
   }
   componentWillUnmount() { }
   UNSAFE_componentWillMount() { }
@@ -311,16 +287,27 @@ class App extends React.Component {
     });
   }
 
-  handleSubmitSearch(event, searchTerm, searchList) {
+  handleSubmitSearch(event, searchList) {
     event.preventDefault();
-    searchTerm = searchTerm.split(' ');
-    if (searchList === 'parents') {
-      this.getEntryByLastName(searchList, searchTerm[0]);
-    } else if (searchList === 'pets') {
-      this.getEntryByPetName(searchList, searchTerm[0]);
-    } else if (searchList === 'appointments') {
-      // stuff
+    let searchTerm = event.target[0].value.split(' ');
+    let param;
+    let searching;
+    if (searchList !== 'appointments') {
+      param = sectionSearchParams[searchList];
+      searching = searchTerm[0];
+    } else {
+      // must look up parent/pet names for ID to search appointments with!
+      param = 'id';
+      searching = 'oldApptUniqueId';
     }
+    getListingByParam(searchList, param, searching).then((response) => {
+      if (typeof response.data !== 'object') {
+        response.data = {};
+      }
+      // this.addToDisplayList(searchList, response.data, true) // to only show the result
+      this.addToDisplayList(searchList, response.data);
+      calls++;
+    });
   }
 
   handleEntryFormRequest(type) {
@@ -336,7 +323,7 @@ class App extends React.Component {
 
   handleSwitchSectionView(oldSection) {
     this.setState({
-      lastSectionSelected: oldSection
+      lastSectionSelected: oldSection,
     });
   }
 
@@ -370,7 +357,8 @@ class App extends React.Component {
           onSwitchSectionView={this.handleSwitchSectionView}
           printEntryLink={this.printEntryLink}
           menuSymbol={headerMenuSymbol}
-          lists={this.state.lists} />
+          lists={this.state.lists}
+          callCount={calls} />
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
@@ -378,6 +366,7 @@ class App extends React.Component {
               lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
+              displayList={this.state.displayLists.parents}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -386,6 +375,7 @@ class App extends React.Component {
               lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
+              displayList={this.state.displayLists.pets}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -394,6 +384,7 @@ class App extends React.Component {
               lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
+              displayList={this.state.displayLists.appointments}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -402,6 +393,7 @@ class App extends React.Component {
               lastSectionSelected={this.state.lastSectionSelected}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
+              displayList={this.state.displayLists.employees}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
