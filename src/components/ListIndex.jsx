@@ -94,14 +94,16 @@ class ListIndex extends React.Component {
   }
 
   slideIn(speed, delay) {
-    document.getElementById('main-list').style.transition = 'none';
-    document.getElementById('main-list').style.transform = 'translateX(20vw)';
-    document.getElementById('main-list').style.opacity = '0';
     if (document.getElementById('main-list')) {
+      document.getElementById('main-list').style.transition = 'none';
+      document.getElementById('main-list').style.transform = 'translateX(20vw)';
+      document.getElementById('main-list').style.opacity = '0';
       setTimeout(() => {
-        document.getElementById('main-list').style.transition = `all ${speed}ms ease`;
-        document.getElementById('main-list').style.transform = 'translateX(0)';
-        document.getElementById('main-list').style.opacity = '1';
+        if (document.getElementById('main-list')) {
+          document.getElementById('main-list').style.transition = `all ${speed}ms ease`;
+          document.getElementById('main-list').style.transform = 'translateX(0)';
+          document.getElementById('main-list').style.opacity = '1';
+        }
       }, delay);
     }
   }
