@@ -14,8 +14,35 @@ body {
 }
 a {
   text-decoration: none;
-  color: #eee
+  color: #eee;
+  outline: none;
+  border: none;
 }
 ul {
   list-style-type: square
+}
+input[type=radio] {
+  margin: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+}
+button, select {
+  cursor: pointer;
+}
+.material-icons {
+  font-size: 1.5rem;
+}
+.mainMenuItem {
+  background-color: transparent;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  padding-right: 0.75rem;
+}
+#no-result-message {
+  margin-top: 2rem;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-size: 2rem;
 }
