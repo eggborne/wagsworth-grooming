@@ -17,13 +17,17 @@ function EmployeeCard(props) {
       `}</style>
       <h2>{obj.firstName} {obj.lastName}</h2>
       <h3>{obj.role}</h3>
-      <h3>{obj.phoneNumbers}</h3>
+      <ul>
+        {obj.phoneNumbers.map((note, index) =>
+          <li key={index}>{note}</li>
+        )}
+      </ul>
       <h3>{obj.email}</h3>
       <h3>Schedule: {obj.schedule}</h3>
       <h3>Appointments: </h3>
       <ul>
         {obj.appointments.map((appt, index) =>
-          <li key={index}><big><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',obj.appointments[index])}</a></big></li>
+          <li key={index}><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',obj.appointments[index])}</a></li>
         )}
       </ul>
       <h3>Notes:</h3>
