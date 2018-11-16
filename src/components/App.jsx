@@ -24,6 +24,19 @@ const getListingByParam = (listType, paramName, param) =>
     }
   });
 
+const getFullList = (listType, orderBy) =>
+  axios({
+    method: 'get',
+    url: 'https://www.eggborne.com/scripts/getlists.php',
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded',
+    },
+    params: {
+      listType: listType,
+      orderBy: orderBy,
+    }
+  });
+
 const entryAttributes = {
   pets: [
     'name',
@@ -176,32 +189,16 @@ class App extends React.Component {
     }
   }
 
-  getList(event, listType, start, limit) {
+  getList(event, listType) {
     if (event) {
       event.preventDefault();
     }
-    new Promise(
-      (resolve) => {
-        $.ajax({
-          type: 'get',
-          url: 'https://www.eggborne.com/scripts/getlists.php',
-          data: {
-            listType: listType,
-            start: start,
-            limit: limit
-          },
-          success: (response) => {
-            let newEntryArray = JSON.parse(response);
-            resolve([listType, newEntryArray]);
-          }
-        });
-      }
-    ).then((val) => {
-      this.addToLocalList(val[0], val[1]);
-    }).catch(() => {
-
+    getFullList(listType, 'dateCreated').then((response) => {
+      response.data.map((resp) => {
+        this.addToDisplayList(listType, resp);
+      });
+      calls++;
     });
-    // return promise;
   }
 
   addToLocalList(listType, newEntryInput) {
