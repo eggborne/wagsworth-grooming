@@ -221,7 +221,6 @@ class App extends React.Component {
     }
     // record entry as id:entry
 
-
     // why does this change the actual state??
     newLists[listType][newEntryInput.id] = newEntryInput;
 
@@ -310,7 +309,8 @@ class App extends React.Component {
     });
   }
 
-  handleEntryFormRequest(type) {
+  handleEntryFormRequest(event, type) {
+    event.preventDefault();
     this.setState({
       newFormRequested: type
     });
