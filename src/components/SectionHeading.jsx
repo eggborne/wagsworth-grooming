@@ -110,7 +110,7 @@ function SectionHeading(props) {
             </div>
           </div>
           <div id='btns'>
-            <button onClick={() => props.onRequestNewEntryForm(props.type)}><i className='material-icons'>{addIcon}</i></button>
+            <button onClick={() => props.onRequestNewEntryForm(event, props.type)}><i className='material-icons'>{addIcon}</i></button>
             {/* <button onClick={() => props.onClickToUpdateList(props.type)}><i className='material-icons'>refresh</i></button> */}
           </div>
         </div>
