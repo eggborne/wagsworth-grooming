@@ -7,20 +7,47 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: '',
       searchList: null,
     };
 
     this.changeSearchList = this.changeSearchList.bind(this);
-    this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
     this.toggleMenuItemOn = this.toggleMenuItemOn.bind(this);
     this.handleSearchFocus = this.handleSearchFocus.bind(this);
     this.handleHomeClick = this.handleHomeClick.bind(this);
-
   }
 
   componentDidMount() {
 
+  }
+
+  getAutosuggestList(currentSearchList) {
+    let optionsList = [];
+    if (currentSearchList === 'parents') {
+      let parentList = Object.entries(this.props.lists[currentSearchList]);
+      parentList.map((parent) => {
+        optionsList.push(`${parent[1].lastName}, ${parent[1].firstNames.join(' & ')}`);
+      });
+    } else if (currentSearchList === 'pets') {
+      let petList = Object.entries(this.props.lists[currentSearchList]);
+      petList.map((pet) => {
+        let petName = pet[1].name;
+        let petLastName = this.props.printEntryLink('parents', pet[1].parent, true);
+        let petBreed = pet[1].breed;
+        optionsList.push(`${petName} ${petLastName} - ${petBreed.join(' / ')}`);
+      });
+    } else if (currentSearchList === 'appointments') {
+      // let apptList = Object.entries(this.props.lists[currentSearchList]);
+      // apptList.map((appt) => {
+      //   let apptDate = appt[1].date;
+      //   let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
+      //   let apptServices = appt[1].services.join(', ');
+      //   optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
+      // });
+    } else if (currentSearchList === 'splashPage') {
+      // shouldn't be done here
+      document.getElementById('search-input').placeholder = 'Search...';
+    }
+    return optionsList;
   }
 
   highlightSection(section) {
@@ -37,6 +64,8 @@ class Header extends React.Component {
   }
 
   changeSearchList(newList) {
+    // tell App.jsx what the previous section was
+    this.props.onSwitchSectionView(this.state.searchList, newList);
     this.setState({
       searchList: newList
     });
@@ -46,8 +75,6 @@ class Header extends React.Component {
         searchType.checked = true;
       }
     });
-    // tell App.jsx what the previous section was
-    this.props.onSwitchSectionView(this.state.searchList);
     this.setState({
       searchList: newList
     });
@@ -60,6 +87,7 @@ class Header extends React.Component {
   }
 
   toggleMenuItemOn(newItem, noHamburger) {
+    
     Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem) => {
       if (menuItem.id === newItem) {
         menuItem.style.backgroundColor = '#222';
@@ -67,37 +95,31 @@ class Header extends React.Component {
         menuItem.style.backgroundColor = 'transparent';
       }
     });
-    let newList = newItem.replace('MenuArea', 's');
     // trigger App.handleSwitchSectionView to record last selected section
-    this.props.onSwitchSectionView(this.state.searchList);
-    this.setState({
-      searchList: newList
-    });
-    this.highlightSection(newList);
-    document.getElementById('hamburger-container').style.opacity = 0;
-    if (!noHamburger) {
-      setTimeout(() => {
-        this.props.onClickHamburger(false, newList, true);
-      }, 200);
-    }
-    if (newList) {
-      document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
-    } else {
-      document.getElementById('search-input').placeholder = 'Search...';
-    }
-  }
+    let newList = newItem.replace('MenuArea', 's');
 
-  handleSearchTermChange() {
-    let newTerm = this.state.searchTerm;
-    let stroke = event.data;
-    if (!stroke) {
-      newTerm = newTerm.slice(0, newTerm.length - 1);
-    } else {
-      newTerm += stroke;
+    if (!noHamburger) {
+      // setTimeout(() => {
+      //   this.props.onClickHamburger(false, newList, true);
+      // }, 200);
     }
-    this.setState({
-      searchTerm: newTerm
-    });
+
+
+    this.changeSearchList(newList);
+
+
+    // this.props.onSwitchSectionView(this.state.searchList, newList);
+    // this.setState({
+    //   searchList: newList
+    // });
+    // this.highlightSection(newList);
+    // document.getElementById('hamburger-container').style.opacity = 0;
+    
+    // if (newList) {
+    //   document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
+    // } else {
+    //   document.getElementById('search-input').placeholder = 'Search...';
+    // }
   }
 
   handleHomeClick() {
@@ -115,7 +137,6 @@ class Header extends React.Component {
     let currentSearchList = this.state.searchList;
     let menuVis;
     let searchVis;
-    let optionsList = [];
     if (this.props.menuSymbol === 'menu') {
       menuVis = 'none';
     } else {
@@ -127,30 +148,7 @@ class Header extends React.Component {
       searchVis = 'block';
     }
 
-    // fill autosuggest list
-    if (currentSearchList === 'parents') {
-      let parentList = Object.entries(this.props.lists[currentSearchList]);
-      parentList.map((parent) => {
-        optionsList.push(`${parent[1].lastName}, ${parent[1].firstNames.join(' & ')}`);
-      });
-    } else if (currentSearchList === 'pets') {
-      let petList = Object.entries(this.props.lists[currentSearchList]);
-      petList.map((pet) => {
-        let petName = pet[1].name;
-        let petLastName = this.props.printEntryLink('parents', pet[1].parent, true);
-        optionsList.push(`${petName} ${petLastName}`);
-      });
-    } else if (currentSearchList === 'appointments') {
-      let apptList = Object.entries(this.props.lists[currentSearchList]);
-      apptList.map((appt) => {
-        let apptDate = appt[1].date;
-        let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
-        let apptServices = appt[1].services.join(', ');
-        optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
-      });
-    } else if (currentSearchList === 'splashPage') {
-      document.getElementById('search-input').placeholder = 'Search...';
-    }
+    let optionsList = this.getAutosuggestList(currentSearchList);
 
     let suggestOptions =
       optionsList.map((optionString, i) =>
@@ -160,9 +158,7 @@ class Header extends React.Component {
     return (
       <div id="header">
         <style jsx>{`
-          .material-icons {
-            font-size: 1.5rem;
-          }
+          
           #hamburger-icon {
             font-size:2.5rem;
             align-self: center;
@@ -174,14 +170,6 @@ class Header extends React.Component {
             align-items: center;
             justify-content: space-between;
           }
-          .mainMenuItem {
-            background-color: transparent;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            padding-right: 0.75rem;
-            height: 25%;
-            // transition: background 300ms ease;
-          }
           #hamburger {
             text-align: center;
             width: 18vmin;
@@ -189,6 +177,7 @@ class Header extends React.Component {
             background-color: #191919;
             display: inline-flex;
             justify-content: center;
+            cursor: pointer;
           }
           #header {
             background-image: linear-gradient(var(--darkest) 8rem, var(--mainBg));
@@ -266,22 +255,20 @@ class Header extends React.Component {
             transition: all 400ms ease;
             padding: 0.5rem;
           }
+          #parent-tab {
+            background-color: var(--dark);
+          }
           input[type=radio] {
-            margin: 0;
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: 0.25rem;
             display: none;
           }
         `}</style>
-
         <div id='top-row'>
           <div onClick={this.handleHomeClick}>
             <Link to="/">
               <div id="logo">
                 {this.props.displayTitle}
               </div>
-              <div className='tiny'>Administrative Portal v0.1</div>
+              <div className='tiny'>Administrative Portal v0.1 | <strong>DB calls: <big>{this.props.callCount}</big></strong></div>
             </Link>
           </div>
           <div onClick={() => this.props.onClickHamburger(event, this.state.searchList)} id='hamburger'>
@@ -295,13 +282,12 @@ class Header extends React.Component {
             <div className='mainMenuItem' id='petMenuArea' onClick={() => this.toggleMenuItemOn('petMenuArea')}><Link to="/pets">Pets</Link></div>
             <div className='mainMenuItem' id='appointmentMenuArea' onClick={() => this.toggleMenuItemOn('appointmentMenuArea')}><Link to="/appointments">Appointments</Link></div>
           </div>
-
           <div id="admin-search-form">
-            <form onSubmit={() => this.props.onSubmitSearch(event, this.state.searchTerm.value, this.state.searchList)}>
+            <form onSubmit={(event) => this.props.onSubmitSearch(event, this.state.searchList)}>
               <div id="search-area">
                 <input
+                  name='search-bar'
                   onFocus={this.handleSearchFocus}
-                  onChange={this.handleSearchTermChange}
                   list='found-entries'
                   autoComplete='off'
                   type='text'
@@ -310,10 +296,10 @@ class Header extends React.Component {
                 <datalist id='found-entries'>
                   {suggestOptions}
                 </datalist>
-                <button id="search-button" type="submit"><i className="material-icons">search</i></button>
+                <button name="submit-button" id="search-button" type="submit"><i className="material-icons">search</i></button>
               </div>
               <div id='search-options'>
-                <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div><Link to="/parents">Parents</Link></div></div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div id='parent-tab'><Link to="/parents">Parents</Link></div></div>
                 <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input><div><Link to="/pets">Pets</Link></div></div>
                 <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input><div><Link to="/appointments">Appointments</Link></div></div>
               </div>
@@ -332,7 +318,8 @@ Header.propTypes = {
   onSubmitSearch: PropTypes.func,
   onSwitchSectionView: PropTypes.func,
   printEntryLink: PropTypes.func,
-  lists: PropTypes.object
+  lists: PropTypes.object,
+  callCount: PropTypes.number
 };
 
 export default Header;
