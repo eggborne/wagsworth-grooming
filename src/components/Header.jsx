@@ -87,7 +87,7 @@ class Header extends React.Component {
   }
 
   toggleMenuItemOn(newItem, noHamburger) {
-    
+
     Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem) => {
       if (menuItem.id === newItem) {
         menuItem.style.backgroundColor = '#222';
@@ -114,7 +114,7 @@ class Header extends React.Component {
     // });
     // this.highlightSection(newList);
     // document.getElementById('hamburger-container').style.opacity = 0;
-    
+
     // if (newList) {
     //   document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
     // } else {
@@ -137,10 +137,13 @@ class Header extends React.Component {
     let currentSearchList = this.state.searchList;
     let menuVis;
     let searchVis;
+    let hambRadius;
     if (this.props.menuSymbol === 'menu') {
       menuVis = 'none';
+      hambRadius = '0.5rem';
     } else {
       menuVis = 'block';
+      hambRadius = '0.5rem 0.5rem 0 0';
     }
     if (currentSearchList === 'employees') {
       searchVis = 'none';
@@ -158,108 +161,14 @@ class Header extends React.Component {
     return (
       <div id="header">
         <style jsx>{`
-          
-          #hamburger-icon {
-            font-size:2.5rem;
-            align-self: center;
-          }
-          #top-row {
-            background-color: var(--darkest);
-            width:100%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-between;
+          #hamburger-container {       
+            display: ${menuVis};
           }
           #hamburger {
-            text-align: center;
-            width: 18vmin;
-            height: 18vmin;
-            background-color: #191919;
-            display: inline-flex;
-            justify-content: center;
-            cursor: pointer;
-          }
-          #header {
-            background-image: linear-gradient(var(--darkest) 8rem, var(--mainBg));
-            color: var(--mainBg);
-            font-family: Tangerine; cursive;
-            font-size: 2.5rem;
-            padding: 3% 3% 0 3%;
-            display: flex;
-            flex-direction: column;
+            border-radius: ${hambRadius};
           }
           #admin-search-form {
-            font-family: Playfair Display; serif;
-            width: 100%;
-            color: var(--darkAccent);
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
             display: ${searchVis};
-          }
-          #hamburger-container {
-            box-sizing:border-box;
-            font-size: 2rem;
-            font-family: Tangerine; cursive;
-            text-align: right;
-            width: 100%;
-            padding: 2%;
-            background-color: rgba(25, 25, 25, 1) ;
-            display: ${menuVis};
-            transition: all 400ms ease;
-            opacity: 0;
-          }
-          .tiny {
-            text-align: right;
-            font-size: 0.6rem;
-            font-family: sans-serif;
-            margin-top: 0.25rem;
-          }
-          #search-area {
-            width: 100%;
-            margin-top: 0.5rem;
-            margin-bottom: 0;
-            display: inline-flex;
-            align-items: stretch;
-            justify-content: space-between;
-          }
-          #search-input {
-            width:75%;
-            font-size: 1.25rem;
-            padding-left: 0.5rem;
-            border-radius: 2px;
-          }
-          #search-button {
-            width: 20%;
-            border-radius: 2px;
-            padding: 0.5rem;
-            font-size: 1rem;
-          }
-          #search-options {
-            width:90%;
-            max-width: 300px;
-            margin-top: 0.5rem;
-            display: inline-flex;
-            justify-content: flex-start;
-            justify-items: center;
-            align-items: center;
-          }
-          .search-list-tab {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-          }
-          .search-list-tab > div {
-            background-color: var(--light);
-            border-radius: 0.5rem 0.5rem 0rem 0rem;
-            font-family: Helvetica;
-            transition: all 400ms ease;
-            padding: 0.5rem;
-          }
-          #parent-tab {
-            background-color: var(--dark);
-          }
-          input[type=radio] {
-            display: none;
           }
         `}</style>
         <div id='top-row'>
@@ -268,7 +177,7 @@ class Header extends React.Component {
               <div id="logo">
                 {this.props.displayTitle}
               </div>
-              <div className='tiny'>Administrative Portal v0.1 | <strong>DB calls: <big>{this.props.callCount}</big></strong></div>
+              <div className='tiny'>Administrative Portal v0.1 | <strong>DB calls: <big id='call-count'>{this.props.callCount}</big></strong></div>
             </Link>
           </div>
           <div onClick={() => this.props.onClickHamburger(event, this.state.searchList)} id='hamburger'>
@@ -299,9 +208,24 @@ class Header extends React.Component {
                 <button name="submit-button" id="search-button" type="submit"><i className="material-icons">search</i></button>
               </div>
               <div id='search-options'>
-                <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}><input defaultChecked type='radio' name='search-type' value='parents'></input><div id='parent-tab'><Link to="/parents">Parents</Link></div></div>
-                <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}><input type='radio' name='search-type' value='pets'></input><div><Link to="/pets">Pets</Link></div></div>
-                <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}><input type='radio' name='search-type' value='appointments'></input><div><Link to="/appointments">Appointments</Link></div></div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('parents')}>
+                  <input defaultChecked type='radio' name='search-type' value='parents'></input>
+                  <div>
+                    <Link to="/parents"><div className='tab-contents'><i className='material-icons'>person</i> Parents</div></Link>
+                  </div>
+                </div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('pets')}>
+                  <input type='radio' name='search-type' value='pets'></input>
+                  <div>
+                    <Link to="/pets"><div className='tab-contents'><i className='material-icons'>pets</i> Pets</div></Link>
+                  </div>
+                </div>
+                <div className='search-list-tab' onClick={() => this.changeSearchList('appointments')}>
+                  <input type='radio' name='search-type' value='appointments'></input>
+                  <div>
+                    <Link to="/appointments"><div className='tab-contents'><i className='material-icons'>event</i> Appointments</div></Link>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
