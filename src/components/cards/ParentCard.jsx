@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-var moment = require('moment');
+import CardFooter from './CardFooter';
 
 function ParentCard(props) {
   if (!props.entryObject.id) {
@@ -9,7 +9,6 @@ function ParentCard(props) {
     );
   } else {
     let obj = props.entryObject;
-    let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
     return (
       <div style={props.style.div}>
         <style jsx>{`
@@ -19,52 +18,85 @@ function ParentCard(props) {
       big {
         font-weight: bold;
       }
+      .smaller {
+        color: var(--dark);
+        font-size: 1rem;
+      }
       a: {
         color: blue
       }
       a:visited {
         color: blue;
       }
+      h4 {
+        color: var(--dark);
+      }
     `}</style>
-        <h2>{obj.lastName}</h2>
-        <h3>{obj.firstNames.join(' & ')}</h3>
-        <h3>Phone:</h3>
-        <ul>
-          {obj.phoneNumbers.map((number, i) =>
-            <li key={i}>{number}</li>)}
-        </ul>
-        <h3>Pets:</h3>
-        <ul>
-          {obj.petIds.map((pet, index) =>
-            <li key={index}><big><a href={'./#/pets'}>{props.printAssociatedEntryLink('pets', pet)}</a></big></li>
-          )}
-        </ul>
-        <h3>Appointments: </h3>
-        <ul>
-          {obj.appointments.map((appt, index) =>
-            <li key={index}><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',appt)}</a></li>
-          )}
-        </ul>
-        <h3>Notes:</h3>
+        <div className='card-title'>
+          <div>{obj.lastName}</div><div className='smaller'>{obj.firstNames.join(' & ')}</div>
+        </div>
+        <div className='card-panel-row'>
+          <div className='info-area'>
+            <i className='material-icons panel-icon'>phone</i>
+            <ul className='panel-ul'>
+              {obj.phoneNumbers.map((number, i) =>
+                <li key={i}>{number}</li>)}
+            </ul>
+          </div>
+          <div className='info-area'>
+            <i className='material-icons panel-icon'>home</i>
+            <ul className='panel-ul'>
+              <li key={'01'}>{obj.address[0]}</li>
+              <li key={'02'}>{obj.address[1]}, {obj.address[2]}</li>
+              <li key={'03'}>{obj.address[3]}</li>
+            </ul>
+          </div>
+        </div>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>pets</i> <div>Pets</div></div>
+          <div className='list-body'>
+            <ul>
+              {obj.petIds.map((pet, index) =>
+                <li key={index}><big><a href={'./#/pets'}>{props.printAssociatedEntryLink('pets', pet)}</a></big></li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>event</i> <div>Appointments</div></div>
+          <div className='list-body'>
+            <ul>
+              {obj.appointments.map((appt, index) =>
+                <li key={index}><big><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments', appt)}</a></big></li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>notes</i> <div>Notes</div></div>
+          <div className='list-body'>
+            <ul className='square-ul'>
+              {obj.notes.map((note, index) =>
+                <li key={index}>{note}</li>
+              )}
+            </ul>
+          </div>
+        </div>
+
+
+
+        {/* <h4>Notes:</h4>
         <ul>
           {obj.notes.map((note, index) =>
             <li key={index}>{note}</li>
           )}
-        </ul>
-        <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
-        <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
-        <small style={props.style.small}>Unique ID: {obj.id}</small>
+        </ul> */}
+        <CardFooter creationDate={obj.dateCreated}
+          entryId={obj.id} />
       </div>
     );
   }
 
-}
-
-function displayTimeCreatedInfo(dateCreated) {
-  return {
-    dateCreated: moment(dateCreated).format('MMMM Do YYYY'),
-    timeSinceCreated: moment(dateCreated).from(moment(), false)
-  };
 }
 
 ParentCard.propTypes = {
