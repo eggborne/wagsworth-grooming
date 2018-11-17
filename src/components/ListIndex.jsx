@@ -7,20 +7,6 @@ import EmployeeCard from './cards/EmployeeCard';
 import SplashPage from './SplashPage';
 import PropTypes from 'prop-types';
 // var moment = require('moment');
-import axios from 'axios';
-
-
-const getListingByParam = (listType, paramName, param) => axios({
-  method: 'get',
-  url: `https://www.eggborne.com/scripts/getentryby${paramName.toLowerCase()}.php`,
-  headers: {
-    'Content-type': 'application/x-www-form-urlencoded',
-  },
-  params: {
-    listType: listType,
-    [paramName]: param,
-  }
-});
 
 const componentNames = {
   splashPage: SplashPage,
@@ -35,7 +21,7 @@ const cardStyle = {
     padding: '2.5%',
     backgroundColor: 'var(--lightBg)',
     borderRadius: '0.5rem',
-    border: '1px solid grey',
+    border: '1px solid gray',
     marginTop: '2%',
     marginBottom: '2%'
   },
@@ -89,10 +75,6 @@ class ListIndex extends React.Component {
     }
   }
 
-  getListing(listType, paramName, param) {
-    return getListingByParam(listType, paramName, param);
-  }
-
   slideIn(speed, delay) {
     if (document.getElementById('main-list')) {
       document.getElementById('main-list').style.transition = 'none';
@@ -113,9 +95,9 @@ class ListIndex extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.section !== this.props.lastSectionSelected) {
-      this.slideIn(200, 50);
-    }
+    // if (this.props.section !== this.props.lastSectionSelected) {
+    //   this.slideIn(200, 50);
+    // }
   }
 
   convertTime(military) {
@@ -196,6 +178,7 @@ class ListIndex extends React.Component {
         secHeading = <div></div>;
       } else {
         secHeading = <SectionHeading type={sec}
+          entryAttributes={this.props.entryAttributes}
           onRequestNewEntryForm={this.props.onRequestNewEntryForm}
           onClickToUpdateList={this.props.handleUpdateListFromDB}
           onChangeSortBy={this.handleChangeSortBy}
@@ -203,38 +186,22 @@ class ListIndex extends React.Component {
       }
       window.scrollTo(0, 0);
       let ComponentName = componentNames[sec];
-      let listObj = this.props.lists[sec];
-      let entriesToDisplay;
-      if (!listObj) {
-        entriesToDisplay = [];
-      } else {
-        if (this.props.displayList) {
-          entriesToDisplay = Object.values(this.props.displayList);
-        } else {
-          entriesToDisplay = Object.values(listObj);
-        }
-        // appointments only have petIds, so need to find those pets' parentIds!
-        if (this.props.section === 'appointments') {
-          entriesToDisplay.map((entry) => {
-            // if the appointment's pet is in the local list...
-            if (this.props.lists.pets[entry.petId]) {
-              // set appointment.parentId to that pet's parentId
-              let pet = this.props.lists.pets[entry.petId];
-              entry.parentId = pet.parent;
-            }
-          });
-        }
+      let entriesToDisplay = Object.values(this.props.displayList);
+      // appointments only have petIds, so need to find those pets' parentIds!
+      if (this.props.section === 'appointments') {
+        entriesToDisplay.map((entry) => {
+          // if the appointment's pet is in the local list...
+          if (this.props.lists.pets[entry.petId]) {
+            // set appointment.parentId to that pet's parentId
+            let pet = this.props.lists.pets[entry.petId];
+            entry.parentId = pet.parent;
+          }
+        });
       }
       return (
         <div>
-          <style jsx>{`
-            #main-list {
-              // opacity: 0;
-              // transition: all 600ms ease;
-            }
-          `}</style>
           {secHeading}
-          <div id='main-list'>
+          <div>
             {entriesToDisplay.map((entry) =>
               <ComponentName key={entry.id}
                 style={cardStyle}
@@ -253,6 +220,7 @@ ListIndex.propTypes = {
   lists: PropTypes.object,
   displayList: PropTypes.object,
   section: PropTypes.string,
+  entryAttributes: PropTypes.object,
   lastSectionSelected: PropTypes.string,
   handleUpdateListFromDB: PropTypes.func,
   printEntryLink: PropTypes.func,
