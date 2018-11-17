@@ -37,89 +37,55 @@ const getFullList = (listType, orderBy) =>
     }
   });
 
-const entryAttributes = {
-  pets: [
-    'name',
-    'breed',
-    'sex',
-    'color',
-    'weight',
-    'dob',
-    'vaccinationDate',
-    'vaccinationClinic',
-    'veterinarian',
-    'parent',
-    'notes',
-  ],
-  parents: [
-    'lastName',
-    'firstNames',
-    'phoneNumbers',
-    'email',
-    'notes',
-    'petIds',
-    'upcomingApptIds',
-    'pastApptIds',
-  ],
-  appointments: [
-    'employeeId',
-    'petId',
-    'date',
-    'startTime',
-    'services',
-    'notes',
-  ],
-  employees: [
-    'role',
-    'firstName',
-    'lastName',
-    'phoneNumbers',
-    'email',
-    'upcomingApptIds',
-    'pastApptIds',
-    'schedule',
-    'notes'
-  ]
-};
 
-const sectionSearchParams = {
-  parents: 'lastName',
-  pets: 'name',
-  appointments: 'lastName'
+const entryAttributes = {
+  parents: {
+    dbAttributes: ['lastName', 'firstNames', 'phoneNumbers', 'email', 'notes', 'petIds', 'upcomingApptIds', 'pastApptIds',],
+    miniDisplayString: (selfObj) => { return selfObj.lastName; },
+    sortOptions: ['Name', 'Last Appt', 'Created'],
+    searchParams: ['lastName']
+  },
+  pets: {
+    dbAttributes: ['name', 'breed', 'sex', 'color', 'weight', 'dob', 'vaccinationDate', 'vaccinationClinic', 'veterinarian', 'parent', 'notes',],
+    miniDisplayString: (selfObj) => { return selfObj.name; },
+    sortOptions: ['Name', 'Parent', 'Created'],
+    searchParams: ['name']
+  },
+  appointments: {
+    dbAttributes: ['employeeId', 'petId', 'date', 'startTime', 'services', 'notes',],
+    miniDisplayString: (selfObj) => { return selfObj.date; },
+    sortOptions: ['Date', 'Parent', 'Pet'],
+    searchParams: ['name', 'lastName']
+  },
+  employees: {
+    dbAttributes: ['role', 'firstName', 'lastName', 'phoneNumbers', 'email', 'upcomingApptIds', 'pastApptIds', 'schedule', 'notes'],
+    miniDisplayString: (selfObj) => { return `${selfObj.firstName} ${selfObj.lastName[0].toUpperCase()}.`; }
+  }
 };
 
 let shorterDimension = null;
-if (window.innerWidth < window.innerHeight) {
-  shorterDimension = window.innerWidth;
-} else {
-  shorterDimension = window.innerHeight;
-}
+window.innerWidth < window.innerHeight
+  ? shorterDimension = window.innerWidth
+  : shorterDimension = window.innerHeight;
+
+const heightAdjusted = {
+  minHeight: window.innerHeight - (shorterDimension * 0.15)
+};
 const displayTitle = 'Wagsworth Grooming Co.';
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       newFormRequested: null,
       menuSummoned: false,
       lastSectionSelected: null,
-      lists: {
-        employees: {},
-        parents: {},
-        pets: {},
-        appointments: {}
-      },
-      displayLists: {
-        employees: {},
-        parents: {},
-        pets: {},
-        appointments: {}
-      }
+      lists: { employees: {}, parents: {}, pets: {}, appointments: {} },
+      displayLists: { employees: {}, parents: {}, pets: {}, appointments: {} }
     };
-
+    this.arrayFromMultiObjectString = this.arrayFromMultiObjectString.bind(this);
     this.printEntryLink = this.printEntryLink.bind(this);
-    this.addToLocalList = this.addToLocalList.bind(this);
+    this.addToLocalMasterList = this.addToLocalMasterList.bind(this);
     this.addToDisplayList = this.addToDisplayList.bind(this);
     this.saveNewEntryToDatabase = this.saveNewEntryToDatabase.bind(this);
     this.getList = this.getList.bind(this);
@@ -132,13 +98,15 @@ class App extends React.Component {
 
   saveNewEntryToDatabase(tableName, newEntryObj) {
 
+    // change this to use axios
+
     let dataObj = {
       tableName: tableName,
       uniqueId: uuid(),
       dateCreated: moment().format()
     };
 
-    entryAttributes[tableName].forEach((dataField) => {
+    entryAttributes[tableName].dbAttributes.forEach((dataField) => {
       dataObj[[dataField]] = newEntryObj[dataField];
     });
 
@@ -156,53 +124,61 @@ class App extends React.Component {
 
   }
 
-  printEntryLink(type, key, end) {
+  printEntryLink(type, key) {
+
+    // calls on entries from array an extra time
+    // e.g. [Bobid, MegId] calls for Bob twice
+
     let output;
-    if (key && this.state.lists[type][key]) {
-      let entryObj = this.state.lists[type][key];
-      if (type === 'employees') {
-        output = `${entryObj.firstName} ${entryObj.lastName}`;
-      } else if (type === 'pets') {
-        output = `${entryObj.name} ${this.printEntryLink('parents', entryObj.parent, true)}`;
-      } else if (type === 'parents') {
-        output = `${entryObj.lastName}`;
-      } else if (type === 'appointments') {
-        output = `${entryObj.date} - ${this.printEntryLink('pets', entryObj.petId, true)}`;
-      }
+    if (!key) {
+      // DB has empty field
+      return 'no data passed';
     } else {
-      if (key) {
-        if (!end) {
-          getListingByParam(type, 'id', key).then((response) => {
-            this.addToDisplayList(type, response.data);
-            calls++;
-          });
-          return;
-        }
+      // check localMasterList for associated entry
+      if (!this.state.lists[type][key]) {
+        // get it from DB
+        getListingByParam(type, 'id', key).then((response) => {
+          if (!this.state.lists[type][response.id]) {
+            // add it to localMasterList
+            this.addToLocalMasterList(type, response.data);
+          }
+          calls++;
+          console.log(`call ${calls} called by printEntryLink for ${type} ${response.data.name} ${response.data.id}`);
+        });
+        return;
       } else {
-        output = 'No id passed';
+        // get it from localMasterList
+        let entryObj = this.state.lists[type][key];
+        output = entryAttributes[type].miniDisplayString(entryObj);
       }
-    }
-    if (output) {
-      return output;
-    } else {
-      return 'loading...';
+
+      if (output) {
+        return output;
+      } else {
+        return 'loading...';
+      }
     }
   }
 
-  getList(event, listType) {
+  getList(event, listType, orderBy) {
     if (event) {
       event.preventDefault();
     }
-    getFullList(listType, 'dateCreated').then((response) => {
+    getFullList(listType, orderBy).then((response) => {
+      let inc = 1;
       response.data.map((resp) => {
-        this.addToDisplayList(listType, resp);
+        setTimeout(() => {
+          this.addToDisplayList(listType, resp);
+        }, inc);
+        inc += 250;
       });
       calls++;
+      console.log(`call ${calls} called by getList for ${listType}`);
     });
   }
 
-  addToLocalList(listType, newEntryInput) {
-    // let newLists = { ...this.state.lists }; // eslint doesn't like it
+  addToLocalMasterList(listType, newEntryInput) {
+    // let newLists = { ...this.state.lists }; // eslint doesn't like this
     let newLists = Object.assign({}, this.state.lists);
     for (let prop in newEntryInput) {
       let val = newEntryInput[prop];
@@ -216,21 +192,13 @@ class App extends React.Component {
       }
       newEntryInput[prop] = val;
     }
-    // record entry as id:entry
-
-    // why does this change the actual state??
     newLists[listType][newEntryInput.id] = newEntryInput;
-
-    // this.setState({
-    //   lists: newLists,
-    // });
+    this.setState({
+      lists: newLists,
+    });
   }
 
   addToDisplayList(listType, newEntryObj, replace) {
-    if (!this.state.lists[listType][newEntryObj.id]) {
-      console.warn(`adding ${newEntryObj} to ${listType} list, but also local list because it was not there`);
-      this.addToLocalList(listType, newEntryObj);
-    }
     let newLists = Object.assign({}, this.state.displayLists);
     for (let prop in newEntryObj) {
       let val = newEntryObj[prop];
@@ -253,16 +221,6 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
-
-  }
-  componentWillUnmount() { }
-  UNSAFE_componentWillMount() { }
-  UNSAFE_componentWillReceiveProps() { }
-  shouldComponentUpdate() { return true; }
-  UNSAFE_componentWillUpdate() { }
-  componentDidUpdate() { }
-
   handleHamburgerClick(event, section, skipFade) {
     if (event) {
       event.preventDefault();
@@ -283,27 +241,157 @@ class App extends React.Component {
     });
   }
 
+  arrayFromMultiObjectString(objectString) {
+    let objectArray = [];
+    let splitArr = objectString.split('}{');
+    splitArr.forEach((apptString, i) => {
+      let fullString;
+      if (i === 0) {
+        // only needs end bracket
+        fullString = `${apptString}}`;
+      } else if (i === splitArr.length - 1) {
+        // only needs start bracket
+        fullString = `{${apptString}`;
+      } else {
+        // needs both brackets
+        fullString = `{${apptString}}`;
+      }
+      objectArray.push(JSON.parse(fullString));
+    });
+    return objectArray;
+  }
+
   handleSubmitSearch(event, searchList) {
     event.preventDefault();
     let searchTerm = event.target[0].value.split(' ');
     let param;
     let searching;
     if (searchList !== 'appointments') {
-      param = sectionSearchParams[searchList];
+      param = entryAttributes[searchList].searchParams[0];
       searching = searchTerm[0];
+      getListingByParam(searchList, param, searching).then((response) => {
+        if (typeof response.data !== 'object') {
+          response.data = {};
+        }
+        // this.addToDisplayList(searchList, response.data, true) // to only show the result
+        this.addToDisplayList(searchList, response.data);
+        calls++;
+      });
     } else {
-      // must look up parent/pet names for ID to search appointments with!
-      param = 'id';
-      searching = 'oldApptUniqueId';
+      // must look up pet/parent names for ID to search appointments with!
+      param = entryAttributes[searchList].searchParams[0];
+      searching = searchTerm[0]; // assumed to be a pet name first
+      getListingByParam('pets', param, searching).then((response) => {
+        return response.data.id;
+      }).then((petId) => {
+        if (!petId) {
+          throw searching;
+        }
+        getListingByParam('appointments', 'petId', petId).then((apptObj) => {
+          if (!apptObj.data) {
+            throw error;
+          }
+          if (typeof apptObj.data !== 'object') {
+            // got multiple results as objs in one string
+            let apptsToAdd = this.arrayFromMultiObjectString(apptObj.data);
+            // clear appt display list
+            let listsCopy = Object.assign({}, this.state.displayLists);
+            listsCopy.appointments = {};
+            this.setState({
+              displayLists: listsCopy
+            });
+            // add new result appts
+            apptsToAdd.map((appt) => {
+              this.addToDisplayList(searchList, appt);
+            });
+          } else {
+            let apptsToAdd = [apptObj.data];
+            apptsToAdd.map((appt) => {
+              this.addToDisplayList(searchList, appt, true);
+            });
+          }
+        }).catch(() => {
+          // search parent last names instead
+          console.warn(`NO APPTS for valid existing pet ${searching} found!! Trying parent ${entryAttributes[searchList].searchParams[1]} instead...`);
+
+          // (check in local first!!)
+          param = entryAttributes[searchList].searchParams[1];
+          getListingByParam('parents', 'lastName', searching).then((response) => {
+            return response.data;
+          }).then((parentObj) => {
+            if (!parentObj) {
+              throw searching;
+            } else {
+              parentObj.petIds = parentObj.petIds.slice(1, parentObj.petIds.length - 1);
+              parentObj.petIds = parentObj.petIds.split(',');
+              parentObj.petIds.map((petId) => {
+                getListingByParam('appointments', 'petId', petId).then((response) => {
+                  if (!response.data) {
+                    throw petId;
+                  } else if (typeof response.data !== 'object') {
+                    response.data = this.arrayFromMultiObjectString(response.data);
+                  } else {
+                    response.data = [response.data];
+                  }
+                  // clear appt display list
+                  let listsCopy = Object.assign({}, this.state.displayLists);
+                  listsCopy.appointments = {};
+                  this.setState({
+                    displayLists: listsCopy
+                  });
+                  // add new result appts
+                  response.data.map((appt) => {
+                    this.addToDisplayList(searchList, appt);
+                  });
+                }).catch((petId) => {
+                  console.warn(`NO APPTS with PETID ${petId} found!!`);
+                });
+              });
+            }
+          }).catch((searching) => {
+            console.warn(`NO PARENT EXISTS ${searching}!!`);
+          });
+        });
+      }).catch((searching) => {
+        console.warn(`NO PET EXISTS ${searching}!! Trying parent ${entryAttributes[searchList].searchParams[1]} instead...`);
+        // try parent lastname instead
+        getListingByParam('parents', 'lastName', searching).then((response) => {
+          return response.data;
+        }).then((parentObj) => {
+          if (!parentObj) {
+            throw searching;
+          } else {
+            parentObj.petIds = parentObj.petIds.slice(1, parentObj.petIds.length - 1);
+            parentObj.petIds = parentObj.petIds.split(',');
+            parentObj.petIds.map((petId) => {
+              getListingByParam('appointments', 'petId', petId).then((response) => {
+                if (!response.data) {
+                  throw petId;
+                } else if (typeof response.data !== 'object') {
+                  response.data = this.arrayFromMultiObjectString(response.data);
+                } else {
+                  response.data = [response.data];
+                }
+                // clear appt display list
+                let listsCopy = Object.assign({}, this.state.displayLists);
+                listsCopy.appointments = {};
+                this.setState({
+                  displayLists: listsCopy
+                });
+                // add new result appts
+                response.data.map((appt) => {
+                  this.addToDisplayList(searchList, appt);
+                });
+              }).catch((petId) => {
+                console.warn(`NO APPTS with PETID ${petId} found!!`);
+              });
+            });
+          }
+        }).catch((searching) => {
+          console.warn(`NO PARENT EXISTS ${searching} (tried after didn't find pet with name ${searching})!!`);
+        });
+      });
     }
-    getListingByParam(searchList, param, searching).then((response) => {
-      if (typeof response.data !== 'object') {
-        response.data = {};
-      }
-      // this.addToDisplayList(searchList, response.data, true) // to only show the result
-      this.addToDisplayList(searchList, response.data);
-      calls++;
-    });
   }
 
   handleEntryFormRequest(event, type) {
@@ -325,9 +413,7 @@ class App extends React.Component {
   }
 
   render() {
-    var heightAdjusted = {
-      minHeight: window.innerHeight - (shorterDimension * 0.15)
-    };
+
     let hamburgerMenu;
     let headerMenuSymbol;
     if (this.state.menuSummoned) {
@@ -337,17 +423,6 @@ class App extends React.Component {
     }
     return (
       <div style={heightAdjusted} id='main'>
-        <style jsx>{`
-          #main {
-            background-color: var(--mainBg);
-            font-family: Playfair Display; serif;
-            position: relative
-          }
-          #padding-container {
-            padding: 3%;
-            padding-top: 0;
-          }
-        `}</style>
         <Header displayTitle={displayTitle}
           onClickHamburger={this.handleHamburgerClick}
           onSubmitSearch={this.handleSubmitSearch}
@@ -364,6 +439,7 @@ class App extends React.Component {
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.parents}
+              entryAttributes={entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -373,6 +449,7 @@ class App extends React.Component {
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.pets}
+              entryAttributes={entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -382,6 +459,7 @@ class App extends React.Component {
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.appointments}
+              entryAttributes={entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
@@ -391,6 +469,7 @@ class App extends React.Component {
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.employees}
+              entryAttributes={entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
