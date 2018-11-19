@@ -16,57 +16,15 @@ const componentNames = {
   employees: EmployeeCard,
 };
 
-const cardStyle = {
-  div: {
-    padding: '2.5%',
-    backgroundColor: 'var(--lightBg)',
-    borderRadius: '0.5rem',
-    border: '1px solid gray',
-    marginTop: '2%',
-    marginBottom: '2%'
-  },
-  small: {
-    fontFamily: 'sans-serif',
-    fontSize: '0.75rem'
-  }
-};
-
-function compareValues(key, order = 'asc') {
-  return function (a, b) {
-    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-      // property doesn't exist on either object
-      return 0;
-    }
-
-    const varA = (typeof a[key] === 'string') ?
-      a[key] : a[key];
-    const varB = (typeof b[key] === 'string') ?
-      b[key] : b[key];
-
-    let comparison = 0;
-    if (varA > varB) {
-      comparison = 1;
-    } else if (varA < varB) {
-      comparison = -1;
-    }
-    return (
-      (order == 'desc') ? (comparison * -1) : comparison
-    );
-  };
-}
-
 class ListIndex extends React.Component {
 
   constructor(props) {
 
     super(props);
     this.state = {
-      sortBy: 'asc',
-    };
 
+    };
     this.slideIn = this.slideIn.bind(this);
-    this.handleChangeSortBy = this.handleChangeSortBy.bind(this);
-    this.handleChangeSortStyle = this.handleChangeSortStyle.bind(this);
   }
 
   componentDidMount() {
@@ -132,43 +90,11 @@ class ListIndex extends React.Component {
     // });
   }
 
-  handleChangeSortBy(event, sortStyle, returnOnly) {
-    if (returnOnly) {
-      let fullArr = Object.values(this.props.lists[this.props.section]);
-      let newArr = [];
-      newArr = fullArr.sort(compareValues('lastName', sortStyle));
-      return newArr;
-    } else {
-      if (event.target.value.toLowerCase() === 'name') {
-        // let fullArr = Object.values(this.props.lists[this.props.section]);
-        // let newArr = [];
-        // must add to prop instead??
-        // newArr = fullArr.sort(compareValues('lastName', this.state.sortBy));
-        this.setState({
-          sortBy: sortStyle,
-        });
-      }
-    }
-  }
-
-  handleChangeSortStyle(event, sortStyle) {
-    Array.from(document.getElementsByName('sort-order')).map((sortRadios) => {
-      if (sortRadios.value === sortStyle) {
-        sortRadios.checked = true;
-      } else {
-        sortRadios.checked = false;
-      }
-    });
-    // must add to prop instead??
-    // let newArr = this.handleChangeSortBy(event, sortStyle, true);
-    this.setState({
-      sortBy: sortStyle,
-    });
-  }
 
   render() {
     let sec = this.props.section;
     let secHeading;
+    let showingEntriesMessage;
     if (sec === 'splashPage') {
       return (
         <SplashPage />
@@ -182,11 +108,16 @@ class ListIndex extends React.Component {
           onRequestNewEntryForm={this.props.onRequestNewEntryForm}
           onClickToUpdateList={this.props.handleUpdateListFromDB}
           onChangeSortBy={this.handleChangeSortBy}
-          onChangeSortStyle={this.handleChangeSortStyle} />;
+          onChangeSortStyle={this.props.onChangeAscOrDesc} />;
       }
       window.scrollTo(0, 0);
       let ComponentName = componentNames[sec];
       let entriesToDisplay = Object.values(this.props.displayList);
+      let totalEntries = Object.values(this.props.lists[this.props.section]);
+
+      if (entriesToDisplay.length) {
+        showingEntriesMessage = <div id='showing-results-message'>Showing {entriesToDisplay.length} of {totalEntries.length} total entries</div>;
+      }
       // appointments only have petIds, so need to find those pets' parentIds!
       if (this.props.section === 'appointments') {
         entriesToDisplay.map((entry) => {
@@ -201,10 +132,10 @@ class ListIndex extends React.Component {
       return (
         <div>
           {secHeading}
+          {showingEntriesMessage}
           <div>
             {entriesToDisplay.map((entry) =>
               <ComponentName key={entry.id}
-                style={cardStyle}
                 entryObject={entry}
                 convertTime={this.convertTime}
                 printAssociatedEntryLink={this.props.printEntryLink} />
@@ -223,6 +154,7 @@ ListIndex.propTypes = {
   entryAttributes: PropTypes.object,
   lastSectionSelected: PropTypes.string,
   handleUpdateListFromDB: PropTypes.func,
+  onChangeAscOrDesc: PropTypes.func,
   printEntryLink: PropTypes.func,
   onRequestNewEntryForm: PropTypes.func,
   onSubmitNewEntryForm: PropTypes.func,
