@@ -95,7 +95,7 @@ class App extends React.Component {
           miniDisplayString: (selfObj) => {
             return [
               `${selfObj.name}`,
-              `${ selfObj.breed.join('/') }`
+              `${selfObj.breed.join('/')}`
             ];
           },
           sortOptions: ['Name', 'Parent', 'Created'],
@@ -139,6 +139,7 @@ class App extends React.Component {
     this.handleSwitchSectionView = this.handleSwitchSectionView.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
+    this.renderRouteJSX = this.renderRouteJSX.bind(this);
   }
 
   handleChangeAscOrDesc(event, sec, newSort) {
@@ -513,6 +514,21 @@ class App extends React.Component {
     });
   }
 
+  renderRouteJSX(routeName, key) {
+    return <Route key={key}
+      path={`/${routeName}`} render={() => <ListIndex section={routeName}
+      lastSectionSelected={this.state.lastSectionSelected}
+      onChangeAscOrDesc={this.handleChangeAscOrDesc}
+      handleUpdateListFromDB={this.getList}
+      lists={this.state.lists}
+      displayList={this.state.displayLists[routeName]}
+      entryAttributes={this.state.entryAttributes}
+      printEntryLink={this.printEntryLink}
+      onRequestNewEntryForm={this.handleEntryFormRequest}
+      newFormRequested={this.state.newFormRequested}
+      onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />;
+  }
+
   render() {
 
     let hamburgerMenu;
@@ -522,6 +538,9 @@ class App extends React.Component {
     } else {
       headerMenuSymbol = 'menu';
     }
+    
+    let routeNames = Object.keys(this.state.entryAttributes);
+    console.log('routenames', routeNames)
     return (
       <div style={heightAdjusted} id='main'>
         <Header displayTitle={displayTitle}
@@ -535,50 +554,9 @@ class App extends React.Component {
         <div id='padding-container'>
           <Switch>
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
-            <Route path='/parents' render={() => <ListIndex section={'parents'}
-              lastSectionSelected={this.state.lastSectionSelected}
-              onChangeAscOrDesc={this.handleChangeAscOrDesc}
-              handleUpdateListFromDB={this.getList}
-              lists={this.state.lists}
-              displayList={this.state.displayLists.parents}
-              entryAttributes={this.state.entryAttributes}
-              printEntryLink={this.printEntryLink}
-              onRequestNewEntryForm={this.handleEntryFormRequest}
-              newFormRequested={this.state.newFormRequested}
-              onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
-            <Route path='/pets' render={() => <ListIndex section={'pets'}
-              lastSectionSelected={this.state.lastSectionSelected}
-              onChangeAscOrDesc={this.handleChangeAscOrDesc}
-              handleUpdateListFromDB={this.getList}
-              lists={this.state.lists}
-              displayList={this.state.displayLists.pets}
-              entryAttributes={this.state.entryAttributes}
-              printEntryLink={this.printEntryLink}
-              onRequestNewEntryForm={this.handleEntryFormRequest}
-              newFormRequested={this.state.newFormRequested}
-              onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
-            <Route path='/appointments' render={() => <ListIndex section={'appointments'}
-              lastSectionSelected={this.state.lastSectionSelected}
-              onChangeAscOrDesc={this.handleChangeAscOrDesc}
-              handleUpdateListFromDB={this.getList}
-              lists={this.state.lists}
-              displayList={this.state.displayLists.appointments}
-              entryAttributes={this.state.entryAttributes}
-              printEntryLink={this.printEntryLink}
-              onRequestNewEntryForm={this.handleEntryFormRequest}
-              newFormRequested={this.state.newFormRequested}
-              onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
-            <Route path='/employees' render={() => <ListIndex section={'employees'}
-              lastSectionSelected={this.state.lastSectionSelected}
-              onChangeAscOrDesc={this.handleChangeAscOrDesc}
-              handleUpdateListFromDB={this.getList}
-              lists={this.state.lists}
-              displayList={this.state.displayLists.employees}
-              entryAttributes={this.state.entryAttributes}
-              printEntryLink={this.printEntryLink}
-              onRequestNewEntryForm={this.handleEntryFormRequest}
-              newFormRequested={this.state.newFormRequested}
-              onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
+            {routeNames.map((routeName, i) => 
+              this.renderRouteJSX(routeName, i)
+            )}
             <Route path='/newentry' render={() => <NewEntryFormIndex type={this.state.newFormRequested}
               onFormSubmission={this.handleSubmittingNewEntry}
               lists={this.state.lists} />} />
