@@ -9,6 +9,8 @@ body {
   --darkAccent: #81878B;
   --darkBg: #d3d3d3;
   --lightBg: #eee;
+  --outerBorderColor: gray;
+  --innerBorderColor: rgb(184, 181, 181);
   max-width: 800px;
   min-width: 324px;
   margin:0;
@@ -36,6 +38,11 @@ ul {
 .square-ul {
   list-style-type: square;
   margin-left: 1.5rem;
+  font-family: sans-serif
+}
+.square-ul li {
+  margin-top: 0.1rem;
+  padding: 0.25rem !important;
 }
 .panel-ul {
   padding: 0;
@@ -44,13 +51,24 @@ ul {
 li {
   font-size: 0.9em;
 }
+big {
+  font-weight: bold;
+}
+.smaller {
+  font-size: 1rem;
+}
 h2 {
   margin-top: 0;
+  margin-bottom: 0;
+}
+h3 {
+  margin-top: 0.5rem;
   margin-bottom: 0;
 }
 h4 {
   margin-bottom: 0.5rem;
   border-radius: 0.5rem !important;
+  color: var(--dark);
 }
 input[type=radio] {
   margin: 0;
@@ -81,13 +99,13 @@ button, select {
   background-image: linear-gradient(var(--darkest) 8rem, var(--mainBg));
   color: var(--mainBg);
   font-family: Tangerine, cursive;
-  font-size: 2.2rem;
+  font-size: 2rem;
   padding: 3% 3% 0 3%;
   display: flex;
   flex-direction: column;
 }
 #hamburger-icon {
-  font-size:2.75rem;
+  font-size:2.5rem;
   align-self: center;  
 }
 #top-row {
@@ -99,8 +117,8 @@ button, select {
 }
 #hamburger {
   text-align: center;
-  width: 3.75rem;
-  height: 3.75rem;
+  width: 3.5rem;
+  height: 3.5rem;
   background-color: #191919;
   display: inline-flex;
   justify-content: center;
@@ -132,31 +150,33 @@ button, select {
   margin-top: 0.25rem;
 }
 #search-area {
-  width: 100%;
+  width: 80%;
+  height: 2.5rem;
   margin-top: 0.5rem;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   display: inline-flex;
   align-items: stretch;
   justify-content: space-between;
 }
 #search-input {
-  width:75%;
-  font-size: 1.25rem;
-  padding-left: 0.5rem;
-  border-radius: 2px;
+  width:72%;
+  font-size: 1rem;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  border-radius: 0.5rem;
 }
 #search-button {
   width: 20%;
   border-radius: 2px;
   padding: 0.5rem;
   font-size: 1rem;
+  border-radius: 0.5rem;
 }
 #search-options {
   margin-top: 0.5rem;
   display: inline-flex;
   justify-content: flex-start;
   justify-items: center;
-  align-items: center;
+  align-items: center;  
 }
 .search-list-tab {
   font-size: 1.2rem;
@@ -167,19 +187,26 @@ button, select {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.tab-contents > i {
+  margin-right: 0.25rem;
 }
 .search-list-tab > div {
   background-color: var(--light);
   border-radius: 0.5rem 0.5rem 0rem 0rem;
   font-family: Helvetica;
   transition: all 400ms ease;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  height: auto;
+  min-height: 2rem;
 }
 #parent-tab {
   background-color: var(--dark);
 }
 input[type=radio] {
-  display: none;
+  display: none;  
 }
 #call-count {
   font-size: 0.8rem;
@@ -195,6 +222,7 @@ input[type=radio] {
   padding: 2%;
   font-family: Helvetica;
   font-size: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 #btns {
@@ -237,6 +265,9 @@ input[type=radio] {
   border-radius: 0;
   padding: 0.25rem;
 }
+#sort-style-radios > div {
+  cursor: pointer;
+}
 #section-heading #lbl {
   width: 35%;
 }
@@ -255,60 +286,89 @@ input[type=radio] {
   margin-top: 2rem;
   font-family: Helvetica, sans-serif;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+#showing-results-message {
+  font-size: 0.75rem;
+  font-family: sans-serif;
+  text-align: center;
 }
 
 /* CARDS */
 
+.card a {
+  color: blue;
+
+}
 .card-title {
   box-sizing: border-box;
   border-radius: 0.5rem 0.5rem 0 0;
-  padding: 0.5rem 1.5rem 1rem 0.75rem;
-  margin-bottom: 0.75rem;
-  background-color: #bbb;
+  padding: 0.75rem 1.5rem 0.75rem 0.75rem;
+  margin-top: 0.75rem;
+  background-color: var(--light);
+  color: white;
   display: inline-flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-end;
   width: 100%;
   font-size: 1.5rem;
   font-weight: bold;
-  
+  letter-spacing: 1px;
+}
+.card-contents {
+  position: relative;
+  padding: 1.25rem 0.75rem 1.5rem 0.75rem;
+  background-color: rgb(224, 219, 210);
+  border-radius: 0;
+  border: 1px solid var(--outerBorderColor);
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.list-body a, .list-body a:visited {
+  color: blue;
 }
 .card-panel-row {
   display: inline-flex;
   width: 100%;
   align-items: stretch;
+  justify-content: space-between;
 }
 .info-area {
   border-radius: 0.5rem;
-  border: 1px solid gray;
-  background-color: #ddd;
+  border: 1px solid var(--innerBorderColor);
+  background-color: rgb(228, 225, 220);
   padding: 1rem;
-  margin-right: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
   font-family: sans-serif;
-  font-size: 0.8rem;
+  flex-grow:2;
+}
+.info-area:nth-child(2) {
+  margin-left: 1rem;
+  flex-grow: 2;
 }
 .panel-icon {
   font-size: 2rem;
   color: var(--dark);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.list-body {
+  font-size: 0.9em;
 }
 .list-head {
   box-sizing: border-box;
   width: 100%;
   color: var(--dark);
+  font-size: 1.2rem;
   font-weight: bold;
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
   margin-top: 1.5rem;
-  border: 1px solid gray;
+  border: 1px solid var(--innerBorderColor);
   border-bottom: 0;
-  background-color: #ddd;
+  background-color: rgb(218, 209, 201);
   padding: 0.5rem;
   border-radius: 0.5rem 0.5rem 0 0;
 }
@@ -317,19 +377,28 @@ input[type=radio] {
   margin-right: 0.5rem;
 }
 .list-body {
-  border: 1px solid gray;
+  border: 1px solid var(--innerBorderColor);
   border-radius: 0 0 0.5rem 0.5rem;
   border-top: 0;
   padding: 0.5rem 0 0.5rem 0;
+  background-color: rgb(228, 225, 220);
+}
+.list-body li {
+  padding: 0.25rem 0 0.25rem 0;
+  margin: 0;
 }
 .card-footer {
   width: 100%;
   font-family: sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   display: inline-flex;
   justify-content: space-between;
-  margin-top: 1.5rem;
-  color: var(--light);
+  box-sizing: border-box;
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--light);
+  color: rgb(228, 225, 220);
+  margin-bottom: 0.5rem;
 }
 
 
