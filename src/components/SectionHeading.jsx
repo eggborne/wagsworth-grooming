@@ -26,7 +26,7 @@ function SectionHeading(props) {
             <div id='lbl'>
               <select
                 id='sort-select'
-                onChange={() => { props.onChangeSortBy(event, _sortStyle); }}>
+                onChange={() => { props.onChangeSortBy(props.type, _sortStyle); }}>
                 {sortOptions.map((sortOption, i) => {
                   return (<option key={i}>{sortOption}</option>);
                 })}
@@ -39,8 +39,8 @@ function SectionHeading(props) {
           </div>
         </div>
         <div id='sort-style-radios'>
-          <div onClick={() => props.onChangeSortStyle(event, '')}><input defaultChecked className='visible' type='radio' name='sort-order' value=''></input>Ascending</div>
-          <div onClick={() => props.onChangeSortStyle(event, 'desc')}><input className='visible' type='radio' name='sort-order' value='desc'></input>Descending</div>
+          <div onClick={() => props.onChangeSortStyle(event, props.type, 'asc')}><input defaultChecked className='visible' type='radio' name='sort-order' value='asc'></input>Ascending</div>
+          <div onClick={() => props.onChangeSortStyle(event, props.type, 'desc')}><input className='visible' type='radio' name='sort-order' value='desc'></input>Descending</div>
         </div>
       </form>
     </div>
