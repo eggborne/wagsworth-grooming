@@ -36,13 +36,13 @@ class Header extends React.Component {
         optionsList.push(`${petName} ${petLastName} - ${petBreed.join(' / ')}`);
       });
     } else if (currentSearchList === 'appointments') {
-      // let apptList = Object.entries(this.props.lists[currentSearchList]);
-      // apptList.map((appt) => {
-      //   let apptDate = appt[1].date;
-      //   let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
-      //   let apptServices = appt[1].services.join(', ');
-      //   optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
-      // });
+      let apptList = Object.entries(this.props.lists[currentSearchList]);
+      apptList.map((appt) => {
+        let apptDate = appt[1].date;
+        let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
+        let apptServices = appt[1].services.join(', ');
+        optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
+      });
     } else if (currentSearchList === 'splashPage') {
       // shouldn't be done here
       document.getElementById('search-input').placeholder = 'Search...';
@@ -54,10 +54,8 @@ class Header extends React.Component {
     Array.from(document.getElementsByName('search-type')).map((searchType) => {
       if (searchType.value === section) {
         searchType.checked = true;
-        searchType.nextSibling.style.color = 'var(--mainBg)';
         searchType.nextSibling.style.backgroundColor = 'var(--dark)';
       } else {
-        searchType.nextSibling.style.color = 'var(--darkAccent)';
         searchType.nextSibling.style.backgroundColor = 'var(--light)';
       }
     });
@@ -129,7 +127,7 @@ class Header extends React.Component {
   handleSearchFocus() {
     if (!this.state.searchList) {
       this.toggleMenuItemOn('parents', true);
-      window.location = '/#/parents';
+      window.location.hash = '#/parents';
     }
   }
 
@@ -148,7 +146,7 @@ class Header extends React.Component {
     if (currentSearchList === 'employees') {
       searchVis = 'none';
     } else {
-      searchVis = 'block';
+      searchVis = 'inline-flex';
     }
 
     let optionsList = this.getAutosuggestList(currentSearchList);
@@ -167,7 +165,7 @@ class Header extends React.Component {
           #hamburger {
             border-radius: ${hambRadius};
           }
-          #admin-search-form {
+          #search-area {
             display: ${searchVis};
           }
         `}</style>
