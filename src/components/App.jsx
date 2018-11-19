@@ -37,31 +37,27 @@ const getFullList = (listType, orderBy) =>
     }
   });
 
-
-const entryAttributes = {
-  parents: {
-    dbAttributes: ['lastName', 'firstNames', 'phoneNumbers', 'email', 'notes', 'petIds', 'upcomingApptIds', 'pastApptIds',],
-    miniDisplayString: (selfObj) => { return selfObj.lastName; },
-    sortOptions: ['Name', 'Last Appt', 'Created'],
-    searchParams: ['lastName']
-  },
-  pets: {
-    dbAttributes: ['name', 'breed', 'sex', 'color', 'weight', 'dob', 'vaccinationDate', 'vaccinationClinic', 'veterinarian', 'parent', 'notes',],
-    miniDisplayString: (selfObj) => { return selfObj.name; },
-    sortOptions: ['Name', 'Parent', 'Created'],
-    searchParams: ['name']
-  },
-  appointments: {
-    dbAttributes: ['employeeId', 'petId', 'date', 'startTime', 'services', 'notes',],
-    miniDisplayString: (selfObj) => { return selfObj.date; },
-    sortOptions: ['Date', 'Parent', 'Pet'],
-    searchParams: ['name', 'lastName']
-  },
-  employees: {
-    dbAttributes: ['role', 'firstName', 'lastName', 'phoneNumbers', 'email', 'upcomingApptIds', 'pastApptIds', 'schedule', 'notes'],
-    miniDisplayString: (selfObj) => { return `${selfObj.firstName} ${selfObj.lastName[0].toUpperCase()}.`; }
-  }
-};
+function compareValues(key, order = '') {
+  return function (a, b) {
+    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      // property doesn't exist on either object
+      return 0;
+    }
+    const varA = (typeof a[key] === 'string') ?
+      a[key] : a[key];
+    const varB = (typeof b[key] === 'string') ?
+      b[key] : b[key];
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return (
+      (order == 'desc') ? (comparison * -1) : comparison
+    );
+  };
+}
 
 let shorterDimension = null;
 window.innerWidth < window.innerHeight
@@ -81,9 +77,58 @@ class App extends React.Component {
       menuSummoned: false,
       lastSectionSelected: null,
       lists: { employees: {}, parents: {}, pets: {}, appointments: {} },
-      displayLists: { employees: {}, parents: {}, pets: {}, appointments: {} }
+      displayLists: { employees: {}, parents: {}, pets: {}, appointments: {} },
+      entryAttributes: {
+        parents: {
+          dbAttributes: ['lastName', 'firstNames', 'phoneNumbers', 'email', 'notes', 'petIds', 'upcomingApptIds', 'pastApptIds',],
+          miniDisplayString: (selfObj) => {
+            return [
+              selfObj.lastName
+            ];
+          },
+          sortOptions: ['Last Name', 'Last Appt', 'Created'],
+          searchParams: ['lastName'],
+          defaultSortParam: 'lastName'
+        },
+        pets: {
+          dbAttributes: ['name', 'breed', 'sex', 'color', 'weight', 'dob', 'vaccinationDate', 'vaccinationClinic', 'veterinarian', 'parent', 'notes',],
+          miniDisplayString: (selfObj) => {
+            return [
+              `${selfObj.name}`,
+              `${ selfObj.breed.join('/') }`
+            ];
+          },
+          sortOptions: ['Name', 'Parent', 'Created'],
+          searchParams: ['name'],
+          defaultSortParam: 'name'
+        },
+        appointments: {
+          dbAttributes: ['employeeId', 'petId', 'date', 'startTime', 'services', 'notes',],
+          miniDisplayString: (selfObj) => {
+            return [
+              `${moment(selfObj.date).format('MMM DD, YYYY')}`,
+              // `${this.printEntryLink('pets', selfObj.petId, true)}`,
+              `${selfObj.petId}`,
+              `${selfObj.services.join(', ')}`
+            ];
+          },
+          sortOptions: ['Date', 'Parent', 'Pet'],
+          searchParams: ['name', 'lastName'],
+          defaultSortParam: 'date'
+        },
+        employees: {
+          dbAttributes: ['role', 'firstName', 'lastName', 'phoneNumbers', 'email', 'upcomingApptIds', 'pastApptIds', 'schedule', 'notes'],
+          miniDisplayString: (selfObj) => {
+            return [
+              `${selfObj.firstName} ${selfObj.lastName[0].toUpperCase()}.`
+            ];
+          },
+          defaultSortParam: 'lastName'
+        }
+      }
     };
     this.arrayFromMultiObjectString = this.arrayFromMultiObjectString.bind(this);
+    this.handleChangeAscOrDesc = this.handleChangeAscOrDesc.bind(this);
     this.printEntryLink = this.printEntryLink.bind(this);
     this.addToLocalMasterList = this.addToLocalMasterList.bind(this);
     this.addToDisplayList = this.addToDisplayList.bind(this);
@@ -96,6 +141,44 @@ class App extends React.Component {
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
   }
 
+  handleChangeAscOrDesc(event, sec, newSort) {
+    let orderBy = this.state.entryAttributes[sec].defaultSortParam;
+    let newArr = Object.values(this.state.displayLists[sec]).slice();
+    newArr = newArr.sort(compareValues(orderBy, newSort));
+    let newListObj = {};
+    newArr.map((entry) => {
+      newListObj[entry.id] = entry;
+    });
+    let dListsCopy = Object.assign({}, this.state.displayLists);
+    dListsCopy[sec] = newListObj;
+    this.setState({
+      displayLists: dListsCopy
+    });
+    // set the proper radio button
+    Array.from(document.getElementsByName('sort-order')).map((sortRadios) => {
+      sortRadios.checked = (sortRadios.value === newSort);
+    });
+  }
+
+  handleChangeSortByAttribute(event, sec, newSort) {
+    let orderBy = this.state.entryAttributes[sec].defaultSortParam;
+    let newArr = Object.values(this.state.displayLists[sec]).slice();
+    newArr = newArr.sort(compareValues(orderBy, newSort));
+    let newListObj = {};
+    newArr.map((entry) => {
+      newListObj[entry.id] = entry;
+    });
+    let dListsCopy = Object.assign({}, this.state.displayLists);
+    dListsCopy[sec] = newListObj;
+    this.setState({
+      displayLists: dListsCopy
+    });
+    // set the proper radio button
+    Array.from(document.getElementsByName('sort-order')).map((sortRadios) => {
+      sortRadios.checked = (sortRadios.value === newSort);
+    });
+  }
+
   saveNewEntryToDatabase(tableName, newEntryObj) {
 
     // change this to use axios
@@ -106,7 +189,7 @@ class App extends React.Component {
       dateCreated: moment().format()
     };
 
-    entryAttributes[tableName].dbAttributes.forEach((dataField) => {
+    this.state.entryAttributes[tableName].dbAttributes.forEach((dataField) => {
       dataObj[[dataField]] = newEntryObj[dataField];
     });
 
@@ -121,10 +204,9 @@ class App extends React.Component {
 
       }
     });
-
   }
 
-  printEntryLink(type, key) {
+  printEntryLink(type, key, callerCardObj) {
 
     // calls on entries from array an extra time
     // e.g. [Bobid, MegId] calls for Bob twice
@@ -143,16 +225,32 @@ class App extends React.Component {
             this.addToLocalMasterList(type, response.data);
           }
           calls++;
-          console.log(`call ${calls} called by printEntryLink for ${type} ${response.data.name} ${response.data.id}`);
+          console.log(`call ${calls} called by printEntryLink for ${type} ${response.data.id}`);
         });
+
         return;
       } else {
         // get it from localMasterList
-        let entryObj = this.state.lists[type][key];
-        output = entryAttributes[type].miniDisplayString(entryObj);
+        let entryObj = Object.assign({}, this.state.lists[type][key]);
+        output = this.state.entryAttributes[type].miniDisplayString(entryObj);
       }
 
       if (output) {
+        if (type === 'appointments') {
+          if (callerCardObj && callerCardObj.name) { // came from PetCard
+            // omit pet name (already in title of card)
+            output = `${output[0]}: ${output[2]}`;
+          } else {
+            output = `${output[0]}: ${this.printEntryLink('pets', output[1])} - ${output[2]}`;
+          }
+        } else if (type === 'pets') {
+          if (callerCardObj && (callerCardObj.lastName || callerCardObj.services)) {
+            output = `${output[0]} (${output[1]})`;
+          } else {
+            // came from a printEntryLink
+            output = output[0];
+          }
+        }
         return output;
       } else {
         return 'loading...';
@@ -161,16 +259,19 @@ class App extends React.Component {
   }
 
   getList(event, listType, orderBy) {
+    orderBy = this.state.entryAttributes[listType].defaultSortParam;
+    console.warn(`getting ${listType} list ordered by ${orderBy}`);
     if (event) {
       event.preventDefault();
     }
     getFullList(listType, orderBy).then((response) => {
-      let inc = 1;
+      let inc = 5;
       response.data.map((resp) => {
         setTimeout(() => {
+          this.addToLocalMasterList(listType, resp);
           this.addToDisplayList(listType, resp);
         }, inc);
-        inc += 250;
+        inc += 500;
       });
       calls++;
       console.log(`call ${calls} called by getList for ${listType}`);
@@ -267,7 +368,7 @@ class App extends React.Component {
     let param;
     let searching;
     if (searchList !== 'appointments') {
-      param = entryAttributes[searchList].searchParams[0];
+      param = this.state.entryAttributes[searchList].searchParams[0];
       searching = searchTerm[0];
       getListingByParam(searchList, param, searching).then((response) => {
         if (typeof response.data !== 'object') {
@@ -279,7 +380,7 @@ class App extends React.Component {
       });
     } else {
       // must look up pet/parent names for ID to search appointments with!
-      param = entryAttributes[searchList].searchParams[0];
+      param = this.state.entryAttributes[searchList].searchParams[0];
       searching = searchTerm[0]; // assumed to be a pet name first
       getListingByParam('pets', param, searching).then((response) => {
         return response.data.id;
@@ -312,10 +413,10 @@ class App extends React.Component {
           }
         }).catch(() => {
           // search parent last names instead
-          console.warn(`NO APPTS for valid existing pet ${searching} found!! Trying parent ${entryAttributes[searchList].searchParams[1]} instead...`);
+          console.warn(`NO APPTS for valid existing pet ${searching} found!! Trying parent ${this.state.entryAttributes[searchList].searchParams[1]} instead...`);
 
           // (check in local first!!)
-          param = entryAttributes[searchList].searchParams[1];
+          param = this.state.entryAttributes[searchList].searchParams[1];
           getListingByParam('parents', 'lastName', searching).then((response) => {
             return response.data;
           }).then((parentObj) => {
@@ -353,7 +454,7 @@ class App extends React.Component {
           });
         });
       }).catch((searching) => {
-        console.warn(`NO PET EXISTS ${searching}!! Trying parent ${entryAttributes[searchList].searchParams[1]} instead...`);
+        console.warn(`NO PET EXISTS ${searching}!! Trying parent ${this.state.entryAttributes[searchList].searchParams[1]} instead...`);
         // try parent lastname instead
         getListingByParam('parents', 'lastName', searching).then((response) => {
           return response.data;
@@ -436,40 +537,44 @@ class App extends React.Component {
             <Route exact path='/' render={() => <ListIndex section={'splashPage'} />} />
             <Route path='/parents' render={() => <ListIndex section={'parents'}
               lastSectionSelected={this.state.lastSectionSelected}
+              onChangeAscOrDesc={this.handleChangeAscOrDesc}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.parents}
-              entryAttributes={entryAttributes}
+              entryAttributes={this.state.entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/pets' render={() => <ListIndex section={'pets'}
               lastSectionSelected={this.state.lastSectionSelected}
+              onChangeAscOrDesc={this.handleChangeAscOrDesc}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.pets}
-              entryAttributes={entryAttributes}
+              entryAttributes={this.state.entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/appointments' render={() => <ListIndex section={'appointments'}
               lastSectionSelected={this.state.lastSectionSelected}
+              onChangeAscOrDesc={this.handleChangeAscOrDesc}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.appointments}
-              entryAttributes={entryAttributes}
+              entryAttributes={this.state.entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
               onSubmitNewEntryForm={this.handleSubmittingNewEntry} />} />
             <Route path='/employees' render={() => <ListIndex section={'employees'}
               lastSectionSelected={this.state.lastSectionSelected}
+              onChangeAscOrDesc={this.handleChangeAscOrDesc}
               handleUpdateListFromDB={this.getList}
               lists={this.state.lists}
               displayList={this.state.displayLists.employees}
-              entryAttributes={entryAttributes}
+              entryAttributes={this.state.entryAttributes}
               printEntryLink={this.printEntryLink}
               onRequestNewEntryForm={this.handleEntryFormRequest}
               newFormRequested={this.state.newFormRequested}
