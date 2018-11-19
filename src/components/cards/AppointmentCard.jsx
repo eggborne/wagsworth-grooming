@@ -1,60 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-var moment = require('moment');
+import CardFooter from './CardFooter';
+import moment from 'moment';
 
-function AppointmentCard(props){
+function AppointmentCard(props) {
   let obj = props.entryObject;
-  let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
+  let employeeLink = props.printAssociatedEntryLink('employees', obj.employeeId);
+  let parentLink = props.printAssociatedEntryLink('parents', obj.parentId);
+  let petLink = props.printAssociatedEntryLink('pets', obj.petId, obj);
   return (
-    <div style={props.style.div}>
-      <style jsx>{`
-        div {
-          padding: 2.5%;
-          background-color: var(--lightBg);
-        }
-        div:nth-child(2n) {
-          background-color: var(--darkBg);
-        }
-        small {
-          font-family: sans-serif;
-          font-size: 0.75rem;
-        }
-        a {
-          color: blue;
-        }
-      `}</style>
-      <h2>{moment(obj.date).format('MMM. DD, YYYY')} | {props.convertTime(obj.startTime)}</h2>
-      <h3>Employee: <a href={'./#/employees'}>{props.printAssociatedEntryLink('employees',obj.employeeId)}</a></h3>
-      <h3>Parent: <a href={'./#/parents'}>{props.printAssociatedEntryLink('parents',obj.parentId)}</a></h3>
-      <h3>Pet: <a href={'./#/pets'}>{props.printAssociatedEntryLink('pets',obj.petId)}</a></h3>
-      <h3>Services:</h3>
-      <ul>
-        {obj.services.map((service, index) =>
-          <li key={index}>{service}</li>
-        )}
-      </ul>
-      <h3>Notes:</h3>
-      <ul>
-        {obj.notes.map((note, index) =>
-          <li key={index}>{note}</li>
-        )}
-      </ul>
-      <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
-      <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
-      <small style={props.style.small}>Unique ID: {obj.id}</small>
+    <div className='card'>
+      <div className='card-title'>
+        <div>{moment(obj.date).format('MMM. DD, YYYY')}</div>
+        <div>{props.convertTime(obj.startTime)}</div>
+      </div>
+      <div className='card-contents'>
+        <h3>Employee: <a href={'./#/employees'}>{employeeLink}</a></h3>
+        <h3>Parent: <a href={'./#/parents'}>{parentLink}</a></h3>
+        <h3>Pet: <a href={'./#/pets'}>{petLink}</a></h3>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>build</i> <div>Services</div></div>
+          <div className='list-body'>
+            <ul className='square-ul'>
+              {obj.services.map((service, index) =>
+                <li key={index}>{service}</li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>notes</i> <div>Notes</div></div>
+          <div className='list-body'>
+            <ul className='square-ul'>
+              {obj.notes.map((note, index) =>
+                <li key={index}>{note}</li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <CardFooter creationDate={obj.dateCreated}
+        entryId={obj.id} />
     </div>
   );
 }
 
-function displayTimeCreatedInfo(dateCreated) {
-  return {
-    dateCreated: moment(dateCreated).format('MMMM Do YYYY'),
-    timeSinceCreated: moment(dateCreated).from(moment(), false)
-  };
-}
-
 AppointmentCard.propTypes = {
-  style: PropTypes.object,
   entryObject: PropTypes.object,
   convertTime: PropTypes.func,
   printAssociatedEntryLink: PropTypes.func
