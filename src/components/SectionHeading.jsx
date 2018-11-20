@@ -35,7 +35,7 @@ function SectionHeading(props) {
           </div>
           <div id='btns'>
             <button onClick={() => props.onRequestNewEntryForm(event, props.type)}><i className='material-icons'>{addIcon}</i></button>
-            <button onClick={() => props.onClickToUpdateList(event, props.type, 'dateCreated')}>All <i className='material-icons'>refresh</i></button>
+            <button onClick={(event) => props.onClickToUpdateList(event, props.type, 'dateCreated')}>All <i className='material-icons'>refresh</i></button>
           </div>
         </div>
         <div id='sort-style-radios'>
