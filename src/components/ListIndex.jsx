@@ -24,6 +24,7 @@ class ListIndex extends React.Component {
     this.state = {
 
     };
+    this.props.handleUpdateListFromDB(event,'employees', 'lastName');
     this.slideIn = this.slideIn.bind(this);
   }
 
@@ -100,23 +101,21 @@ class ListIndex extends React.Component {
         <SplashPage />
       );
     } else {
-      if (sec === 'employees') {
-        secHeading = <div></div>;
-      } else {
-        secHeading = <SectionHeading type={sec}
-          entryAttributes={this.props.entryAttributes}
-          onRequestNewEntryForm={this.props.onRequestNewEntryForm}
-          onClickToUpdateList={this.props.handleUpdateListFromDB}
-          onChangeSortBy={this.handleChangeSortBy}
-          onChangeSortStyle={this.props.onChangeAscOrDesc} />;
-      }
-      window.scrollTo(0, 0);
       let ComponentName = componentNames[sec];
       let entriesToDisplay = Object.values(this.props.displayList);
       let totalEntries = Object.values(this.props.lists[this.props.section]);
-
-      if (entriesToDisplay.length) {
-        showingEntriesMessage = <div id='showing-results-message'>Showing {entriesToDisplay.length} of {totalEntries.length} total entries</div>;
+      if (sec === 'employees') {
+        secHeading = <div></div>;
+      } else {
+        if (entriesToDisplay.length) {
+          showingEntriesMessage = <div id='showing-results-message'>Showing {entriesToDisplay.length} of {totalEntries.length} total entries</div>;
+        }
+        secHeading = <SectionHeading type={sec}
+        entryAttributes={this.props.entryAttributes}
+        onRequestNewEntryForm={this.props.onRequestNewEntryForm}
+        onClickToUpdateList={this.props.handleUpdateListFromDB}
+        onChangeSortBy={this.handleChangeSortBy}
+        onChangeSortStyle={this.props.onChangeAscOrDesc} />;
       }
       // appointments only have petIds, so need to find those pets' parentIds!
       if (this.props.section === 'appointments') {
