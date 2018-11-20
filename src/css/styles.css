@@ -197,7 +197,7 @@ button, select {
   background-color: var(--light);
   border-radius: 0.5rem 0.5rem 0rem 0rem;
   font-family: Helvetica;
-  transition: all 400ms ease;
+  transition: all 100ms ease;
   padding: 0.5rem 0.5rem 0 0.5rem;
   height: auto;
   min-height: 2rem;
