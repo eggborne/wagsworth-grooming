@@ -11,6 +11,10 @@ function ParentCard(props) {
   } else {
     let obj = props.entryObject;
     let petLinks = [];
+    let appointmentLinks = [];
+    obj.appointments.forEach((appt) => {
+      appointmentLinks.push(`${props.printAssociatedEntryLink('appointments', appt, obj)}`);
+    });
     obj.petIds.forEach((pet) => {
       petLinks.push(`${props.printAssociatedEntryLink('pets', pet, obj)}`);
     });
@@ -48,7 +52,7 @@ function ParentCard(props) {
             <div className='list-body'>
               <ul>
                 {petLinks.map((pet, i) =>
-                  <li key={i}><big><a href={'./#/pets'}>{pet}</a></big></li>            
+                  <li key={i}><big><a href={'./#/pets'}>{pet}</a></big></li>
                 )}
               </ul>
             </div>
@@ -57,8 +61,8 @@ function ParentCard(props) {
             <div className='list-head'><i className='material-icons info-icon'>event</i> <div>Appointments</div></div>
             <div className='list-body'>
               <ul>
-                {obj.appointments.map((appt, index) =>
-                  <li key={index}><big><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments', appt)}</a></big></li>
+                {appointmentLinks.map((appt, i) =>
+                  <li key={i}><big><a href={'./#/appointments'}>{appt}</a></big></li>
                 )}
               </ul>
             </div>
