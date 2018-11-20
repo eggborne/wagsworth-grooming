@@ -54,8 +54,10 @@ class Header extends React.Component {
     Array.from(document.getElementsByName('search-type')).map((searchType) => {
       if (searchType.value === section) {
         searchType.checked = true;
+        searchType.nextSibling.style.transform = 'scale(1.025)';
         searchType.nextSibling.style.backgroundColor = 'var(--dark)';
       } else {
+        searchType.nextSibling.style.transform = 'scale(1)';
         searchType.nextSibling.style.backgroundColor = 'var(--light)';
       }
     });
