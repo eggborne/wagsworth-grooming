@@ -1,53 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-var moment = require('moment');
+import CardFooter from './CardFooter';
 
 function EmployeeCard(props) {
   let obj = props.entryObject;
-  let timeInfo = displayTimeCreatedInfo(obj.dateCreated);
+  let appointmentLinkArray = [];
+  obj.appointments.map((appt, i) => {
+    if (appointmentLinkArray[i] !== appt) {
+      appointmentLinkArray.push(props.printAssociatedEntryLink('appointments', appt, obj));
+    }
+  });
   return (
-    <div style={props.style.div}>
-      <style jsx>{`
-        div:nth-child(2n) {
-          background-color: var(--darkBg);
-        }
-        a {
-          color: blue;
-        }
-      `}</style>
-      <h2>{obj.firstName} {obj.lastName}</h2>
-      <h3>{obj.role}</h3>
-      <ul>
-        {obj.phoneNumbers.map((note, index) =>
-          <li key={index}>{note}</li>
-        )}
-      </ul>
-      <h3>{obj.email}</h3>
-      <h3>Schedule: {obj.schedule}</h3>
-      <h3>Appointments: </h3>
-      <ul>
-        {obj.appointments.map((appt, index) =>
-          <li key={index}><a href={'./#/appointments'}>{props.printAssociatedEntryLink('appointments',obj.appointments[index])}</a></li>
-        )}
-      </ul>
-      <h3>Notes:</h3>
-      <ul>
-        {obj.notes.map((note, index) =>
-          <li key={index}>{note}</li>
-        )}
-      </ul>
-      <small style={props.style.small}>Created {timeInfo.dateCreated}</small><br />
-      <small style={props.style.small}>({timeInfo.timeSinceCreated})</small><br />
-      <small style={props.style.small}>Unique ID: {obj.id}</small>
+    <div>
+      <div className='card-title'>
+        <div>{obj.firstName} {obj.lastName}</div>
+      </div>
+      <div className='card-contents'>
+        <h3>{obj.role}</h3>
+        <p></p>
+        <div className='card-panel-row'>
+          <div className='info-area'>
+            <i className='material-icons panel-icon'>phone</i>
+            <ul className='panel-ul'>
+              {obj.phoneNumbers.map((number, i) =>
+                <li key={i}>{number}</li>)}
+            </ul>
+            <br />
+            <i className='material-icons panel-icon'>email</i>
+            <ul className='panel-ul'>
+              <li>{obj.email.split('@')[0]}<br />
+                @{obj.email.split('@')[1]}</li>
+            </ul>
+          </div>
+          <div className='info-area'>
+            <i className='material-icons panel-icon'>home</i>
+            {/* <ul className='panel-ul'>
+              <li key={'01'}>{obj.address[0]}</li>
+              <li key={'02'}>{obj.address[1]}, {obj.address[2]}</li>
+              <li key={'03'}>{obj.address[3]}</li>
+            </ul> */}
+          </div>
+        </div>
+        <h3>Schedule: {obj.schedule}</h3>
+        <div className='list-info-area'>
+          <div className='list-head'><i className='material-icons info-icon'>event</i><div>Appointments</div></div>
+          <div className='list-body'>
+            <ul>
+              {obj.appointments.map((appt, i) =>
+                <li key={i}><big><a href={'./#/appointments'}>{appointmentLinkArray[i]}</a></big></li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <h3>Notes:</h3>
+        <ul>
+          {obj.notes.map((note, index) =>
+            <li key={index}>{note}</li>
+          )}
+        </ul>
+
+
+      </div>
+      <CardFooter creationDate={obj.dateCreated}
+        entryId={obj.id} />
     </div>
   );
-}
-
-function displayTimeCreatedInfo(dateCreated) {
-  return {
-    dateCreated: moment(dateCreated).format('MMMM Do YYYY'),
-    timeSinceCreated: moment(dateCreated).from(moment(), false)
-  };
 }
 
 EmployeeCard.propTypes = {
