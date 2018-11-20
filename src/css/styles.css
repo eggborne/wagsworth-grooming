@@ -201,6 +201,7 @@ button, select {
   padding: 0.5rem 0.5rem 0 0.5rem;
   height: auto;
   min-height: 2rem;
+  transform-origin: 0 0;
 }
 #parent-tab {
   background-color: var(--dark);
@@ -327,6 +328,18 @@ input[type=radio] {
 
 .list-body a, .list-body a:visited {
   color: blue;
+}
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 1rem;
+}
+.data-grid > div {
+  padding: 0.5rem;
+  border: 1px solid rgb(218, 209, 201);
 }
 .card-panel-row {
   display: inline-flex;
