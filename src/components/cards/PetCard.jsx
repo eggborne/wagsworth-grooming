@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CardFooter from './CardFooter';
+import moment from 'moment';
 
 function PetCard(props) {
   if (!props.entryObject.id) {
@@ -20,21 +21,23 @@ function PetCard(props) {
     return (
       <div className='card'>
         <div className='card-title'>
-          <div>{obj.name}</div><div className='smaller'><a href='./#/parents'>{parentLink}</a></div>
+          <div>{obj.name}</div><a href='./#/parents'>{parentLink}</a>
         </div>
         <div className='card-contents'>
-          <h3>Breed:</h3>
-          <ul>
-            {obj.breed.map((breed, i) =>
-              <li key={i}>{breed}</li>
-            )}
-          </ul>
+          <h3>Breed: {obj.breed.join(' / ')}</h3>
           <h3>Sex: {obj.sex}</h3>
-          <h3>Weight: {obj.weight} | Color: {obj.color}</h3>
-          <h3>DOB: {obj.dob}</h3>
-          <h3>Vax date: {obj.vaccinationDate}</h3>
-          <h3>Vax clinic: {obj.vaccinationClinic}</h3>
-          <h3>Vet clinic: {obj.veterinarian}</h3>
+          <h3>Weight: {obj.weight} | Color: {obj.color.join(' / ')}</h3>
+          <h3>DOB: {moment(obj.dob).format('MMM DD, YYYY')}</h3>
+          <div className='list-info-area'>
+            <div className='list-head'><i className='material-icons info-icon'>local_hospital</i> <div>Vet info</div></div>
+            <div className='list-body'>
+              <div className='data-grid'>
+                <div>Vet clinic</div><div>{obj.veterinarian}</div>
+                <div>Vaccination clinic</div><div>{obj.vaccinationClinic}</div>
+                <div>Due date</div><div>{moment(obj.vaccinationDate).format('MMM DD, YYYY')}</div>
+              </div>
+            </div>
+          </div>
           <div className='list-info-area'>
             <div className='list-head'><i className='material-icons info-icon'>event</i> <div>Appointments</div></div>
             <div className='list-body'>
