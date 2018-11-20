@@ -178,7 +178,7 @@ class Header extends React.Component {
               <div className='tiny'>Administrative Portal v0.1 | <strong>DB calls: <big id='call-count'>{this.props.callCount}</big></strong></div>
             </Link>
           </div>
-          <div onClick={() => this.props.onClickHamburger(event, this.state.searchList)} id='hamburger'>
+          <div onClick={(event) => this.props.onClickHamburger(event, this.state.searchList)} id='hamburger'>
             <i id="hamburger-icon" className="material-icons"><big>{this.props.menuSymbol}</big></i>
           </div>
         </div>
