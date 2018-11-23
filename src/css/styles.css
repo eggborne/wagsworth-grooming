@@ -172,6 +172,7 @@ button, select {
   padding: 2%;
   background-color: rgba(25, 25, 25, 1);
   opacity: 0;
+  pointer-events: none;
   transition: height 300ms ease, opacity 600ms ease;
 }
 .tiny {
