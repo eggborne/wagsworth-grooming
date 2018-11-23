@@ -25,23 +25,26 @@ class Header extends React.Component {
     if (currentSearchList === 'parents') {
       let parentList = Object.entries(this.props.lists[currentSearchList]);
       parentList.map((parent) => {
-        optionsList.push(`${parent[1].lastName}, ${parent[1].firstNames.join(' & ')}`);
+        // optionsList.push(`${parent[1].lastName}, ${parent[1].firstNames.join(' & ')}`);
+        optionsList.push(`${parent[1].lastName}`);
       });
     } else if (currentSearchList === 'pets') {
       let petList = Object.entries(this.props.lists[currentSearchList]);
       petList.map((pet) => {
         let petName = pet[1].name;
-        let petLastName = this.props.printEntryLink('parents', pet[1].parent, true);
-        let petBreed = pet[1].breed;
-        optionsList.push(`${petName} ${petLastName} - ${petBreed.join(' / ')}`);
+        // let petLastName = this.props.printEntryLink('parents', pet[1].parent, true);
+        // let petBreed = pet[1].breed;
+        // optionsList.push(`${petName} ${petLastName} - ${petBreed.join(' / ')}`);
+        optionsList.push(`${petName}`);
       });
     } else if (currentSearchList === 'appointments') {
       let apptList = Object.entries(this.props.lists[currentSearchList]);
       apptList.map((appt) => {
         let apptDate = appt[1].date;
-        let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
-        let apptServices = appt[1].services.join(', ');
-        optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
+        // let petLink = this.props.printEntryLink('pets', appt[1].petId, true);
+        // let apptServices = appt[1].services.join(', ');
+        // optionsList.push(`${apptDate} | ${petLink} - ${apptServices}`);
+        optionsList.push(`${apptDate}`);
       });
     } else if (currentSearchList === 'splashPage') {
       // shouldn't be done here
@@ -54,7 +57,7 @@ class Header extends React.Component {
     Array.from(document.getElementsByName('search-type')).map((searchType) => {
       if (searchType.value === section) {
         searchType.checked = true;
-        searchType.nextSibling.style.transform = 'scale(1.025)';
+        searchType.nextSibling.style.transform = 'scale(1.05)';
         searchType.nextSibling.style.backgroundColor = 'var(--dark)';
       } else {
         searchType.nextSibling.style.transform = 'scale(1)';
@@ -84,10 +87,14 @@ class Header extends React.Component {
     } else {
       document.getElementById('search-input').placeholder = 'Search...';
     }
+    if (newList === 'employees') {
+      document.getElementById('search-options').style.display = 'none';
+    } else {
+      document.getElementById('search-options').style.display = 'inline-flex';
+    }
   }
 
-  toggleMenuItemOn(newItem, noHamburger) {
-
+  toggleMenuItemOn(newItem) {
     Array.from(document.getElementsByClassName('mainMenuItem')).map((menuItem) => {
       if (menuItem.id === newItem) {
         menuItem.style.backgroundColor = '#222';
@@ -95,31 +102,8 @@ class Header extends React.Component {
         menuItem.style.backgroundColor = 'transparent';
       }
     });
-    // trigger App.handleSwitchSectionView to record last selected section
     let newList = newItem.replace('MenuArea', 's');
-
-    if (!noHamburger) {
-      // setTimeout(() => {
-      //   this.props.onClickHamburger(false, newList, true);
-      // }, 200);
-    }
-
-
     this.changeSearchList(newList);
-
-
-    // this.props.onSwitchSectionView(this.state.searchList, newList);
-    // this.setState({
-    //   searchList: newList
-    // });
-    // this.highlightSection(newList);
-    // document.getElementById('hamburger-container').style.opacity = 0;
-
-    // if (newList) {
-    //   document.getElementById('search-input').placeholder = `Search ${newList[0].toUpperCase()}${newList.slice(1, -1)}s`;
-    // } else {
-    //   document.getElementById('search-input').placeholder = 'Search...';
-    // }
   }
 
   handleHomeClick() {
@@ -139,10 +123,10 @@ class Header extends React.Component {
     let searchVis;
     let hambRadius;
     if (this.props.menuSymbol === 'menu') {
-      menuVis = 'none';
+      menuVis = '0px';
       hambRadius = '0.5rem';
     } else {
-      menuVis = 'block';
+      menuVis = '14rem';
       hambRadius = '0.5rem 0.5rem 0 0';
     }
     if (currentSearchList === 'employees') {
@@ -162,7 +146,7 @@ class Header extends React.Component {
       <div id="header">
         <style jsx>{`
           #hamburger-container {       
-            display: ${menuVis};
+            height: ${menuVis};
           }
           #hamburger {
             border-radius: ${hambRadius};
