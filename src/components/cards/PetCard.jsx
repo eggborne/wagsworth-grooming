@@ -10,6 +10,10 @@ function PetCard(props) {
     );
   } else {
     let obj = props.entryObject;
+    let petImageSrc;
+    if (obj.images.length) {
+      petImageSrc = require(`../../assets/images/${obj.images[0]}`);
+    }
     let parentLink = props.printAssociatedEntryLink('parents', obj.parent);
     // let parentLink = 'lastName';
     let appointmentLinkArray = [];
@@ -23,6 +27,14 @@ function PetCard(props) {
         <div className='card-title'>
           <div>{obj.name}</div><a href='./#/parents'>{parentLink}</a>
         </div>
+        <img onClick={() => {
+          let width = event.target.style.width;
+          if (width !== '100%') {
+            event.target.style.width = '100%';
+          } else {
+            event.target.style.width = '50%';
+          }
+        }} className='pet-portrait' src={petImageSrc}></img>
         <div className='card-contents'>
           <h3>Breed: {obj.breed.join(' / ')}</h3>
           <h3>Sex: {obj.sex}</h3>
@@ -68,7 +80,8 @@ function PetCard(props) {
 
 PetCard.propTypes = {
   entryObject: PropTypes.object,
-  printAssociatedEntryLink: PropTypes.func
+  printAssociatedEntryLink: PropTypes.func,
+  expandPetPortrait: PropTypes.func
 };
 
 export default PetCard;
