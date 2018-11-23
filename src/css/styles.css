@@ -30,6 +30,25 @@ a {
   outline: none;
   border: none;
 }
+img {
+  transition: all 600ms ease;
+}
+#logo-img {
+  width: 60vmin;
+  border: 1px solid #333;
+  border-radius: 4%;
+  margin: 10%;
+  margin-top: 5%;
+  transition: all 600ms ease;
+}
+#cock {
+  background-color: green;
+}
+#logo-msg, #logo-img {
+  opacity: 0;
+  transform: scale(0);
+  transition: all 600ms ease;
+}
 ul {
   list-style-type: none;
   margin: 0;
@@ -55,7 +74,7 @@ big {
   font-weight: bold;
 }
 .smaller {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 h2 {
   margin-top: 0;
@@ -93,6 +112,16 @@ button, select {
   display: block !important;
 }
 
+/* Splash Page */
+
+#splash-page {
+  padding: 2%;
+  margin:1.5%;
+  text-align: center;
+  border-radius: 0.5rem;
+  background-color: var(--mainBg);
+}
+
 /* Header */
 
 #header {
@@ -100,7 +129,7 @@ button, select {
   color: var(--mainBg);
   font-family: Tangerine, cursive;
   font-size: 2rem;
-  padding: 3% 3% 0 3%;
+  padding: 3% 3% 0% 3%;
   display: flex;
   flex-direction: column;
 }
@@ -114,6 +143,7 @@ button, select {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 0.25rem;
 }
 #hamburger {
   text-align: center;
@@ -123,6 +153,7 @@ button, select {
   display: inline-flex;
   justify-content: center;
   cursor: pointer;
+  transform-origin: 0 0;
 }
 #admin-search-form {
   font-family: Playfair Display, serif;
@@ -140,8 +171,8 @@ button, select {
   width: 100%;
   padding: 2%;
   background-color: rgba(25, 25, 25, 1);
-  transition: all 400ms ease;
   opacity: 0;
+  transition: height 300ms ease, opacity 600ms ease;
 }
 .tiny {
   text-align: right;
@@ -181,6 +212,8 @@ button, select {
 .search-list-tab {
   font-size: 1.2rem;
   margin-right: 0.5rem;
+  opacity: 0.5;
+  pointer-events: none;
 }
 .tab-contents {
   display: inline-flex;
@@ -296,10 +329,13 @@ input[type=radio] {
 }
 
 /* CARDS */
-
+.card {
+  display: flex;
+  flex-direction: column;
+}
 .card a {
   color: blue;
-
+  
 }
 .card-title {
   box-sizing: border-box;
@@ -316,8 +352,17 @@ input[type=radio] {
   font-weight: bold;
   letter-spacing: 1px;
 }
+.pet-portrait {
+  box-sizing: border-box;
+  width: 50%;
+  margin: 0;
+  border-radius: 0;
+  border: 1px solid gray;
+  border-top: 0;
+  border-bottom: 0;
+  transition: all 250ms ease;
+}
 .card-contents {
-  position: relative;
   padding: 1.25rem 0.75rem 1.5rem 0.75rem;
   background-color: rgb(224, 219, 210);
   border-radius: 0;
@@ -393,7 +438,7 @@ input[type=radio] {
   border: 1px solid var(--innerBorderColor);
   border-radius: 0 0 0.5rem 0.5rem;
   border-top: 0;
-  padding: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem;
   background-color: rgb(228, 225, 220);
 }
 .list-body li {
