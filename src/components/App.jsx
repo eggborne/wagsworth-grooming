@@ -88,7 +88,8 @@ class App extends React.Component {
           },
           sortOptions: ['Last Name', 'Last Appt', 'Created'],
           searchParams: ['lastName'],
-          defaultSortParam: 'lastName'
+          defaultSortParam: 'lastName',
+          associatedEntries: ['petIds', 'appointments'] // ids that need to be searched in their lists
         },
         pets: {
           dbAttributes: ['name', 'breed', 'sex', 'color', 'weight', 'dob', 'vaccinationDate', 'vaccinationClinic', 'veterinarian', 'parent', 'notes',],
@@ -100,7 +101,8 @@ class App extends React.Component {
           },
           sortOptions: ['Name', 'Parent', 'Created'],
           searchParams: ['name'],
-          defaultSortParam: 'name'
+          defaultSortParam: 'name',
+          associatedEntries: ['parent', 'appointments']
         },
         appointments: {
           dbAttributes: ['employeeId', 'petId', 'date', 'startTime', 'services', 'notes',],
@@ -114,7 +116,8 @@ class App extends React.Component {
           },
           sortOptions: ['Date', 'Parent', 'Pet'],
           searchParams: ['name', 'lastName'],
-          defaultSortParam: 'date'
+          defaultSortParam: 'date',
+          associatedEntries: ['employees', 'parents', 'pets']
         },
         employees: {
           dbAttributes: ['role', 'firstName', 'lastName', 'phoneNumbers', 'email', 'upcomingApptIds', 'pastApptIds', 'schedule', 'notes'],
@@ -124,23 +127,86 @@ class App extends React.Component {
               lastName: `${selfObj.lastName}`
             };
           },
-          defaultSortParam: 'lastName'
+          defaultSortParam: 'lastName',
+          associatedEntries: ['appointments']
         }
       }
     };
+
+    this.getList(null, 'employees', 'lastName', true).then(() => {
+      this.getList(null, 'parents', 'lastName').then((response) => {
+        document.getElementsByClassName('search-list-tab')[0].style.opacity = '1';
+        document.getElementsByClassName('search-list-tab')[0].style.pointerEvents = 'all';
+      });
+    }).then(() => {
+      this.getList(null, 'pets', 'name').then((response) => {
+        document.getElementsByClassName('search-list-tab')[1].style.opacity = '1';
+        document.getElementsByClassName('search-list-tab')[1].style.pointerEvents = 'all';
+      });
+    }).then(() => {
+      this.getList(null, 'appointments', 'date').then((response) => {
+        document.getElementsByClassName('search-list-tab')[2].style.opacity = '1';
+        document.getElementsByClassName('search-list-tab')[2].style.pointerEvents = 'all';
+      });
+    });
+
     this.arrayFromMultiObjectString = this.arrayFromMultiObjectString.bind(this);
+    this.arrayFromString = this.arrayFromString.bind(this);
     this.handleChangeAscOrDesc = this.handleChangeAscOrDesc.bind(this);
     this.printEntryLink = this.printEntryLink.bind(this);
     this.addToLocalMasterList = this.addToLocalMasterList.bind(this);
     this.addToDisplayList = this.addToDisplayList.bind(this);
     this.saveNewEntryToDatabase = this.saveNewEntryToDatabase.bind(this);
     this.getList = this.getList.bind(this);
+    this.getListingByParameter = this.getListingByParameter.bind(this);
+    this.getAssociatedCalls = this.getAssociatedCalls.bind(this);
     this.handleEntryFormRequest = this.handleEntryFormRequest.bind(this);
     this.handleSubmittingNewEntry = this.handleSubmittingNewEntry.bind(this);
     this.handleSwitchSectionView = this.handleSwitchSectionView.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
     this.renderRouteJSX = this.renderRouteJSX.bind(this);
+  }
+
+  getAssociatedCalls(listType, entryObj) {
+    let assocCalls = [];
+    this.state.entryAttributes[listType].associatedEntries.forEach((idType, i) => {
+      let arr;
+      if (entryObj[idType][0] === '[') {
+        arr = this.arrayFromString(entryObj[idType]);
+      } else {
+        arr = [entryObj[idType]];
+      }
+      let list = `${idType.replace('Id', '')}`;
+      if (list === 'parent') {
+        list = 'parents';
+      }
+      arr.forEach((id, i) => {
+        let prom = new Promise((resolve, reject) => {
+          getListingByParam(list, 'id', id).then((response) => {
+            calls++;
+            console.warn('assoc getListingByParameter initiated call', calls);
+            resolve([list, response]);
+          });
+        });
+        assocCalls.push(prom);
+      });
+    });
+
+    return [entryObj, assocCalls];
+  }
+
+  getListingByParameter(listType, paramName, param) {
+    let initialCall = new Promise((resolve, reject) => {
+      getListingByParam(listType, paramName, param).then((initialEntry) => {
+        calls++;
+        console.warn('initial getListingByParameter initiated call', calls);
+        resolve(initialEntry);
+      }).catch((reason) => {
+        console.log('getListingByParameter rejected', reason);
+      });
+    });
+    return initialCall;
   }
 
   handleChangeAscOrDesc(event, sec, newSort) {
@@ -209,10 +275,6 @@ class App extends React.Component {
   }
 
   printEntryLink(type, key, callerCardObj) {
-
-    // calls on entries from array an extra time
-    // e.g. [Bobid, MegId] calls for Bob twice
-
     let output;
     if (!key) {
       // DB has empty field
@@ -220,26 +282,13 @@ class App extends React.Component {
     } else {
       // check localMasterList for associated entry
       if (!this.state.lists[type][key]) {
-        // get it from DB
-
-        getListingByParam(type, 'id', key).then((response) => {
-          if (!this.state.lists[type][response.id]) {
-            // add it to localMasterList
-            this.addToLocalMasterList(type, response.data);
-
-          }
-
-          calls++;
-          console.log(`call ${calls} called by printEntryLink for ${type} ${response.data.id}`);
-        });
-
+        // do nothing?
         return;
       } else {
         // get it from localMasterList
         let entryObj = Object.assign({}, this.state.lists[type][key]);
         output = Object.assign({}, this.state.entryAttributes)[type].miniDisplayString(entryObj);
       }
-
       if (output) {
         if (type === 'appointments') {
           if (callerCardObj && callerCardObj.name) { // came from PetCard
@@ -267,29 +316,38 @@ class App extends React.Component {
     }
   }
 
-  getList(event, listType, orderBy) {
+  getList(event, listType, orderBy, addToDisplay) {
     console.warn(`getting ${listType} list`);
     orderBy = this.state.entryAttributes[listType].defaultSortParam;
     console.warn(` ordered by ${orderBy}`);
     if (event) {
       event.preventDefault();
     }
-    getFullList(listType, orderBy).then((response) => {
-      let inc = 5;
-      response.data.map((resp) => {
-        setTimeout(() => {
+    let prom = new Promise((resolve) => {
+      getFullList(listType, orderBy).then((response) => {
+        let inc = 5;
+        response.data.map((resp, i) => {
           this.addToLocalMasterList(listType, resp);
-          this.addToDisplayList(listType, resp);
-        }, inc);
-        inc += 400;
+          setTimeout(() => {
+            if (addToDisplay) {
+              this.addToDisplayList(listType, resp);
+            }
+            if (i === response.data.length - 1) {
+              resolve(`done with ${listType} list`);
+            }
+          }, inc);
+
+          inc += 50;
+        });
+        calls++;
+        console.warn(`call ${calls} called by getList for ${listType}`);
       });
-      calls++;
-      console.log(`call ${calls} called by getList for ${listType}`);
     });
+    return prom;
   }
 
   addToLocalMasterList(listType, newEntryInput) {
-    // let newLists = { ...this.state.lists }; // eslint doesn't like this
+    console.log('ADDING ---------- ', listType, newEntryInput);
     let newLists = Object.assign({}, this.state.lists);
     for (let prop in newEntryInput) {
       let val = newEntryInput[prop];
@@ -336,15 +394,17 @@ class App extends React.Component {
     if (event) {
       event.preventDefault();
     }
-    let newOpacity = 0;
     let hamburgerStyle = document.getElementById('hamburger-container').style;
     if (!skipFade) {
       if (hamburgerStyle.opacity == 0) {
-        newOpacity = 1;
+        hamburgerStyle.transition = 'height 300ms ease, opacity 600ms ease';
+        hamburgerStyle.opacity = 1;
+        hamburgerStyle.pointerEvents = 'all';
+      } else {
+        hamburgerStyle.transition = 'height 200ms ease, opacity 100ms ease';
+        hamburgerStyle.opacity = 0;
+        hamburgerStyle.pointerEvents = 'none';
       }
-      setTimeout(() => {
-        hamburgerStyle.opacity = newOpacity;
-      });
     }
     this.setState({
       menuSummoned: !this.state.menuSummoned,
@@ -372,7 +432,68 @@ class App extends React.Component {
     return objectArray;
   }
 
+  arrayFromString(arrayString) {
+    let newArr;
+    if (arrayString[0] === '[') {
+      // cut the brackets off the start and end
+      newArr = arrayString.slice(1, arrayString.length - 1);
+      // make an array split by commas
+      newArr = newArr.split(',');
+    } else if (arrayString.length === 0) {
+      newArr = [];
+    }
+    return newArr;
+  }
+
   handleSubmitSearch(event, searchList) {
+    event.preventDefault();
+    let searchTerm = event.target[0].value.split(' ');
+    let param;
+    let searching;
+    if (searchList !== 'appointments') {
+      param = this.state.entryAttributes[searchList].searchParams[0];
+      searchTerm = searchTerm[0];
+      this.getFullListing(searchList, param, searchTerm).then((response) => {
+        this.addToDisplayList(searchList, response, true);
+      });
+    } else {
+      // must look up pet/parent names for ID to search appointments with!
+      param = this.state.entryAttributes[searchList].searchParams[0];
+      searching = searchTerm[0]; // assumed to be a pet name first
+
+
+    }
+  }
+
+  getFullListing(searchList, param, searchTerm) {
+    // adds an entry to display list
+    // adds its associated entries to master list
+    return new Promise((resolve) => {
+      this.getListingByParameter(searchList, param, searchTerm).then((initialEntry) => {
+        console.log('resolved initial entry', initialEntry.data);
+        return initialEntry;
+      }).then((initialEntry) => {
+        return this.getAssociatedCalls(searchList, initialEntry.data);
+      }).then((assocCalls) => {
+        console.log('CALLS', assocCalls);
+        let orig = assocCalls[0];
+        let callArray = assocCalls[1];
+        callArray.map((call, i) => {
+          call.then((response) => {
+            console.log('assoc', i, response[1].data);
+            this.addToLocalMasterList(response[0], response[1].data);
+            if (i === callArray.length - 1) {
+              resolve(assocCalls[0]);
+            }
+          });
+        });
+        this.addToLocalMasterList(searchList, orig);
+      });
+    });
+  }
+
+  handleSubmitSearch2(event, searchList) {
+    // console.log('search event', event.target[0])
     event.preventDefault();
     let searchTerm = event.target[0].value.split(' ');
     let param;
