@@ -1,0 +1,13 @@
+.navMenu {
+  position: fixed;
+  top: var(--header-height);
+  height: calc(var(--actual-height) - var(--header-height));
+  background-color: #aaaaaa99;
+  width: 100dvw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 200ms ease;
+}
+
