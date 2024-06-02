@@ -1,6 +1,6 @@
 .logo {
   position: relative;
-  height: 85%;
+  height: 100%;
 }
 
 .logo > img {
@@ -10,7 +10,7 @@
   height: 100%;
   width: auto;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
-  /* max-width: 80dvw; */
+  max-width: 80dvw;
 }
 
 .logo > img.monocle {

@@ -1,0 +1,20 @@
+/* SiteSection.module.css */
+.section {
+  margin: var(--main-padding);
+}
+
+.slidesContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.slide {
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.slideIcon {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+}

@@ -1,14 +1,14 @@
 import { cache } from 'react';
-import styles from "./page.module.css";
-import Logo from "@/components/Logo";
 import { database } from '../../firebase';
 import { child, get, ref } from "firebase/database";
 import NavMenu from '@/components/NavMenu';
+import {Section} from '@/types/sections';
+import SiteSection from '@/components/SiteSection';
 
-const fetchData = cache(async () => {
+const fetchData = cache(async (): Promise<Section[]> => {
   console.log('Fetching data...');
   const dbRef = ref(database);
-  let data = 'No content available';
+  let data;
 
   try {
     const snapshot = await get(child(dbRef, 'sections/'));
@@ -20,20 +20,22 @@ const fetchData = cache(async () => {
   } catch (error) {
     console.error(error);
   }
-  console.log('Data fetched');
+  console.log('--------> Data fetched');
   return data;
 });
 
 const Home = async () => {
   const data = await fetchData();
-  return (
-    <main className={styles.main}>
-      <header className={`${styles.header} ${false && styles.expanded}`}>
-        <Logo />
-      </header>
-      <NavMenu data={data} />
+  const navItems = data.map(item => ({
+    label: item.label,
+    href: item.href,
+  }));
 
-      <footer className={styles.footer}>by mikedonovan.dev</footer>
+  const currentSection = 4;
+  return (
+    <main>
+      {/* <NavMenu navItems={navItems} /> */}
+      <SiteSection section={data[currentSection]} />
     </main>
   );
 }

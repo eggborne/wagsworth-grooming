@@ -1,29 +1,26 @@
-"use client";
-
-import { useEffect } from 'react';
 import styles from "./NavMenu.module.css";
 
+interface NavMenuProps {
+  navItems:
+  {
+    label: string;
+    href: string;
+  }[];
+};
 
-const NavMenu = ({ data }: { data: any }) => {
-  useEffect(() => {
-    console.log('Client-side effect');
-  }, []);
+const NavMenu = ({ navItems }: NavMenuProps) => {
 
   return (
-    <div className={styles.navMenu}>
-      nav menu
-    
-      {data && typeof data === 'object' ? (
-        Object.entries(data).map(([key, value]) => (
-          <div key={key}>
-            <h2>{key}</h2>
-            {/* <p>{(value as { textContent: string }).textContent}</p> */}
-          </div>
+    <div className={styles.navMenu}>    
+      {
+        navItems.map(({label, href}, i) => (
+          <nav key={i}>
+            <h2>{label}</h2>
+          </nav>
         ))
-      ) : (
-        <p>{data}</p>
-      )}
+      }
     </div>
+    
   );
 };
 
