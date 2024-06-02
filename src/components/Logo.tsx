@@ -1,7 +1,5 @@
 import styles from './Logo.module.css';
 
-const basePath = 'wagnew';
-
 type LogoProps = {
   // Define any props here if needed
 };
@@ -9,10 +7,10 @@ type LogoProps = {
 const Logo = (props: LogoProps) => {
   return (
     <div className={styles.logo}>
-      <img src={basePath + "/logo/wagsworth.png"} className={styles.wagsworth} />
-      <img src={basePath + "/logo/grooming.png"} className={styles.grooming} />
-      <img src={basePath + "/logo/doghead.png"} className={styles.doghead} />
-      <img src={basePath + "/logo/monocle.png"} className={styles.monocle} />
+      <img src={"/logo/wagsworth.png"} className={styles.wagsworth} />
+      <img src={"/logo/grooming.png"} className={styles.grooming} />
+      <img src={"/logo/doghead.png"} className={styles.doghead} />
+      <img src={"/logo/monocle.png"} className={styles.monocle} />
     </div>
   );
 };

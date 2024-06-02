@@ -25,7 +25,7 @@ main {
   align-items: center;
   width: 100dvw;
   flex-grow: 1;
-  background-image: url('/wagnew/background.jpg');
+  background-image: url('/background.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

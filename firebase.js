@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -19,14 +20,18 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 // Initialize the database instance from the already initialized app
 const database = getDatabase(app);
 
+const storage = getStorage();
+
 if (process.env.NODE_ENV === 'development') {
   // Point to the RTDB emulator running on localhost.
-  console.warn('using emulator for DB')
+  console.warn('using emulator for DB and storage')
   connectDatabaseEmulator(database, "127.0.0.1", 9000);
+  connectStorageEmulator(storage, "127.0.0.1", 9000);
+  // Point to the Storage emulator.
 } 
 
 // const analytics = getAnalytics(app);
 
 console.log('Firebase initialized')
 
-export { database };
+export { database, storage };

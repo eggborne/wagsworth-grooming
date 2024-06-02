@@ -58,6 +58,7 @@ const Home = async () => {
   return (
     <main>
       <NavMenu navItems={navItems} />
+      
       {/* <SiteSection section={currentSection} /> */}
     </main>
   );
