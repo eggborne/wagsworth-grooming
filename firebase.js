@@ -1,5 +1,5 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { connectDatabaseEmulator, getDatabase } from "firebase/database";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -18,6 +18,12 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Initialize the database instance from the already initialized app
 const database = getDatabase(app);
+
+if (process.env.NODE_ENV === 'development') {
+  // Point to the RTDB emulator running on localhost.
+  console.warn('using emulator for DB')
+  connectDatabaseEmulator(database, "127.0.0.1", 9000);
+} 
 
 // const analytics = getAnalytics(app);
 

@@ -20,7 +20,7 @@ const fetchData = cache(async () => {
   } catch (error) {
     console.error(error);
   }
-  console.log('Data fetched:', data);
+  console.log('Data fetched');
   return data;
 });
 
