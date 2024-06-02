@@ -1,6 +1,9 @@
 /* SiteSection.module.css */
 .section {
+  background-color: rgba(150, 150, 132, 0.75);
   margin: var(--main-padding);
+  padding: var(--main-padding);
+  border-radius: calc(var(--main-padding) / 2);
 }
 
 .slidesContainer {

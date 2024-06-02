@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { GetStaticProps, Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Logo from "@/components/Logo";
@@ -22,8 +22,7 @@ export default function RootLayout({
           <Logo />
         </header>
         {children}
-        <footer>by mikedonovan.dev</footer>
-
+        {/* <footer>by mikedonovan.dev</footer> */}
       </body>
     </html>
   );
