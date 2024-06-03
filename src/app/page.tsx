@@ -7,25 +7,6 @@ type NavItem = {
   href: string;
 };
 
-// const fetchData = async (): Promise<Section[]> => {
-//   console.log('Fetching data...');
-//   const dbRef = ref(database);
-//   let data;
-
-//   try {
-//     const snapshot = await get(child(dbRef, 'sections/'));
-//     if (snapshot.exists()) {
-//       data = snapshot.val();
-//     } else {
-//       console.log('No data available');
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-//   console.log('--------> Data fetched');
-//   return data;
-// };
-
 async function fetchNavData(): Promise<NavItem[]> {
   const navData = [];
   const dbRef = ref(database, 'sections/');
@@ -58,7 +39,7 @@ const Home = async () => {
   return (
     <main>
       <NavMenu navItems={navItems} />
-      
+
       {/* <SiteSection section={currentSection} /> */}
     </main>
   );

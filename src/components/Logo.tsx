@@ -1,16 +1,17 @@
 import styles from './Logo.module.css';
 
 type LogoProps = {
-  // Define any props here if needed
-};
+  logoUrls: string[]
+}
 
-const Logo = (props: LogoProps) => {
+const Logo = ( { logoUrls }: LogoProps) => {
+
   return (
     <div className={styles.logo}>
-      <img src={"/logo/wagsworth.png"} className={styles.wagsworth} />
-      <img src={"/logo/grooming.png"} className={styles.grooming} />
-      <img src={"/logo/doghead.png"} className={styles.doghead} />
-      <img src={"/logo/monocle.png"} className={styles.monocle} />
+      <img src={logoUrls[0]} className={styles.doghead} />
+      <img src={logoUrls[1]} className={styles.grooming} />
+      <img src={logoUrls[2]} className={styles.monocle} />
+      <img src={logoUrls[3]} className={styles.wagsworth} />
     </div>
   );
 };

@@ -16,6 +16,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: var(--actual-height);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 main {
@@ -25,15 +29,11 @@ main {
   align-items: center;
   width: 100dvw;
   flex-grow: 1;
-  background-image: url('/background.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;;
   color: #ccc;
 }
 
-header, footer {
+header,
+footer {
   width: 100%;
   min-height: var(--header-height);
   display: flex;

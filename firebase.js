@@ -11,27 +11,24 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-  measurementId: "G-3YPJ2Z7LXL"
+  // measurementId: "G-3YPJ2Z7LXL"
 };
 
-// Ensure the app is initialized only once
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-// Initialize the database instance from the already initialized app
 const database = getDatabase(app);
-
-const storage = getStorage();
-
-if (process.env.NODE_ENV === 'development') {
-  // Point to the RTDB emulator running on localhost.
-  console.warn('using emulator for DB and storage')
-  connectDatabaseEmulator(database, "127.0.0.1", 9000);
-  connectStorageEmulator(storage, "127.0.0.1", 9000);
-  // Point to the Storage emulator.
-} 
-
+const storage = getStorage(app);
 // const analytics = getAnalytics(app);
 
-console.log('Firebase initialized')
+if (process.env.NODE_ENV === 'development') {
+  console.warn('using emulator for DB and storage')
+  connectDatabaseEmulator(database, "127.0.0.1", 9000);
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
+} 
 
-export { database, storage };
+console.log('Firebase initialized');
+
+export {
+  database,
+  storage,
+  // analytics,
+};
