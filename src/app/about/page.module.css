@@ -1,0 +1,6 @@
+.section {
+  background-color: rgba(88, 88, 78, 0.75);
+  margin: var(--main-padding);
+  padding: var(--main-padding);
+  border-radius: calc(var(--main-padding) / 2);
+}

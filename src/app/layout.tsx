@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Logo from "@/components/Logo";
-import { fetchUrlsFromStorage } from "@/scripts/db";
+import { fetchNavData, fetchUrlsFromStorage } from "@/scripts/db";
+import NavMenu from "@/components/NavMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +12,6 @@ export const metadata: Metadata = {
   description: "Professional Dog Grooming in Tualatin, Oregon",
 };
 
-const dataPromise = fetchUrlsFromStorage();
 
 export default async function RootLayout({
   children,
@@ -20,6 +20,7 @@ export default async function RootLayout({
 }>) {
   const logoUrls = await fetchUrlsFromStorage('logo');
   const backgroundImageUrl = await fetchUrlsFromStorage('/');
+  const navItems = await fetchNavData();
 
   return (
     <html lang="en">
@@ -27,6 +28,7 @@ export default async function RootLayout({
         <header>
           <Logo logoUrls={logoUrls} />
         </header>
+        <NavMenu navItems={navItems} />
         {children}
       </body>
     </html>

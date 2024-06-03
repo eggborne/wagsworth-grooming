@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./NavMenu.module.css";
 
 interface NavMenuProps {
@@ -13,9 +14,11 @@ const NavMenu = ({ navItems }: NavMenuProps) => {
   return (
     <div className={styles.navMenu}>    
       {
-        navItems.map(({label, href}, i) => (
-          <nav key={i}>
-            <h2>{label}</h2>
+        navItems.map(({label, href}) => (
+          <nav key={href}>
+            <Link href={href}>
+              {label}
+            </Link>
           </nav>
         ))
       }

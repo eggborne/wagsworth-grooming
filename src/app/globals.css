@@ -20,6 +20,7 @@ body {
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
+  color: #ccc;
 }
 
 main {
@@ -27,9 +28,8 @@ main {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100dvw;
+  /* width: 100dvw; */
   flex-grow: 1;
-  color: #ccc;
 }
 
 header,
