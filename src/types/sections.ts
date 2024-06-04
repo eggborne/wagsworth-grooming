@@ -32,30 +32,30 @@ interface Question {
 // Union type for all possible section types
 type Section =
   | {
-    href: "services";
-    label: "Services";
+    href: string;
+    label: string;
     note: Paragraph[];
     pricedServices: PricedService[];
     slides: Slide[];
   }
   | {
-    href: "about";
-    label: "About Me";
+    href: string;
+    label: string;
     textContent: Paragraph[];
   }
   | {
-    href: "requirements";
-    label: "Requirements";
+    href: string;
+    label: string;
     requirements: Requirement[];
   }
   | {
-    href: "faqs";
-    label: "FAQs";
+    href: string;
+    label: string;
     questions: Question[];
   }
   | {
-    href: "contact";
-    label: "Contact";
+    href: string;
+    label: string;
     phone: PhoneNumber;
     email: string;
     address: string[];

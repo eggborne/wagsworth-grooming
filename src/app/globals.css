@@ -5,6 +5,8 @@
   --header-height: 5rem;
   --expanded-header-height: 8rem;
   --main-padding: 1rem;
+  --logo-aspect-ratio: 600/193;
+  --hamburger-size: calc(var(--header-height) * 0.75);
 }
 
 * {
@@ -30,17 +32,30 @@ main {
   align-items: center;
   /* width: 100dvw; */
   flex-grow: 1;
+  padding-top: var(--header-height);
 }
 
 header,
 footer {
-  width: 100%;
+  width: 100vw;
   min-height: var(--header-height);
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(54, 41, 41);
+  padding:  0 2% 0 1%;
+  transition: all 300ms ease;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+header > a {
   display: flex;
   align-items: center;
-  transition: all 300ms ease;
-  background-color: brown;
-  padding: var(--main-padding);
 }
 
 .header.expanded {
@@ -48,9 +63,16 @@ footer {
 }
 
 footer {
-  min-height: unset;
-  height: 2rem;
+  min-height: 1.5rem;
+  height: 1.5rem;
   font-size: 0.75rem;
   color: #dddddd77;
   justify-content: center;
+  align-items: center;
+}
+
+.section {
+  margin: var(--main-padding) !important;
+  padding: var(--main-padding);
+  border-radius: calc(var(--main-padding) / 2);
 }

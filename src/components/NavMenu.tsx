@@ -7,15 +7,17 @@ interface NavMenuProps {
     label: string;
     href: string;
   }[];
+  open: boolean;
+  onSelect: () => void;
 };
 
-const NavMenu = ({ navItems }: NavMenuProps) => {
+const NavMenu = ({ navItems, open, onSelect }: NavMenuProps) => {
 
   return (
-    <div className={styles.navMenu}>    
+    <div className={styles.navMenu + (!open ? " " + styles.closed : "")}>    
       {
         navItems.map(({label, href}) => (
-          <nav key={href}>
+          <nav onClick={onSelect} key={href}>
             <Link href={href}>
               {label}
             </Link>

@@ -1,16 +1,22 @@
 .navMenu {
   position: fixed;
   top: var(--header-height);
+  left: 0;
   height: calc(var(--actual-height) - var(--header-height));
-  background-color: #aaaaaa99;
+  background-color: #aaaaaaef;
   width: 100dvw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   padding: 2rem 0 2rem 0;
-  transition: all 200ms ease;
+  transition: all 250ms ease;
   /* display: none; */
+}
+
+.navMenu.closed {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .navMenu a {

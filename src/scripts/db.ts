@@ -9,7 +9,7 @@ type NavItem = {
 };
 
 export const fetchSiteData = async (path: string): Promise<Section[] | Section> => {
-  console.log('Fetching ALL data...');
+  console.log('Fetching data: ', path, ' ------');
   const dbRef = ref(database);
   let data: Section[] | Section = [];
 
@@ -18,12 +18,11 @@ export const fetchSiteData = async (path: string): Promise<Section[] | Section> 
     if (snapshot.exists()) {
       data = snapshot.val();
     } else {
-      console.log('No data available');
+      console.log('No ', path, ' data available');
     }
   } catch (error) {
     console.error(error);
   }
-  console.log('type is', typeof data, 'data is', data)
   return data;
 };
 

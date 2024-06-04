@@ -1,0 +1,22 @@
+.hamburger {
+  position: relative;
+  margin-top: calc((var(--header-height) - var(--hamburger-size)) / 2);
+  width: var(--hamburger-size);
+  height: var(--hamburger-size);
+  background-color: brown;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  transition: all 250ms ease;
+}
+
+.hamburger.open > .bar {
+  background-color: #f99
+}
+
+.bar {
+  width: 80%;
+  height: 10%;
+  background-color: #ccc;
+}
