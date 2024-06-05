@@ -10,14 +10,14 @@ const Requirements = async () => {
       <h1>{'label' in sectionData && sectionData.label}</h1>
       <div className={'section ' + styles.requirementsSection}>
         {'requirements' in sectionData && sectionData.requirements.map(({headline, bodyText}, i) => (
-          <>
-            <h2>{headline}</h2>
-            <div key={i}>
+          <div key={i}>
+            <h2 className={styles.headline}>{headline}</h2>
+            <div className={styles.bodyText} key={i}>
               {bodyText.map((text, i) => (
                 <p key={i}>{text}</p>
               ))}
             </div>
-          </>
+          </div>
         ))}
       </div>
     </main>

@@ -1,3 +1,11 @@
 .requirementsSection {
-  background-color: rgba(88, 88, 78, 0.75);
+  background-color: rgba(88, 88, 78, 0.85);
+}
+
+.headline {
+  color: #eee;
+}
+
+.bodyText {
+  padding: 0 0.25rem;
 }

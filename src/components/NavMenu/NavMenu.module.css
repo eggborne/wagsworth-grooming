@@ -1,0 +1,65 @@
+.navMenu {
+  position: fixed;
+  height: calc(var(--actual-height) - var(--header-height));
+  left: 0;
+  top: var(--header-height);
+  background-color: var(--header-color);
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  transition: all 250ms ease;
+}
+
+.navMenu.closed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navMenu > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--bone-height) + (var(--bone-knob-size) / 6));
+  flex-grow: 1;
+  padding: 2rem 0;
+}
+
+.navMenu a {
+  text-decoration: none;
+  font-size: 1.35rem;
+  font-family: 'Berkshire Swash', sans-serif;
+}
+
+.socialLabel {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+  font-size: 1rem;
+  padding-top: 3%;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+  padding: 1%;
+}
+
+.socialLinks img {
+  height: var(--social-button-size);
+  aspect-ratio: 1;
+}
+
+.navFooter, .navFooter a {
+  /* font-size: 0.75rem;
+  color: #dddddd77;
+  font-weight: normal; */
+}
+
+.navFooter a {
+  
+}

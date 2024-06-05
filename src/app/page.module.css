@@ -1,0 +1,13 @@
+.landingPage {
+  margin-top: var(--expanded-header-height);
+  padding: 3rem 0;
+  display: flex;
+}
+
+.gallery {
+  max-width: 70dvw;
+}
+
+.gallery img {
+  width: 33%;
+}

@@ -25,7 +25,7 @@ interface Requirement {
 }
 
 interface Question {
-  question: string | string[]; // Allow for single or multi-line questions
+  question: string;
   answer: Paragraph[];
 }
 

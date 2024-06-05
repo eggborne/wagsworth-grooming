@@ -1,7 +1,7 @@
 import styles from './Logo.module.css';
 
 type LogoProps = {
-  logoUrls: string[]
+  logoUrls: string[],
 }
 
 const Logo = ( { logoUrls }: LogoProps) => {

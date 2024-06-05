@@ -9,13 +9,16 @@ const Services = async () => {
   return (
     <main>
       <h1>{'label' in sectionData && sectionData.label}</h1>
+      <blockquote className={styles.note}>
+        Note: {'note' in sectionData && sectionData.note}
+      </blockquote>
       <div className={styles.slidesContainer}>
         {'slides' in sectionData && sectionData.slides.map((slide, s) => (
           <div
             key={slide.headline}
             className={styles.slide}
           >
-            <h3>{slide.headline}</h3>
+            <h2>{slide.headline}</h2>
             <img src={iconUrls[s === 0 ? 1 : 0]} alt={slide.headline} className={styles.slideIcon} />
             <ul>
               {slide.textContent.map((text, index) => (

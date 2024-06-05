@@ -1,8 +1,8 @@
 .logo {
   position: relative;
   margin-left: 2%;
-  height: 75%;
-  /* aspect-ratio: var(--logo-aspect-ratio); */
+  height: 70%;
+  aspect-ratio: var(--logo-aspect-ratio);
 }
 
 .logo > img {
@@ -18,4 +18,3 @@
 .logo > img.monocle {
   filter: invert();
 }
-

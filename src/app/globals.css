@@ -1,28 +1,87 @@
 @import 'normalize.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 :root {
   --actual-height: 100dvh;
-  --header-height: 5rem;
+  --screen-ratio: calc(100vw / var(--actual-height));
+  --header-height: 4rem;
   --expanded-header-height: 8rem;
   --main-padding: 1rem;
   --logo-aspect-ratio: 600/193;
-  --hamburger-size: calc(var(--header-height) * 0.75);
+  --hamburger-size: calc(var(--header-height) * 0.7);
+  --nav-space-y: calc(var(--actual-height) - (var(--header-height) * 2.5));
+  --social-button-size: calc(var(--actual-height) / 20);
+
+  --knob-divisor: 16;
+
+  --bone-height: calc(var(--nav-space-y) / 12);
+  --bone-knob-size: calc((var(--nav-space-y) / var(--knob-divisor)) + (var(--bone-height) / 4));
+  --bone-knob-offset-x: calc(var(--bone-height) / -16);
+  --bone-knob-offset-y: calc(var(--bone-height) / -24);
+  --bone-color: #ced2a6;
+  --bone-highlight-color: white;
+  --nav-link-color: #1b1717;
+  --header-color: #1e1e1e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+
+  --off-white: #e6e6e6;
+  --off-black: #191919;
+
+  --text-stroke:
+    0.035em -0.035em #000000,
+    0.035em -0.015em #000000,
+    0.035em 0 #000000,
+    0.035em 0.015em #000000,
+    0.035em 0.035em #000000,
+
+    0 -0.035em #000000,
+    0 -0.015em #000000,
+    0 0 #000000,
+    0 0.015em #000000,
+    0 0.035em #000000,
+
+    -0.035em -0.035em #000000,
+    -0.035em -0.015em #000000,
+    -0.035em 0 #000000,
+    -0.035em 0.015em #000000,
+    -0.035em 0.035em #000000,
+    0 0 0.05em black
+  ;
 }
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Berkshire Swash', sans-serif;
+  font-size: 2.5rem !important;
+  font-weight: normal;
+  text-shadow: var(--text-stroke);
+  letter-spacing: 0.025em;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: var(--actual-height);
+  width: 100%;
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-position: center center;
+  background-size: auto 100%;
   background-attachment: fixed;
-  color: #ccc;
+  color: var(--off-white);
+  overscroll-behavior: none;
 }
 
 main {
@@ -30,7 +89,7 @@ main {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* width: 100dvw; */
+  width: 100dvw;
   flex-grow: 1;
   padding-top: var(--header-height);
 }
@@ -42,15 +101,15 @@ footer {
   height: var(--header-height);
   display: flex;
   justify-content: space-between;
-  background-color: rgb(54, 41, 41);
-  padding:  0 2% 0 1%;
-  transition: all 300ms ease;
+  background-color: var(--header-color);
 }
 
 header {
   position: fixed;
   top: 0;
   left: 0;
+  padding:  0 2% 0 1%;
+  transition: all 250ms ease;
 }
 
 header > a {
@@ -58,21 +117,31 @@ header > a {
   align-items: center;
 }
 
-.header.expanded {
+header.expanded {
   height: var(--expanded-header-height);
+  background-color: transparent;
 }
 
 footer {
   min-height: 1.5rem;
   height: 1.5rem;
-  font-size: 0.75rem;
-  color: #dddddd77;
   justify-content: center;
   align-items: center;
+  font-size: 0.75rem !important;
+  color: #dddddd77;
+  white-space: pre;
+}
+
+footer > a {
+  font-size: inherit !important;
+  font-weight: bold !important;
+  color: #ffffff88;
+  font-family: sans-serif !important;
+  text-decoration: none;
 }
 
 .section {
   margin: var(--main-padding) !important;
-  padding: var(--main-padding);
+  padding: calc(var(--main-padding) / 2) var(--main-padding);
   border-radius: calc(var(--main-padding) / 2);
 }
