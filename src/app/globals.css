@@ -17,8 +17,8 @@
   --bone-knob-size: calc((var(--nav-space-y) / var(--knob-divisor)) + (var(--bone-height) / 4));
   --bone-knob-offset-x: calc(var(--bone-height) / -16);
   --bone-knob-offset-y: calc(var(--bone-height) / -24);
-  --bone-color: #ced2a6;
-  --bone-highlight-color: white;
+  --bone-color: #8d8d7f;
+  --bone-highlight-color: rgb(138, 176, 110);
   --nav-link-color: #1b1717;
   --header-color: #1e1e1e;
   -webkit-font-smoothing: antialiased;
@@ -26,7 +26,7 @@
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-size: 1rem;
 
-  --off-white: #e6e6e6;
+  --off-white: #e4e4e4;
   --off-black: #191919;
 
   --text-stroke:

@@ -53,13 +53,3 @@
   height: var(--social-button-size);
   aspect-ratio: 1;
 }
-
-.navFooter, .navFooter a {
-  /* font-size: 0.75rem;
-  color: #dddddd77;
-  font-weight: normal; */
-}
-
-.navFooter a {
-  
-}
