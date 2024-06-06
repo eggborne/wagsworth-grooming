@@ -8,13 +8,11 @@
 
 .answer {
   padding: 0 0.25rem;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 250ms ease;
+  overflow-y: hidden;
+  max-height: 0px;
+  transition: all 400ms ease !important;
 }
 
 .questionSet.expanded > .answer {
-  max-height: 20rem;
-  opacity: 1;
-  transition: max-height 250ms ease;
+  max-height: 40rem;
 }

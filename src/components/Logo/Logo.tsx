@@ -4,14 +4,18 @@ type LogoProps = {
   logoUrls: string[],
 }
 
-const Logo = ( { logoUrls }: LogoProps) => {
-
+const Logo = ({ logoUrls }: LogoProps) => {
+  console.log('Logo rendered');
   return (
     <div className={styles.logo}>
-      <img src={logoUrls[0]} className={styles.doghead} />
-      <img src={logoUrls[1]} className={styles.grooming} />
-      <img src={logoUrls[2]} className={styles.monocle} />
-      <img src={logoUrls[3]} className={styles.wagsworth} />
+      {logoUrls &&
+        <>
+          <img src={logoUrls[0]} className={styles.doghead} />
+          <img src={logoUrls[1]} className={styles.grooming} />
+          <img src={logoUrls[2]} className={styles.monocle} />
+          <img src={logoUrls[3]} className={styles.wagsworth} />
+        </>
+      }
     </div>
   );
 };

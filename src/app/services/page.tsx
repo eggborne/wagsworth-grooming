@@ -1,10 +1,14 @@
-import { fetchSiteData, fetchUrlsFromStorage } from "@/scripts/db";
+import { fetchSiteData, fetchUrlsFromStorage } from "../../../firebase";
 import styles from "./page.module.css";
 
 const Services = async () => {
 
-  const sectionData = await fetchSiteData('sections/0');
-  const iconUrls = await fetchUrlsFromStorage('icons');
+  const [sectionData, iconUrls] = await Promise.all([
+    fetchSiteData('sections/0'),
+    fetchUrlsFromStorage('icons')
+  ]);
+  const groomUrl = iconUrls[3];
+  const bathUrl = iconUrls[0];
 
   return (
     <main>
@@ -19,7 +23,7 @@ const Services = async () => {
             className={styles.slide}
           >
             <h2>{slide.headline}</h2>
-            <img src={iconUrls[s === 0 ? 1 : 0]} alt={slide.headline} className={styles.slideIcon} />
+            <img src={s === 0 ? groomUrl : bathUrl} alt={slide.headline} className={styles.slideIcon} />
             <ul>
               {slide.textContent.map((text, index) => (
                 <li key={index}>{text}</li>

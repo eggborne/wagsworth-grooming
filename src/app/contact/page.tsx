@@ -1,7 +1,7 @@
-import { fetchSiteData } from "@/scripts/db";
+import { fetchSiteData } from "../../../firebase";
 import styles from "./page.module.css";
 
-const About = async () => {
+const Contact = async () => {
 
   const sectionData = await fetchSiteData('sections/4');
 
@@ -23,4 +23,4 @@ const About = async () => {
   );
 }
 
-export default About;
+export default Contact;

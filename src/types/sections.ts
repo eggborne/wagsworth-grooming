@@ -67,4 +67,19 @@ interface WagsworthData {
   style: Record<string, unknown>; // Placeholder for potential style data
 }
 
-export type { WagsworthData, Section };
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+type FirebaseData = {
+  uiUrls: string[],
+  sections: Section[] | Section,
+  navItems: NavItem[],
+  logoUrls: string[],
+  iconUrls: string[],
+  socialItems: string[],
+}
+
+
+export type { WagsworthData, Section, NavItem, FirebaseData };

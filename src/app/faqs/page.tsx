@@ -1,4 +1,4 @@
-import { fetchSiteData } from "@/scripts/db";
+import { fetchSiteData } from "../../../firebase";
 import styles from "./page.module.css";
 import QuestionSet from "@/components/QuestionSet/QuestionSet";
 

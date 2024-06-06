@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { fetchNavData, fetchUrlsFromStorage } from "@/scripts/db";
 import Header from "@/components/Header.client";
+import { getAllSiteData } from "../../firebase";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
   description: "Professional Dog Grooming in Tualatin, Oregon",
+  themeColor: "green",
+
 };
 
+// export const revalidate = false
 
 export default async function RootLayout({
   children,
@@ -15,19 +18,22 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const logoUrls = await fetchUrlsFromStorage('logo');
-  const uiUrls = await fetchUrlsFromStorage('ui');
-  const socialItems = await fetchUrlsFromStorage('icons/social');
-  const backgroundImageUrl = uiUrls.find((url) => url.includes('background'));
-  const navItems = await fetchNavData();
+  const siteData = await getAllSiteData();
+
+  const backgroundImageUrl = siteData.uiUrls.find((url) => url.includes('background'));
+
+  console.log('Layout rendering!!!!')
 
   return (
     <html lang="en">
       <body style={{
         backgroundImage: `url(${backgroundImageUrl}`,
-        opacity: '0',
       }}>
-        <Header logoUrls={logoUrls} navItems={navItems} socialItems={socialItems} />
+        <Header
+          logoUrls={siteData.logoUrls}
+          navItems={siteData.navItems}
+          socialItems={siteData.socialItems}
+        />
         {children}
         <footer>{`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a></footer>
       </body>

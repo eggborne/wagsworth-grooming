@@ -1,13 +1,10 @@
 import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
+import { NavItem } from "@/types/sections";
 
 interface NavMenuProps {
-  navItems:
-  {
-    label: string;
-    href: string;
-  }[];
+  navItems: NavItem[];
   socialItems: string[];
   open: boolean;
   selectedNavItem: string;
@@ -15,7 +12,7 @@ interface NavMenuProps {
 };
 
 const NavMenu = ({ navItems, socialItems, open, selectedNavItem, onSelect }: NavMenuProps) => {
-
+  console.log('navMenu rendered')
   return (
     <nav className={styles.navMenu + (!open ? " " + styles.closed : "")}>
       <ul>

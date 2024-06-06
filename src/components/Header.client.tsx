@@ -19,7 +19,6 @@ type HeaderProps = {
 
 const Header = ({ logoUrls, navItems, socialItems }: HeaderProps) => {
   const pathname = usePathname();
-  
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState(pathname);
   const [largeLogo, setLargeLogo] = useState(pathname === '/');
@@ -34,15 +33,27 @@ const Header = ({ logoUrls, navItems, socialItems }: HeaderProps) => {
 
   useEffect(() => {
     onSelectNavItem(pathname);
-  }, [pathname])
+  }, [pathname]);
+
+  useEffect(() => {
+    console.log('adding BG');
+    document.body.style.opacity = '1';
+  }, []);
+
 
   return (
     <header className={(largeLogo && !menuOpen) ? 'expanded' : ''} >
       <Link onClick={() => onSelectNavItem('/')} href='/'>
-        <Logo logoUrls={logoUrls} />
+        <Logo logoUrls={logoUrls}/>
       </Link>
       <Hamburger onClick={toggleMenu} open={menuOpen} />
-      <NavMenu onSelect={onSelectNavItem} navItems={navItems} socialItems={socialItems} open={menuOpen} selectedNavItem={selectedNavItem} />
+      <NavMenu
+        navItems={navItems}
+        socialItems={socialItems}
+        onSelect={onSelectNavItem}
+        open={menuOpen}
+        selectedNavItem={selectedNavItem}
+      />
     </header>
   );
 };
