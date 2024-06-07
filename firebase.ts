@@ -1,7 +1,7 @@
-import { FirebaseData, NavItem, Section } from "@/types/sections";
+import { FirebaseData, FirebaseInitialData, NavItem, Section } from "@/types/sections";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { child, connectDatabaseEmulator, get, getDatabase, ref } from "firebase/database";
-import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage';
+import { StorageReference, getDownloadURL, getMetadata, listAll, ref as storageRef } from 'firebase/storage';
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 // import { getAnalytics } from "firebase/analytics";
 
@@ -37,11 +37,11 @@ if (process.env.NODE_ENV === 'development') {
   connectStorageEmulator(storage, "127.0.0.1", 9199);
 }
 
-const fetchSiteData = async (path: string): Promise<Section[] | Section> => {
-  console.log('------ fetchSiteData Fetching section data: ', path, ' ------');
+const fetchSectionData = async (path: string): Promise<Section> => {
+  console.log('------ fetchSectionData Fetching section data: ', path, ' ------');
   const startTime = Date.now();
   const dbRef = ref(database);
-  let data: Section[] = [];
+  let data;
 
   try {
     const snapshot = await get(child(dbRef, path));
@@ -107,38 +107,60 @@ const fetchUrlsFromStorage = async (dir?: string | null): Promise<string[]> => {
   }
 };
 
-const getAllSiteData = async (): Promise<FirebaseData> => {
-  // Initiate all data fetching promises simultaneously
-  console.log('------ getAllSiteData Fetching all data ------');
+const fetchImageData = async (dir: string) => {
+  console.log(dir, ' ------ fetchImageData Fetching from Storage ------ ');
   const startTime = Date.now();
-  const [uiUrls, sections, navItems, logoUrls, iconUrls, socialItems] = await Promise.all([
-    fetchUrlsFromStorage("ui"),
-    fetchSiteData("sections"),
+  const listRef = storageRef(storage, dir);
+  try {
+    const res = await listAll(listRef);
+
+    const urlPromises = res.items.map(async (itemRef) => {
+      const fileName = itemRef.fullPath.split('/').pop()?.split('.')[0];
+      const path = itemRef.fullPath.split('/').slice(0, -1).join('/');
+      const url = await getDownloadURL(itemRef);
+      return {
+        path,
+        fileName,
+        url,
+      }
+    });
+
+    const imageDataArray = await Promise.all(urlPromises);
+    console.log(imageDataArray.length, 'fetched from', dir, 'in', Date.now() - startTime, 'ms');
+    return imageDataArray;
+  } catch (error) {
+    console.error("Error fetching image URLs:", error);
+    return [];
+  }
+};
+
+const getInitialSiteData = async (): Promise<FirebaseInitialData> => {
+  console.log('------ getInitialSiteData Fetching data ------');
+  const startTime = Date.now();
+  const [uiImages, logoImages, socialImages, navItems] = await Promise.all([
+    fetchImageData('/ui'),
+    fetchImageData('logo'),
+    fetchImageData('icons/social'),
     fetchNavData(),
-    fetchUrlsFromStorage("logo"),
-    fetchUrlsFromStorage("icons"),
-    fetchUrlsFromStorage("icons/social"),
   ]);
 
-  console.log('- Time taken to fetch all data: ---------------->', Date.now() - startTime, 'ms')
-
-  const siteData: FirebaseData = {
-    uiUrls,
-    sections,
+  console.log('- Time taken to getInitialSiteData: ---------------->', Date.now() - startTime, 'ms');
+  const initialData: FirebaseInitialData = {
+    uiImages,
+    logoImages,
+    socialImages,
     navItems,
-    logoUrls,
-    iconUrls,
-    socialItems,
   };
 
-  return siteData;
+  return initialData;
 };
 
 export {
   database,
   storage,
-  getAllSiteData,
-  fetchSiteData,
+  getInitialSiteData,
+  fetchSectionData,
   fetchUrlsFromStorage,
+  fetchImageData,
   // analytics,
 };

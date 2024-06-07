@@ -1,21 +1,18 @@
-import { fetchSiteData, fetchUrlsFromStorage } from "../../../firebase";
+import { fetchImageData, fetchSectionData } from "../../../firebase";
 import styles from "./page.module.css";
 
 const Services = async () => {
 
   const [sectionData, iconUrls] = await Promise.all([
-    fetchSiteData('sections/0'),
-    fetchUrlsFromStorage('icons')
+    fetchSectionData('sections/0'),
+    fetchImageData('icons'),
   ]);
-  const groomUrl = iconUrls[3];
-  const bathUrl = iconUrls[0];
+  const groomUrl = iconUrls.filter(icon => icon.fileName === 'scissors')[0].url;
+  const bathUrl = iconUrls.filter(icon => icon.fileName === 'bath')[0].url;
 
   return (
     <main>
-      <h1>{'label' in sectionData && sectionData.label}</h1>
-      <blockquote className={styles.note}>
-        Note: {'note' in sectionData && sectionData.note}
-      </blockquote>
+      <h1>{sectionData.label}</h1>
       <div className={styles.slidesContainer}>
         {'slides' in sectionData && sectionData.slides.map((slide, s) => (
           <div
@@ -32,14 +29,19 @@ const Services = async () => {
           </div>
         ))}
       </div>
-      <h3>A la Carte Services</h3>
-      <ul>
-        {'pricedServices' in sectionData && sectionData.pricedServices.map((service) => (
-          <li key={service.name}>
-            {service.name}: ${service.price.toFixed(2)}
-          </li>
-        ))}
-      </ul>
+      <blockquote className={styles.note}>
+        Note: {'note' in sectionData && sectionData.note}
+      </blockquote>
+      <div className={styles.alaCartArea}>
+        <h2>A la Carte Services</h2>
+        <ul>
+          {'pricedServices' in sectionData && sectionData.pricedServices.map((service) => (
+            <li key={service.name}>
+              {service.name}: ${service.price}
+            </li>
+          ))}
+        </ul>
+      </div>
     </main>
   );
 }

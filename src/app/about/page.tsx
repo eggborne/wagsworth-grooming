@@ -1,17 +1,16 @@
-import { FirebaseData, Section } from "@/types/sections";
+import { fetchSectionData } from "../../../firebase";
 import styles from "./page.module.css";
-import { fetchSiteData } from "../../../firebase";
 
 const About = async () => {
 
-  const sectionData = await fetchSiteData('/sections/1')
+  const sectionData = await fetchSectionData('/sections/1')
 
   return (
     <main>
-      <h1>{'label' in sectionData && sectionData.label}</h1>
+      <h1>{sectionData.label}</h1>
       <div className={'section ' + styles.aboutSection}>
-        {'textContent' in sectionData && sectionData.textContent.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
+        {'textContent' in sectionData && sectionData.textContent.map((paragraph, i) => (
+          <p key={i}>{paragraph}</p>
         ))}
       </div>
     </main>

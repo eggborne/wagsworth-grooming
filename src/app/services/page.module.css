@@ -1,12 +1,3 @@
-.note {
-  background-color: rgb(82, 43, 43);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin: 1.5rem;
-  margin-top: 0;
-  font-style: italic;
-  color: #bbb;
-}
 
 .slidesContainer {
   display: flex;
@@ -32,4 +23,16 @@
   width: 5rem;
   height: 5rem;
   margin-bottom: 0.5rem;
+}
+
+.alaCartArea {
+  background: rgba(142, 38, 38, 0.297);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.alaCartArea ul {
+  font-size: 1.2rem;
 }

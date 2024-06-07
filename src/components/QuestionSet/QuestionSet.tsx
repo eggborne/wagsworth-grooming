@@ -13,7 +13,10 @@ const QuestionSet = ({ question, answer, key }: QuestionSetProps) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={styles.questionSet + ' ' + (expanded ? styles.expanded : '')} key={key} onClick={() => setExpanded(!expanded)}>
-      <h2 className={styles.question}>{question}</h2>
+      <div className={styles.questionContainer}>
+        <h2 className={styles.question}>{question}</h2>
+        <button className={styles.expandButton}>△</button>
+      </div>
       <div className={styles.answer}>
         {answer.map((text, i) => (
           <p key={i}>{text}</p>

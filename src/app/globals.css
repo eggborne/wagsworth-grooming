@@ -81,14 +81,14 @@ body {
   height: var(--actual-height);
   width: 100%;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center;
   background-size: auto 100%;
   background-attachment: fixed;
   color: var(--off-white);
   overscroll-behavior: none;
 
-  opacity: 0;
-  transition: opacity 400ms ease;
+  /* opacity: 0;
+  transition: opacity 400ms ease; */
 }
 
 main {
@@ -109,6 +109,7 @@ footer {
   display: flex;
   justify-content: space-between;
   background-color: var(--header-color);
+  z-index: 1;
 }
 
 header {
@@ -151,4 +152,14 @@ footer > a {
   margin: var(--main-padding) !important;
   padding: calc(var(--main-padding) / 2) var(--main-padding);
   border-radius: calc(var(--main-padding) / 2);
+}
+
+blockquote {
+  background-color: rgb(82, 43, 43);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1.5rem;
+  margin-top: 0;
+  font-style: italic;
+  color: #bbb;
 }

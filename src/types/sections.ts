@@ -61,25 +61,38 @@ type Section =
     address: string[];
   };
 
+type NavItem = {
+  label: string,
+  href: string,
+};
+
+type ImageData = {
+  path: string,
+  fileName?: string,
+  url: string,
+};
+
+type FirebaseData = {
+  imageUrls: {
+    path: string,
+    fileName?: string,
+    url: string,
+  }[],
+  sections: Section[] | Section,
+  navItems: NavItem[],
+}
+
+type FirebaseInitialData = {
+  uiImages: ImageData[],
+  logoImages: ImageData[],
+  socialImages: ImageData[],
+  navItems: NavItem[],
+}
+
 // Type for the overall data structure
 interface WagsworthData {
   sections: Section[];
   style: Record<string, unknown>; // Placeholder for potential style data
 }
 
-type NavItem = {
-  label: string;
-  href: string;
-};
-
-type FirebaseData = {
-  uiUrls: string[],
-  sections: Section[] | Section,
-  navItems: NavItem[],
-  logoUrls: string[],
-  iconUrls: string[],
-  socialItems: string[],
-}
-
-
-export type { WagsworthData, Section, NavItem, FirebaseData };
+export type { WagsworthData, Section, NavItem, FirebaseInitialData, ImageData, FirebaseData };

@@ -1,8 +1,39 @@
 .questionSet {
   cursor: pointer;
+  margin: 1rem;
+  background-color: salmon;
+  margin: var(--main-padding) !important;
+  padding: calc(var(--main-padding) / 2) var(--main-padding);
+  border-radius: calc(var(--main-padding) / 2);
+  background-color: rgba(88, 88, 78, 0.85);
+}
+
+.questionContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .question {
+  color: #eee;
+  font-size: 1.25rem;
+}
+
+.expandButton {
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  background-color: transparent;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center 60%;
+  transform: scaleY(-1);
+  transition: all 250ms ease !important;
   color: #eee;
 }
 
@@ -15,4 +46,10 @@
 
 .questionSet.expanded > .answer {
   max-height: 40rem;
+}
+
+.questionSet.expanded .expandButton {
+  /* transform: rotate(180deg); */
+  transform: scaleY(1);
+  color: rgb(252, 143, 143);
 }

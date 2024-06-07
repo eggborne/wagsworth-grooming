@@ -6,18 +6,15 @@ import NavMenu from "./NavMenu/NavMenu";
 import Hamburger from "./Hamburger/Hamburger";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { ImageData, NavItem } from "@/types/sections";
 
 type HeaderProps = {
-  logoUrls: string[],
-  navItems:
-  {
-    label: string;
-    href: string;
-  }[],
-  socialItems: string[],
+  logoImages: ImageData[],
+  navItems: NavItem[],
+  socialImages: ImageData[],
 };
 
-const Header = ({ logoUrls, navItems, socialItems }: HeaderProps) => {
+const Header = ({ logoImages, navItems, socialImages }: HeaderProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState(pathname);
@@ -44,12 +41,12 @@ const Header = ({ logoUrls, navItems, socialItems }: HeaderProps) => {
   return (
     <header className={(largeLogo && !menuOpen) ? 'expanded' : ''} >
       <Link onClick={() => onSelectNavItem('/')} href='/'>
-        <Logo logoUrls={logoUrls}/>
+        <Logo logoImages={logoImages}/>
       </Link>
       <Hamburger onClick={toggleMenu} open={menuOpen} />
       <NavMenu
         navItems={navItems}
-        socialItems={socialItems}
+        socialImages={socialImages}
         onSelect={onSelectNavItem}
         open={menuOpen}
         selectedNavItem={selectedNavItem}
