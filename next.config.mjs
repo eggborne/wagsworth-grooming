@@ -10,6 +10,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com', // Add Firebase Storage domain
+      },
+      {
+        protocol: 'https',
         hostname: '**.wagsworth-editor.appspot.com', // Allow Firebase Storage URLs
       },
     ],
