@@ -33,7 +33,7 @@ const Header = ({ logoImages, navItems, socialImages }: HeaderProps) => {
   }, [pathname]);
 
   useEffect(() => {
-    console.log('adding BG');
+    console.log('adding opacity to body');
     document.body.style.opacity = '1';
   }, []);
 

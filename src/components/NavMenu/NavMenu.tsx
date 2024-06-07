@@ -2,6 +2,7 @@ import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
 import { ImageData, NavItem } from "@/types/sections";
+import Image from "next/image";
 
 interface NavMenuProps {
   navItems: NavItem[];
@@ -30,7 +31,7 @@ const NavMenu = ({ navItems, socialImages, open, selectedNavItem, onSelect }: Na
       <div className={styles.socialLinks}>
         {socialImages.map((item, i) => (
           <a key={i} href={'#'}>
-            <img src={item.url} alt='' />
+            <Image fill src={item.url} alt='' />
           </a>
         ))}
       </div>

@@ -9,7 +9,7 @@
 }
 
 .slide {
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
   background-color: rgba(198, 198, 185, 0.85);
   display: flex;
@@ -17,12 +17,20 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.slide > h2 {
+  font-family: 'Berkshire Swash';
+  font-size: 2.25rem;
+  font-weight: normal;
 }
 
 .slideIcon {
+  position: relative;
   width: 5rem;
   height: 5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .alaCartArea {

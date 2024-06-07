@@ -9,7 +9,7 @@
   --logo-aspect-ratio: 600/193;
   --hamburger-size: calc(var(--header-height) * 0.7);
   --nav-space-y: calc(var(--actual-height) - (var(--header-height) * 2.5));
-  --social-button-size: calc(var(--actual-height) / 20);
+  --social-button-size: calc(var(--nav-space-y) / 12);
 
   --knob-divisor: 16;
 
@@ -26,7 +26,7 @@
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-size: 1rem;
 
-  --off-white: #e4e4e4;
+  --off-white: #dddddd;
   --off-black: #191919;
 
   --text-stroke:
@@ -54,6 +54,7 @@
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 
 ul {
@@ -72,23 +73,24 @@ h1 {
 }
 
 html {
-  background-color: black;
+  /* background-color: var(--off-black); */
 }
 
 body {
   display: flex;
   flex-direction: column;
-  height: var(--actual-height);
+  min-height: var(--actual-height);
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: auto 100%;
+  background-size: cover;
   background-attachment: fixed;
+  background-color: var(--off-black);
   color: var(--off-white);
-  overscroll-behavior: none;
 
-  /* opacity: 0;
-  transition: opacity 400ms ease; */
+  font-size: 1.15rem;
+  opacity: 0;
+  transition: all 250ms ease;
 }
 
 main {

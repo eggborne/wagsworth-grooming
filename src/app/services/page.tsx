@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { fetchImageData, fetchSectionData } from "../../../firebase";
 import styles from "./page.module.css";
 
@@ -20,7 +21,9 @@ const Services = async () => {
             className={styles.slide}
           >
             <h2>{slide.headline}</h2>
-            <img src={s === 0 ? groomUrl : bathUrl} alt={slide.headline} className={styles.slideIcon} />
+            <div className= {styles.slideIcon}>
+              <Image fill src={s === 0 ? groomUrl : bathUrl} alt={slide.headline} />
+            </div>
             <ul>
               {slide.textContent.map((text, index) => (
                 <li key={index}>{text}</li>
