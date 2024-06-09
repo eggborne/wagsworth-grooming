@@ -9,7 +9,7 @@ const fetchPageData = async (path: string): Promise<Section> => {
   const pageData = await fetch(
     `${DB_ROOT}${path}.json`,
     {
-      next: { revalidate: 60 },
+      next: { revalidate: false },
     }
   );
   const data = await pageData.json();
@@ -21,7 +21,7 @@ const fetchNavList = async (): Promise<NavItem[]> => {
   const shallowSiteData = await fetch(
     `${DB_ROOT}sections.json?shallow=true`,
     {
-      next: { revalidate: 60 },
+      next: { revalidate: false },
     }
   );
   const navData: NavItem[] = [];
