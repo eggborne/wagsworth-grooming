@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { fetchImageData, fetchSectionData } from "../../../firebase";
+import { fetchImageData } from "../../../firebase";
+import { fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 
 const Services = async () => {
 
   const [sectionData, iconUrls] = await Promise.all([
-    fetchSectionData('sections/0'),
+    fetchPageData('sections/services'),
     fetchImageData('icons'),
   ]);
   const groomUrl = iconUrls.filter(icon => icon.fileName === 'scissors')[0].url;

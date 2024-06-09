@@ -7,6 +7,7 @@ import Hamburger from "./Hamburger/Hamburger";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ImageData, NavItem } from "@/types/sections";
+import { fetchNavList } from "@/scripts/db";
 
 type HeaderProps = {
   logoImages: ImageData[],
@@ -29,18 +30,19 @@ const Header = ({ logoImages, navItems, socialImages }: HeaderProps) => {
   };
 
   useEffect(() => {
-    onSelectNavItem(pathname);
-  }, [pathname]);
-
-  useEffect(() => {
     console.log('adding opacity to body');
     document.body.style.opacity = '1';
   }, []);
 
+  useEffect(() => {
+    onSelectNavItem(pathname);
+  }, [pathname]);
+
+
 
   return (
     <header className={(largeLogo && !menuOpen) ? 'expanded' : ''} >
-      <Link onClick={() => onSelectNavItem('/')} href='/'>
+      <Link href='/'>
         <Logo logoImages={logoImages}/>
       </Link>
       <Hamburger onClick={toggleMenu} open={menuOpen} />

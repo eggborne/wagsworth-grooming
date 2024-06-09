@@ -13,7 +13,9 @@ interface NavMenuProps {
 };
 
 const NavMenu = ({ navItems, socialImages, open, selectedNavItem, onSelect }: NavMenuProps) => {
-  console.log('navMenu rendered')
+  console.log('bav items-------------------------', navItems)
+  
+  
   return (
     <nav className={styles.navMenu + (!open ? " " + styles.closed : "")}>
       <ul>

@@ -1,23 +1,24 @@
 .landingPage {
-  margin-top: var(--expanded-header-height);
-  padding: 3rem 0;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery {
-  max-width: 70dvw;
+  max-width: 80dvw;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 2%;
 }
 
 .galleryImage {
-  width: 30%;
+  position: relative;
+  width: 6rem;
+  height: 10rem;
 }
 
-.galleryImage img {
-  width: 100%;
-  height: 100%;
+.galleryImage > img {
   object-fit: cover;
-
 }

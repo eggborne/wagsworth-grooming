@@ -86,7 +86,6 @@ type FirebaseInitialData = {
   uiImages: ImageData[],
   logoImages: ImageData[],
   socialImages: ImageData[],
-  navItems: NavItem[],
 }
 
 // Type for the overall data structure

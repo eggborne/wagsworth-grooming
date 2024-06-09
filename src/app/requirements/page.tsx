@@ -1,9 +1,9 @@
-import { fetchSectionData } from "../../../firebase";
+import { fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 
 const Requirements = async () => {
 
-  const sectionData = await fetchSectionData('sections/2');
+  const sectionData = await fetchPageData('sections/requirements');
 
   return (
     <main>
