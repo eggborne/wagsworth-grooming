@@ -2,6 +2,7 @@ import Image from "next/image";
 import { fetchImageData } from "../../../firebase";
 import { fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
+import ServiceSlide from "@/components/ServiceSlide/ServiceSlide";
 
 const Services = async () => {
 
@@ -17,20 +18,7 @@ const Services = async () => {
       <h1>{sectionData.label}</h1>
       <div className={styles.slidesContainer}>
         {'slides' in sectionData && sectionData.slides.map((slide, s) => (
-          <div
-            key={slide.headline}
-            className={styles.slide}
-          >
-            <h2>{slide.headline}</h2>
-            <div className= {styles.slideIcon}>
-              <Image fill src={s === 0 ? groomUrl : bathUrl} alt={slide.headline} />
-            </div>
-            <ul>
-              {slide.textContent.map((text, index) => (
-                <li key={index}>{text}</li>
-              ))}
-            </ul>
-          </div>
+          <ServiceSlide key={s} slide={slide} iconUrl={s === 0 ? groomUrl : bathUrl} />
         ))}
       </div>
       <blockquote className={styles.note}>

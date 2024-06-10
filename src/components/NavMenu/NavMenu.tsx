@@ -9,18 +9,15 @@ interface NavMenuProps {
   socialImages: ImageData[];
   open: boolean;
   selectedNavItem: string;
-  onSelect: (href: string) => void;
 };
 
-const NavMenu = ({ navItems, socialImages, open, selectedNavItem, onSelect }: NavMenuProps) => {
-  console.log('bav items-------------------------', navItems)
-  
+const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps) => {  
   
   return (
     <nav className={styles.navMenu + (!open ? " " + styles.closed : "")}>
       <ul>
         {navItems.map(({ label, href }) => (
-          <Link key={href} onClick={() => onSelect(href)} href={href}>
+          <Link key={href} href={href}>
             <NavLink
               label={label}
               href={href}

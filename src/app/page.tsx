@@ -12,7 +12,7 @@ const Home = async () => {
       <div className={styles.gallery}>
         {galleryImageUrls.map(({ url }, i) => (
           <div className={styles.galleryImage} key={url}>
-            <Image fill src={url} alt={`gallery image ${i}`} />
+            <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" src={url} alt={`gallery image ${i}`} />
           </div>
         ))}
       </div>

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ImageData, NavItem } from "@/types/sections";
 import { fetchNavList } from "@/scripts/db";
+import { fetchImageData } from "../../firebase";
 
 type HeaderProps = {
   logoImages: ImageData[],
@@ -16,18 +17,11 @@ type HeaderProps = {
 };
 
 const Header = ({ logoImages, navItems, socialImages }: HeaderProps) => {
+  // const Header = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedNavItem, setSelectedNavItem] = useState(pathname);
-  const [largeLogo, setLargeLogo] = useState(pathname === '/');
 
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
-  
-  const onSelectNavItem = (href: string) => {
-    setSelectedNavItem(href);
-    setLargeLogo(href === '/');
-    setMenuOpen(false);
-  };
 
   useEffect(() => {
     console.log('adding opacity to body');
@@ -35,23 +29,22 @@ const Header = ({ logoImages, navItems, socialImages }: HeaderProps) => {
   }, []);
 
   useEffect(() => {
-    onSelectNavItem(pathname);
+    setMenuOpen(false);
   }, [pathname]);
 
 
 
   return (
-    <header className={(largeLogo && !menuOpen) ? 'expanded' : ''} >
+    <header className={(pathname === '/' && !menuOpen) ? 'expanded' : ''} >
       <Link href='/'>
-        <Logo logoImages={logoImages}/>
+        <Logo logoImages={logoImages} />
       </Link>
       <Hamburger onClick={toggleMenu} open={menuOpen} />
       <NavMenu
         navItems={navItems}
         socialImages={socialImages}
-        onSelect={onSelectNavItem}
         open={menuOpen}
-        selectedNavItem={selectedNavItem}
+        selectedNavItem={pathname}
       />
     </header>
   );

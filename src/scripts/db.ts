@@ -2,7 +2,7 @@ import { NavItem, Section } from "@/types/sections";
 
 // const DB_ROOT = `http://127.0.0.1:9000/`;
 
-const DB_ROOT = process.env.FIREBASE_DATABASE_URL;
+const DB_ROOT = process.env.FIREBASE_DATABASE_URL + '/sites/WagsworthSiteID/';
 console.log('using root', DB_ROOT)
 
 const fetchPageData = async (path: string): Promise<Section> => {

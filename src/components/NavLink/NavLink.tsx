@@ -6,8 +6,8 @@ interface NavLinkProps {
   selected: boolean;
 };
 
-const NavLink = ({ label, href, selected }: NavLinkProps) => {
-
+const NavLink = ({ label, selected }: NavLinkProps) => {
+  console.log('NavLink', label, 'rendering')
   return (
     <li className={styles.navLink + (selected ? ' ' + styles.selected : '')}>
       <div className={styles.label}
