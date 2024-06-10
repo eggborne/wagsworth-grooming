@@ -1,4 +1,4 @@
-import { NavItem, Section } from "@/types/sections";
+import { ImageMetadata, NavItem, Section } from "@/types/sections";
 
 // const DB_ROOT = `http://127.0.0.1:9000/`;
 
@@ -14,6 +14,16 @@ const fetchPageData = async (path: string): Promise<Section> => {
   );
   const data = await pageData.json();
   
+  return data;
+}
+const fetchImageMetadata = async (path: string): Promise<Record<string,ImageMetadata>> => {
+  const imageData = await fetch(
+    `${DB_ROOT}images/${path}.json`,
+    {
+      next: { revalidate: 600 },
+    }
+  );
+  const data = await imageData.json();
   return data;
 }
 
@@ -48,4 +58,5 @@ const fetchNavList = async (): Promise<NavItem[]> => {
 export {
   fetchNavList,
   fetchPageData,
+  fetchImageMetadata,
 }

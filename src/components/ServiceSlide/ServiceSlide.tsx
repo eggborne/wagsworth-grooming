@@ -1,7 +1,5 @@
-import { ImageData } from '@/types/sections';
 import styles from './ServiceSlide.module.css';
 import Image from 'next/image';
-import { fetchImageData } from '../../../firebase';
 
 type ServiceSlideProps = {
   slide: {

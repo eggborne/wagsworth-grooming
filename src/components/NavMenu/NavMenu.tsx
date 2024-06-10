@@ -1,12 +1,12 @@
 import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
-import { ImageData, NavItem } from "@/types/sections";
+import { ImageData, ImageMetadata, NavItem } from "@/types/sections";
 import Image from "next/image";
 
 interface NavMenuProps {
   navItems: NavItem[];
-  socialImages: ImageData[];
+  socialImages: Record<string, ImageMetadata>;
   open: boolean;
   selectedNavItem: string;
 };
@@ -28,9 +28,14 @@ const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps
       </ul>
       <div className={styles.socialLabel}>Follow us</div>
       <div className={styles.socialLinks}>
-        {socialImages.map((item, i) => (
-          <a key={i} href={'#'}>
-            <Image fill src={item.url} alt='' />
+        {Object.values(socialImages).map((item, i) => (
+          <a key={i} href={item.href}>
+            <Image
+              fill
+              src={item.url}
+              alt={item.alt}
+              sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 100px"
+            />
           </a>
         ))}
       </div>

@@ -1,24 +1,17 @@
-import Image from "next/image";
-import { fetchImageData } from "../../../firebase";
 import { fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 import ServiceSlide from "@/components/ServiceSlide/ServiceSlide";
 
 const Services = async () => {
 
-  const [sectionData, iconUrls] = await Promise.all([
-    fetchPageData('sections/services'),
-    fetchImageData('icons'),
-  ]);
-  const groomUrl = iconUrls.filter(icon => icon.fileName === 'scissors')[0].url;
-  const bathUrl = iconUrls.filter(icon => icon.fileName === 'bath')[0].url;
+  const sectionData = await fetchPageData('sections/services');
 
   return (
     <main>
       <h1>{sectionData.label}</h1>
       <div className={styles.slidesContainer}>
         {'slides' in sectionData && sectionData.slides.map((slide, s) => (
-          <ServiceSlide key={s} slide={slide} iconUrl={s === 0 ? groomUrl : bathUrl} />
+          <ServiceSlide key={s} slide={slide} iconUrl={s === 0 ? 'scissors.svg' : 'bath.svg'} />
         ))}
       </div>
       <blockquote className={styles.note}>

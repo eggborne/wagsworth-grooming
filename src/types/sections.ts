@@ -72,6 +72,14 @@ type ImageData = {
   url: string,
 };
 
+type ImageMetadata = {
+  url: string,
+  height: number,
+  width: number,
+  alt: string,
+  href?: string,
+};
+
 type FirebaseData = {
   imageUrls: {
     path: string,
@@ -94,4 +102,4 @@ interface WagsworthData {
   style: Record<string, unknown>; // Placeholder for potential style data
 }
 
-export type { WagsworthData, Section, NavItem, FirebaseInitialData, ImageData, FirebaseData };
+export type { WagsworthData, Section, NavItem, FirebaseInitialData, ImageData, ImageMetadata, FirebaseData };

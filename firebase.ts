@@ -1,11 +1,10 @@
-import { FirebaseInitialData } from "@/types/sections";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
-import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage';
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 // import { getAnalytics } from "firebase/analytics";
 
 console.log('>>>>>> executing firebase.js')
+console.log('getApps().length', getApps().length);
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -29,56 +28,3 @@ if (process.env.NODE_ENV === 'development') {
   connectDatabaseEmulator(database, "127.0.0.1", 9000);
   connectStorageEmulator(storage, "127.0.0.1", 9199);
 }
-
-const fetchImageData = async (dir: string) => {
-  console.log(dir, ' ------ fetchImageData Fetching from Storage ------ ');
-  const startTime = Date.now();
-  const listRef = storageRef(storage, dir);
-
-  try {
-    const res = await listAll(listRef);
-
-    const urlPromises = res.items.map(async (itemRef) => {
-      const fileName = itemRef.fullPath.split('/').pop()?.split('.')[0];
-      const path = itemRef.fullPath.split('/').slice(0, -1).join('/');
-      const url = await getDownloadURL(itemRef);
-      return {
-        path,
-        fileName,
-        url,
-      }
-    });
-
-    const imageDataArray = await Promise.all(urlPromises);
-    console.log(imageDataArray.length, 'fetched from', dir, 'in', Date.now() - startTime, 'ms');
-    return imageDataArray;
-  } catch (error) {
-    console.error("Error fetching image URLs:", error);
-    return [];
-  }
-};
-
-const getInitialSiteData = async (): Promise<FirebaseInitialData> => {
-  console.log('------ getInitialSiteData Fetching data ------');
-  const startTime = Date.now();
-  const [uiImages, logoImages, socialImages] = await Promise.all([
-    fetchImageData('ui'),
-    fetchImageData('logo'),
-    fetchImageData('icons/social'),
-  ]);
-
-  console.log('- Time taken to getInitialSiteData: ---------------->', Date.now() - startTime, 'ms');
-  const initialData: FirebaseInitialData = {
-    uiImages,
-    logoImages,
-    socialImages,
-  };
-
-  return initialData;
-};
-
-export {
-  getInitialSiteData,
-  fetchImageData,
-  // analytics,
-};

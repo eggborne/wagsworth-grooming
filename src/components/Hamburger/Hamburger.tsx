@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './Hamburger.module.css';
 
 type  HamburgerProps = {
@@ -6,9 +7,18 @@ type  HamburgerProps = {
 };
 
 const Hamburger = ({ onClick, open }: HamburgerProps) => {
-  console.log('Hamburger rendered');
+  const [transitioning, setTransitioning] = useState('');
+  const handleClick = () => {
+    setTransitioning(open ? 'unfolding' : 'folding');
+    setTimeout(() => {
+      setTransitioning('');
+      onClick(!open);
+    }, 125);
+
+  };
+
   return (
-    <div onClick={() => onClick(!open)} className={styles.hamburger + ' ' + (open ? styles.open : '')}>
+    <div onClick={handleClick} className={styles.hamburger + (transitioning ? ' ' + styles.opening : '') + ((open && !transitioning) ? ' ' + styles.open : '')}>
       <div className={styles.bar}></div>
       <div className={styles.bar}></div>
       <div className={styles.bar}></div>

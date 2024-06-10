@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header.client";
-import { getInitialSiteData } from "../../firebase";
-import { fetchNavList } from "@/scripts/db";
+import { fetchImageMetadata, fetchNavList } from "@/scripts/db";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
@@ -20,19 +19,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   console.log('Layout rendering!!!!');
-  const initialSiteData = await getInitialSiteData();
 
-  const navItems = await fetchNavList();
-  const socialImages = initialSiteData.socialImages;
-  const logoImages = initialSiteData.logoImages;
+  // const navItems = await fetchNavList();
+  // const socialImages = await fetchImageMetadata('socialLinks');
+  // const logoImages = await fetchImageMetadata('logo');
 
-  const backgroundImageUrl = initialSiteData.uiImages.filter(urlSet => urlSet.fileName?.includes('background'))[0].url;
-
+  const [ navItems, socialImages, logoImages ] = await Promise.all([
+    fetchNavList(),
+    fetchImageMetadata('socialLinks'),
+    fetchImageMetadata('logo'),
+  ]);
   return (
     <html lang="en">
       <body style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundImage: `url(seamlesstile.jpg)`,
       }}>
         <Header
           logoImages={logoImages}
