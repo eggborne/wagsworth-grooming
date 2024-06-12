@@ -36,6 +36,8 @@ export const viewport = {
   themeColor: "var(--off-black)",
 }
 
+export const revalidate = 600;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
