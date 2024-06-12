@@ -1,7 +1,26 @@
 .landingPage {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  padding-top: calc(var(--expanded-header-height) * 1.85);
+  padding-bottom: 1rem;
+}
+
+.landingPage > h1 {
+  font-size: 2.25rem !important;
+  max-width: 90vw
+}
+
+.landingPage > .introText {
+  padding: 1rem 2rem;
+  width: 100%;
+  background: red;
+  text-align: center;
+}
+
+.landingPage > p {
+  color: #ffffffaa;
+  margin: 0.5rem;
 }
 
 .gallery {

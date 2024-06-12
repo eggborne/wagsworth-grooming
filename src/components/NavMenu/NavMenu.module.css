@@ -26,6 +26,10 @@
   padding: 2rem 0;
 }
 
+.navMenu .navLink .label {
+  color: green !important;
+}
+
 .navMenu a {
   text-decoration: none;
   font-size: 1.35rem;
@@ -59,4 +63,5 @@
 
 .socialLinks img {
   position: static !important;
+  object-fit: contain;
 }

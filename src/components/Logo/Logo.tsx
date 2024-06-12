@@ -1,4 +1,4 @@
-import { ImageData, ImageMetadata } from '@/types/sections';
+import { ImageMetadata } from '@/types/sections';
 import styles from './Logo.module.css';
 import Image from 'next/image';
 

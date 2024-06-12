@@ -29,9 +29,25 @@ interface Question {
   answer: Paragraph[];
 }
 
+type HomePageData = {
+  bannerText: string,
+  introContent: Paragraph[],
+}
+
+type ContactInfo = {
+  addressCoords: {
+    n: string,
+    w: string,
+  }
+  email: string,
+  phone: PhoneNumber,
+  streetAddress: string[],
+}
+
 // Union type for all possible section types
 type Section =
   | {
+    navOrder: number,
     href: string;
     label: string;
     note: Paragraph[];
@@ -39,21 +55,25 @@ type Section =
     slides: Slide[];
   }
   | {
+    navOrder: number,
     href: string;
     label: string;
     textContent: Paragraph[];
   }
   | {
+    navOrder: number,
     href: string;
     label: string;
     requirements: Requirement[];
   }
   | {
+    navOrder: number,
     href: string;
     label: string;
     questions: Question[];
   }
   | {
+    navOrder: number,
     href: string;
     label: string;
     phone: PhoneNumber;
@@ -64,12 +84,6 @@ type Section =
 type NavItem = {
   label: string,
   href: string,
-};
-
-type ImageData = {
-  path: string,
-  fileName?: string,
-  url: string,
 };
 
 type ImageMetadata = {
@@ -90,16 +104,10 @@ type FirebaseData = {
   navItems: NavItem[],
 }
 
-type FirebaseInitialData = {
-  uiImages: ImageData[],
-  logoImages: ImageData[],
-  socialImages: ImageData[],
-}
-
 // Type for the overall data structure
 interface WagsworthData {
   sections: Section[];
   style: Record<string, unknown>; // Placeholder for potential style data
 }
 
-export type { WagsworthData, Section, NavItem, FirebaseInitialData, ImageData, ImageMetadata, FirebaseData };
+export type { WagsworthData, HomePageData, ContactInfo, Section, NavItem, ImageMetadata, FirebaseData };

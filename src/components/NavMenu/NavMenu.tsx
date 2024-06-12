@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
-import { ImageData, ImageMetadata, NavItem } from "@/types/sections";
+import { ImageMetadata, NavItem } from "@/types/sections";
 import Image from "next/image";
 
 interface NavMenuProps {
@@ -17,7 +17,7 @@ const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps
     <nav className={styles.navMenu + (!open ? " " + styles.closed : "")}>
       <ul>
         {navItems.map(({ label, href }) => (
-          <Link key={href} href={href}>
+          <Link prefetch key={href} href={href}>
             <NavLink
               label={label}
               href={href}

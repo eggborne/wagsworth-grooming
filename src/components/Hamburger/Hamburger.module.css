@@ -1,5 +1,4 @@
 .hamburger {
-  --hamburger-margin: calc((var(--header-height) - var(--hamburger-size)) / 2.5);
   --hamburger-bar-thickness: calc(var(--hamburger-size) * 0.08);
   --hamburger-bar-width: calc(var(--hamburger-size) * 0.6);
   position: relative;
@@ -7,7 +6,7 @@
   margin-right: var(--hamburger-margin);
   width: var(--hamburger-size);
   height: var(--hamburger-size);
-  background-color: rgb(79, 49, 49);
+  background-color: var(--hamburger-color);
   outline: var(--hamburger-margin) solid transparent;
   border-radius: 8%;
   transition: all 250ms ease;
