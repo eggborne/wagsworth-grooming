@@ -1,24 +1,36 @@
 .slide {
   padding: 1.5rem;
   border-radius: 0.5rem;
-  background-color: rgba(198, 198, 185, 0.85);
+  background-color: #cbcb8b3c;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex;
   justify-content: center;
   gap: 1rem;
   font-size: 1.2rem;
+  color: var(--off-white);
+} 
+
+.slideHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
 }
 
-.slide>h2 {
-  font-family: 'Berkshire Swash';
-  font-size: 2.25rem;
-  font-weight: normal;
+.slideHeader > h2 {
+  text-align: left;
+  padding: 0;
 }
 
 .slideIcon {
   position: relative;
-  width: 5rem;
   height: 5rem;
-  margin-bottom: 2rem;
+  overflow: visible;
+}
+
+.slideIcon img {
+  position: absolute;
+  object-fit: cover;
 }

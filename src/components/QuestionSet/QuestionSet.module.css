@@ -2,9 +2,8 @@
   cursor: pointer;
   margin: 1rem;
   background-color: salmon;
-  margin: var(--main-padding) !important;
-  padding: calc(var(--main-padding) / 2) var(--main-padding);
-  border-radius: calc(var(--main-padding) / 2);
+  padding: 0 calc(var(--main-padding));
+  border-radius: var(--section-roundness);
   background-color: rgba(88, 88, 78, 0.85);
 }
 
@@ -13,12 +12,12 @@
   grid-template-columns: 1fr auto;
   grid-template-rows: 1fr;
   align-items: center;
-  gap: 0.5rem;
+  /* gap: 0.25rem; */
 }
 
 .question {
   color: #eee;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 
 .expandButton {

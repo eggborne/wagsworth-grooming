@@ -1,5 +1,4 @@
 import { fetchPageData } from "@/scripts/db";
-import styles from "./page.module.css";
 
 const Requirements = async () => {
 
@@ -7,21 +6,26 @@ const Requirements = async () => {
 
   return (
     <main>
-      <h1>{'label' in sectionData && sectionData.label}</h1>
-      <blockquote className={styles.note}>
-        Note: {'note' in sectionData && sectionData.note}
-      </blockquote>
-      <div className={'section ' + styles.requirementsSection}>
-        {'requirements' in sectionData && sectionData.requirements.map(({headline, bodyText}, i) => (
-          <div key={i}>
-            <h2 className={styles.headline}>{headline}</h2>
-            <div className={styles.bodyText} key={i}>
-              {bodyText.map((text, i) => (
-                <p key={i}>{text}</p>
-              ))}
-            </div>
+      <div className={`borderedSectionContainer`}>
+        <div className={`borderedSection`}>
+          <h1 style={{ fontSize: 'calc(var(--image-border-width) / 2.5) !important'}}>{'label' in sectionData && sectionData.label}</h1>
+          <blockquote>
+            Note: {'note' in sectionData && sectionData.note}
+          </blockquote>
+          {/* <div className={'section ' + styles.requirementsSection}> */}
+          <div>
+            {'requirements' in sectionData && sectionData.requirements.map(({ headline, bodyText }, i) => (
+              <div key={i}>
+                <h2>{headline}</h2>
+                <div key={i}>
+                  {bodyText.map((text, i) => (
+                    <p key={i}>{text}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </main>
   );

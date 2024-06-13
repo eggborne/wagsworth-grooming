@@ -3,12 +3,13 @@
   height: var(--actual-height);
   left: 0;
   padding-top: var(--header-height);
+  padding-bottom: var(--footer-height);
   background-color: var(--header-color);
   width: 100vw;
   display: flex;
   flex-direction: column;
   transition: all 250ms ease;
-  z-index: -1;
+  z-index: 0;
 }
   
 .navMenu.closed {
@@ -26,42 +27,8 @@
   padding: 2rem 0;
 }
 
-.navMenu .navLink .label {
-  color: green !important;
-}
-
 .navMenu a {
   text-decoration: none;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-family: 'Berkshire Swash', sans-serif;
-}
-
-.socialLabel {
-  align-self: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-style: italic;
-  font-size: 1rem;
-  padding-top: 3%;
-}
-
-.socialLinks {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, var(--social-button-size));
-  grid-template-rows: var(--social-button-size);
-  justify-content: center;
-  align-items: center;
-  gap: 2%;
-  padding: 1%;
-}
-
-.socialLinks > a {
-  position: relative;
-}
-
-.socialLinks img {
-  position: static !important;
-  object-fit: contain;
 }

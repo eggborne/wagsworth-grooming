@@ -1,0 +1,72 @@
+.contactIcons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: var(--header-height);
+  width: calc(var(--hamburger-size) * 2.25);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  translate: var(--icons-start-x) var(--icons-start-y);
+  transition: 
+    translate var(--expansion-speed) ease, 
+    rotate var(--expansion-speed) ease,
+    scale var(--expansion-speed) ease
+  ;
+}
+
+.contactIcons a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.contactDetail {
+  position: absolute;
+  top: -100%;
+  width: max-content;
+  min-height: var(--hamburger-size);
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  pointer-events: none;
+  left: 100%;
+  opacity: 0;
+  transform-origin: bottom left;
+  rotate: -90deg;
+}
+
+.contactDetail.phone {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.icon {
+  position: relative;
+  width: var(--hamburger-size);
+  height: var(--hamburger-size);
+  rotate: 0;
+  transition: rotate var(--expansion-speed) ease;
+}
+
+.contactIcons.expanded {
+  translate: var(--icons-end-x) var(--icons-end-y);
+  rotate: 90deg;
+  gap: 0.5rem;
+}
+
+.expanded .contactDetail {
+  pointer-events: all;
+  opacity: 1;
+  transition: all var(--expansion-speed) ease;
+  transition-delay: var(--expansion-speed);
+}
+
+.contactIcons.expanded .icon {
+  rotate: -90deg;
+}
+
+.contactIcons.scrolled {
+  scale: 0.65;
+  translate: calc(var(--icons-start-x) + (var(--header-height) / 3)) calc(var(--icons-start-y) - (var(--header-height) / 6));
+}

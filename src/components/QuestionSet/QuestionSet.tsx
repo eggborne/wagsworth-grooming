@@ -14,7 +14,7 @@ const QuestionSet = ({ question, answer, key }: QuestionSetProps) => {
   return (
     <div className={styles.questionSet + ' ' + (expanded ? styles.expanded : '')} key={key} onClick={() => setExpanded(!expanded)}>
       <div className={styles.questionContainer}>
-        <h2 className={styles.question}>{question}</h2>
+        <h3 className={styles.question}>{question}</h3>
         <button className={styles.expandButton}>△</button>
       </div>
       <div className={styles.answer}>

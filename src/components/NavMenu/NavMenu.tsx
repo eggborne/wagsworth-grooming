@@ -3,6 +3,7 @@ import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
 import { ImageMetadata, NavItem } from "@/types/sections";
 import Image from "next/image";
+import SocialLinks from "../SocialLinks/SocialLinks";
 
 interface NavMenuProps {
   navItems: NavItem[];
@@ -26,20 +27,8 @@ const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps
           </Link>
         ))}
       </ul>
-      <div className={styles.socialLabel}>Follow us</div>
-      <div className={styles.socialLinks}>
-        {Object.values(socialImages).map((item, i) => (
-          <a key={i} href={item.href}>
-            <Image
-              fill
-              src={item.url}
-              alt={item.alt}
-              sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 100px"
-            />
-          </a>
-        ))}
-      </div>
-      <footer className={styles.navFooter}>{`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a></footer>
+      <SocialLinks socialImages={socialImages} />
+      {/* <footer className={styles.navFooter}>{`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a></footer> */}
     </nav>
 
   );

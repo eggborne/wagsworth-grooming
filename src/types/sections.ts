@@ -84,6 +84,7 @@ type Section =
 type NavItem = {
   label: string,
   href: string,
+  order: number,
 };
 
 type ImageMetadata = {

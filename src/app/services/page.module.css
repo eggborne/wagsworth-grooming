@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 1rem;
   color: #070707;
-  padding: 1rem;
+  padding: 2rem 0;
   padding-top: 0;
 }
 
@@ -14,8 +14,12 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 2rem;
+  border-radius: var(--section-roundness);
 }
 
 .alaCartArea ul {
-  font-size: 1.2rem;
+  font-size: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }

@@ -1,12 +1,10 @@
 .contactSection {
-  background-color: rgba(88, 88, 78, 0.85);
-  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 1rem;
-  margin-top: calc(var(--expanded-header-height) * 1.55);
+  /* margin-top: calc(var(--expanded-header-height) * 1.55); */
   flex-grow: 1;
+  border-radius: var(--section-roundness);
 }
 
 .contactSection > address {
@@ -16,7 +14,7 @@
 
 .googleMapFrame {
   width: 100%;
-  flex-grow: 1;
+  aspect-ratio: 1;
   border: 0;
   box-shadow: 0 0 12px #00000077;
   border-radius: 0.5rem;

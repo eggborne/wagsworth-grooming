@@ -1,43 +1,25 @@
 .landingPage {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   padding-top: calc(var(--expanded-header-height) * 1.85);
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
+  padding-bottom: calc(var(--image-border-width) * 1.6);
 }
 
 .landingPage > h1 {
-  font-size: 2.25rem !important;
+  font-size: 1.75rem !important;
   max-width: 90vw
 }
 
 .landingPage > .introText {
   padding: 1rem 2rem;
   width: 100%;
-  background: red;
+  background: #1d101083;
   text-align: center;
 }
 
 .landingPage > p {
   color: #ffffffaa;
   margin: 0.5rem;
-}
-
-.gallery {
-  max-width: 80dvw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2%;
-}
-
-.galleryImage {
-  position: relative;
-  width: 6rem;
-  height: 10rem;
-}
-
-.galleryImage > img {
-  object-fit: cover;
 }

@@ -17,13 +17,17 @@ const ServiceSlide = ({ slide, iconUrl }: ServiceSlideProps) => {
       key={slide.headline}
       className={styles.slide}
     >
-      <h2>{slide.headline}</h2>
-      <div className={styles.slideIcon}>
-        <Image fill src={iconUrl} alt={slide.headline} />
+      <div className={styles.slideHeader}>
+        <h2>{slide.headline}</h2>
+        <div className={styles.slideIcon} style={{ aspectRatio: 1 }}>
+          <Image fill src={iconUrl} alt={slide.headline} />
+        </div>
       </div>
       <ul>
         {slide.textContent.map((text, index) => (
-          <li key={index}>{text}</li>
+          <li key={index}>
+            <p>{text}</p>
+          </li>
         ))}
       </ul>
     </div>

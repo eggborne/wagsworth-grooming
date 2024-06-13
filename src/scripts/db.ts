@@ -51,13 +51,23 @@ const fetchNavList = async (): Promise<NavItem[]> => {
 
   const hrefData = Object.keys(shallowSiteData);
 
-  const labelPromises = hrefData.map(href => fetchPageData(`sections/${href}/label`));
+  const labelPromises: any[] = [];
+  const orderPromises: any[] = [];
+  hrefData.forEach(href => {
+    labelPromises.push(fetchPageData(`sections/${href}/label`));
+    orderPromises.push(fetchPageData(`sections/${href}/order`));
+  });
+  // hrefData.map(href => fetchPageData(`sections/${href}/label`));
   const labelArray = await Promise.all(labelPromises);
+  const orderArray = await Promise.all(orderPromises);
+
+  console.log('labelArray', labelArray)
 
   return labelArray.map((label, i) => ({
-    label: label ? label.toString() : `Section ${i + 1}`,
+    label: label,
     href: hrefData[i],
-  }));
+    order: orderArray[i],
+  })).sort((a, b) => a.order - b.order);
 };
 
 export {

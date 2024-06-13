@@ -5,10 +5,12 @@ import Logo from "./Logo/Logo";
 import NavMenu from "./NavMenu/NavMenu";
 import Hamburger from "./Hamburger/Hamburger";
 // import styles from "./Header.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ContactInfo, ImageMetadata, NavItem } from "@/types/sections";
 import Image from "next/image";
+import ContactIcons from "./ContactIcons/ContactIcons";
+import SectionFooter from "./SectionFooter/SectionFooter";
 
 type HeaderProps = {
   navItems: NavItem[],
@@ -20,18 +22,26 @@ type HeaderProps = {
 const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navFooterVisible, setNavFooterVisible] = useState(false);
   
   const pathname = usePathname();
 
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log('adding opacity to body');
     document.body.style.opacity = '1';
+  }, []);
 
+  useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 0);
+      const scrollY = Math.ceil(window.scrollY);
+      const notAtTop = scrollY > 0;
+      setScrolled(notAtTop);
+      if (notAtTop) {
+        const pastYPoint = scrollY >= (document.body.scrollHeight - window.innerHeight);
+        setNavFooterVisible(pastYPoint);
+      }      
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -43,6 +53,7 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
 
   useEffect(() => {
     setMenuOpen(false);
+    setNavFooterVisible(false);
   }, [pathname]);
 
   const closeNavIfLogoClicked = () => {
@@ -51,40 +62,30 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
     }
   };
 
-  // let headerClass = styles.Header;
-  let headerClass = ((pathname !== '/') && scrolled && !menuOpen) ? ' scrolled' : '';
-  if ((((pathname === '/' && !scrolled) || pathname === '/contact') && !menuOpen)) {
+  const headerExpanded = (((pathname === '/' && !scrolled)) && !menuOpen);
+  let headerClass = 'header' 
+  // headerClass += ((pathname !== '/') && scrolled && !menuOpen) ? ' scrolled' : '';
+  if (headerExpanded) {
     headerClass += ' expanded';
   }
 
+  const nextSectionIndex = navItems.findIndex((item) => item.href === pathname.slice(1));
+  // const nextSection = navItems[((nextSectionIndex + 1) === navItems.length) ? 0 : (nextSectionIndex + 1)];
+  const nextSection = (nextSectionIndex + 1) < navItems.length ? navItems[nextSectionIndex + 1] : null;
+  
   return (
     <header className={headerClass} >
       <Link href='/' onClick={closeNavIfLogoClicked}>
         <Logo logoImages={logoImages} />
       </Link>
-      <div className='icon-area'>
-        <Link href={`tel:+1-${contactInfo.phone}`}>
-          <Image
-            src={'phoneicon.svg'}
-            alt={'phone icon'}
-            width={32}
-            height={32}
-            className={'icon'}
-          />
-          <div className={'contact-detail phone'}>{`(${contactInfo.phone.slice(0, 3)})-${contactInfo.phone.slice(3, 6)}-${contactInfo.phone.slice(6, 10)}`}</div>
-        </Link>
-        <Link href='mailto:john.c.breckinridge@altostrat.com'>
-          <Image
-            src={'emailicon.svg'}
-            alt={'phone icon'}
-            width={32}
-            height={32}
-            className={'icon'}
-          />
-          <div className={'contact-detail email'}>booking<br />@wagsworthgrooming.com</div>
-        </Link>
-      </div>
+      <ContactIcons
+        contactInfo={contactInfo}
+        expanded={headerExpanded}
+        // scrolled={!menuOpen && scrolled && pathname !== '/'}
+        scrolled={false}
+      />
       <Hamburger onClick={toggleMenu} open={menuOpen} />
+      {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}
       <NavMenu
         navItems={navItems}
         socialImages={socialImages}

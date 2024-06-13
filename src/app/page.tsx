@@ -1,6 +1,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { fetchImageMetadata, fetchLandingPageData } from "@/scripts/db";
+import Gallery from "@/components/Gallery/Gallery";
 
 
 const Home = async () => {
@@ -16,17 +17,7 @@ const Home = async () => {
       <div className={styles.introText}>
         {Object.values(pageData.introContent).map((paragraph, p) => <p key={p}>{paragraph}</p>)}
       </div>
-      <div className={styles.gallery}>
-        {Object.values(galleryImages).map(({ url, alt }, i) => (
-          <div className={styles.galleryImage} key={i}>
-            <Image
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              src={url}
-              alt={alt} />
-          </div>
-        ))}
-      </div>
+      <Gallery galleryImages={galleryImages} />
     </main>
   );
 }

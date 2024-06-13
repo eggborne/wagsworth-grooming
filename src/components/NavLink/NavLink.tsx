@@ -10,7 +10,7 @@ const NavLink = ({ label, selected }: NavLinkProps) => {
   return (
     <li className={styles.navLink + (selected ? ' ' + styles.selected : '')}>
       <div className={styles.label}
-        style={{ fontSize: `${label.length > 10 ? '1.15rem' : '1.4rem'}` }}
+        style={{ fontSize: `${label.length > 10 ? '1rem' : '1.2rem'}` }}
       >{label}</div>
       <div className={styles.boneContainer}>
         <div className={styles.boneKnob}></div>

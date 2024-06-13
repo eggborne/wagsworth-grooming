@@ -1,0 +1,45 @@
+.gallery {
+  width: var(--gallery-width);
+  display: grid;
+  grid-template-columns: 1fr var(--gallery-height) 1fr;
+  margin-top: 1rem;
+}
+
+.galleryControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.galleryControl > .prevButton {
+  rotate: 90deg;
+}
+
+.galleryControl > .nextButton {
+  rotate: -90deg;
+}
+
+.galleryWindow {
+  height: var(--gallery-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
+.galleryImageContainer {
+  position: absolute;
+  height: var(--gallery-height);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+  
+.galleryImageContainer.showing {
+  opacity: 1;
+  z-index: 1;
+}
+
+.galleryImageContainer > img {
+  object-fit: contain;  
+}
+

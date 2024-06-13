@@ -1,0 +1,29 @@
+.socialLabel {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+  font-size: 1rem;
+  padding-top: 3%;
+}
+
+.socialLinks {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, var(--social-button-size));
+  grid-template-rows: var(--social-button-size);
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+  padding: 1%;
+}
+
+.socialLinks>a {
+  position: relative;
+}
+
+.socialLinks img {
+  position: static !important;
+  object-fit: contain;
+}

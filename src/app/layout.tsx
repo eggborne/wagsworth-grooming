@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header.client";
 import { fetchContactInfo, fetchImageMetadata, fetchNavList } from "@/scripts/db";
+import { NavItem, Section } from "@/types/sections";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
@@ -46,13 +47,13 @@ export default async function RootLayout({
 
   console.log('Layout rendering!!!!');
 
-  const [ navItems, contactInfo, socialImages, logoImages ] = await Promise.all([
+  const [navItems, contactInfo, socialImages, logoImages] = await Promise.all([
     fetchNavList(),
     fetchContactInfo(),
     fetchImageMetadata('socialLinks'),
     fetchImageMetadata('logo'),
   ]);
-
+  
   return (
     <html lang="en">
       <body style={{
@@ -65,7 +66,9 @@ export default async function RootLayout({
           socialImages={socialImages}
         />
         {children}
-        <footer>{`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a></footer>
+        <footer>
+          {`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a>
+        </footer>
       </body>
     </html>
   );

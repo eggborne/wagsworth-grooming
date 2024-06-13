@@ -4,6 +4,26 @@
       "authorizedUsers": [
         "SusanAuthId"
       ],
+      "contactInfo": {
+        "addressCoords": {
+          "n": "45.38046923232942",
+          "w": "-122.76340852089065"
+        },
+        "email": "booking@wagsworthgrooming.com",
+        "phone": "9712245154",
+        "streetAddress": [
+          "19300 SW Boones Ferry",
+          "Suite 7",
+          "Tualatin, OR 97062"
+        ]
+      },
+      "homePage": {
+        "bannerText": "Professional dog care in Tualatin, Oregon",
+        "introContent": [
+          "Worshipping our father Lucifer since 1983",
+          "We will fellate your dog enthuiastically"
+        ]
+      },
       "images": {
         "gallery": {
           "doggo1": {
@@ -116,6 +136,7 @@
       },
       "sections": {
         "about": {
+          "order": 2,
           "href": "about",
           "label": "About Me",
           "textContent": [
@@ -131,6 +152,7 @@
           ]
         },
         "contact": {
+          "order": 5,
           "address": [
             "19300 SW Boones Ferry",
             "Suite 7",
@@ -138,10 +160,11 @@
           ],
           "email": "booking@wagsworthgrooming.com",
           "href": "contact",
-          "label": "Contact",
+          "label": "Contact Us",
           "phone": "9712245154"
         },
         "faqs": {
+          "order": 3,
           "href": "faqs",
           "label": "FAQs",
           "questions": [
@@ -207,6 +230,7 @@
           ]
         },
         "requirements": {
+          "order": 4,
           "href": "requirements",
           "label": "Requirements",
           "note": "This is about as strict as I'm going to get, so bear with me while I put on my hard-nose hat. These rules are to make sure I keep the days flowing smoothly with minimal setbacks.",
@@ -245,6 +269,7 @@
           ]
         },
         "services": {
+          "order": 1,
           "href": "services",
           "label": "Services",
           "note": [
