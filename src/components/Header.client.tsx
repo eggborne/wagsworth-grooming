@@ -5,10 +5,9 @@ import Logo from "./Logo/Logo";
 import NavMenu from "./NavMenu/NavMenu";
 import Hamburger from "./Hamburger/Hamburger";
 // import styles from "./Header.module.css";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ContactInfo, ImageMetadata, NavItem } from "@/types/sections";
-import Image from "next/image";
 import ContactIcons from "./ContactIcons/ContactIcons";
 import SectionFooter from "./SectionFooter/SectionFooter";
 import classNames from "classnames";
@@ -37,7 +36,7 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
       if (menuOpen) return;
       const scrollY = Math.ceil(window.scrollY);
       const notAtTop = scrollY > 0;
-      setScrolled(notAtTop);      
+      setScrolled(notAtTop);
       if (notAtTop) {
         let pastYPoint = scrollY >= Math.abs(document.body.scrollHeight - window.innerHeight);
         if (navFooterVisible) {
@@ -74,9 +73,6 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
     'scrolled': scrolled
   });
 
-  // const nextSectionIndex = navItems.findIndex((item) => item.href === pathname.slice(1));
-  // const nextSection = (nextSectionIndex + 1) < navItems.length ? navItems[nextSectionIndex + 1] : null;
-
   const nextSection = nextSectionFromPath(pathname, navItems);
 
   console.log()
@@ -91,7 +87,6 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
           <ContactIcons
             contactInfo={contactInfo}
             expanded={headerExpanded}
-            // scrolled={!menuOpen && scrolled && pathname !== '/'}
             scrolled={scrolled}
           />
           <Hamburger onClick={toggleMenu} open={menuOpen} />

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header.client";
 import { fetchContactInfo, fetchImageMetadata, fetchNavList } from "@/scripts/db";
-import { NavItem, Section } from "@/types/sections";
-import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
