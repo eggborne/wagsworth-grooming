@@ -1,12 +1,8 @@
-// src/types/sections.ts
-
-// Basic building block types
 type Paragraph = string;
 type ImagePath = string;
 type Color = string;
 type PhoneNumber = string;
 
-// Specific types for different sections
 interface PricedService {
   name: string;
   price: number;
@@ -29,86 +25,64 @@ interface Question {
   answer: Paragraph[];
 }
 
-type HomePageData = {
-  bannerText: string,
-  introContent: Paragraph[],
+interface HomePageData {
+  bannerText: string;
+  introContent: Paragraph[];
 }
 
-type ContactInfo = {
+interface ContactInfo {
   addressCoords: {
     n: string,
     w: string,
-  }
-  email: string,
-  phone: PhoneNumber,
-  streetAddress: string[],
-}
-
-// Union type for all possible section types
-type Section =
-  | {
-    navOrder: number,
-    href: string;
-    label: string;
-    note: Paragraph[];
-    pricedServices: PricedService[];
-    slides: Slide[];
-  }
-  | {
-    navOrder: number,
-    href: string;
-    label: string;
-    textContent: Paragraph[];
-  }
-  | {
-    navOrder: number,
-    href: string;
-    label: string;
-    requirements: Requirement[];
-  }
-  | {
-    navOrder: number,
-    href: string;
-    label: string;
-    questions: Question[];
-  }
-  | {
-    navOrder: number,
-    href: string;
-    label: string;
-    phone: PhoneNumber;
-    email: string;
-    address: string[];
   };
-
-type NavItem = {
-  label: string,
-  href: string,
-  order: number,
-};
-
-type ImageMetadata = {
-  url: string,
-  height: number,
-  width: number,
-  alt: string,
-  href?: string,
-};
-
-type FirebaseData = {
-  imageUrls: {
-    path: string,
-    fileName?: string,
-    url: string,
-  }[],
-  sections: Section[] | Section,
-  navItems: NavItem[],
+  email: string;
+  phone: PhoneNumber;
+  streetAddress: string[];
 }
 
-// Type for the overall data structure
-interface WagsworthData {
-  sections: Section[];
-  style: Record<string, unknown>; // Placeholder for potential style data
+interface ImageMetadata {
+  url: string;
+  height: number;
+  width: number;
+  alt: string;
+  href?: string;
+};
+
+interface NavItem {
+  href: string;
+  label: string;
+  order: number;
+};
+
+interface SectionData {
+  href: string;
+  label: string;
+  note?: Paragraph[];
+  order: number;
+  bannerImage?: ImageMetadata;
+  textContent?: Paragraph[];
 }
 
-export type { WagsworthData, HomePageData, ContactInfo, Section, NavItem, ImageMetadata, FirebaseData };
+interface ServicesData extends SectionData {
+  pricedServices: PricedService[];
+  slides: Slide[];
+}
+
+interface AboutData extends SectionData {
+  textContent: Paragraph[];
+}
+
+interface FAQsData extends SectionData {
+  questions: Question[];
+}
+
+interface RequirementsData extends SectionData {
+  requirements: Requirement[];
+}
+
+interface ContactData extends SectionData { }
+
+export type {
+  ServicesData, AboutData, FAQsData, RequirementsData, ContactData,
+  HomePageData, ContactInfo, SectionData, NavItem, ImageMetadata
+};

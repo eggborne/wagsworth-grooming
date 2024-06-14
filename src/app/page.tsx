@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import Image from "next/image";
 import { fetchImageMetadata, fetchLandingPageData } from "@/scripts/db";
 import Gallery from "@/components/Gallery/Gallery";
 

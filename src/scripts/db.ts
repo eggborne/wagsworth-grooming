@@ -1,11 +1,12 @@
-import { ContactInfo, HomePageData, ImageMetadata, NavItem, Section } from "@/types/sections";
+import { ContactInfo, HomePageData, ImageMetadata, NavItem, SectionData } from "@/types/sections";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const SITE_ID = 'WagsworthSiteID';
+const DB_CONTEXT = 'live';
 
 const FIREBASE_ID = 'wagsworth-editor-default-rtdb';
-const DB_ROOT = isDevelopment ? `http://localhost:9000/sites/${SITE_ID}/` : `${process.env.FIREBASE_DATABASE_URL}/sites/${SITE_ID}/`;
+const DB_ROOT = isDevelopment ? `http://localhost:9000/sites/${SITE_ID}/${DB_CONTEXT}Data/` : `${process.env.FIREBASE_DATABASE_URL}/sites/${SITE_ID}/`;
 const DB_SUFFIX = isDevelopment ? `.json?ns=${FIREBASE_ID}` : `.json`;
 
 console.log('using root', DB_ROOT);
@@ -33,7 +34,7 @@ const fetchContactInfo = async (): Promise<ContactInfo> => {
   return fetchData(url);
 };
 
-const fetchPageData = async (path: string): Promise<Section> => {
+const fetchPageData = async (path: string): Promise<SectionData> => {
   const url = `${DB_ROOT}${path}${DB_SUFFIX}`;
   return fetchData(url);
 };

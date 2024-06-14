@@ -1,11 +1,10 @@
 .socialLabel {
-  align-self: center;
   display: flex;
   justify-content: center;
   align-items: center;
   font-style: italic;
   font-size: 1rem;
-  padding-top: 3%;
+  padding-bottom: 1dvh;
 }
 
 .socialLinks {
@@ -16,7 +15,7 @@
   justify-content: center;
   align-items: center;
   gap: 2%;
-  padding: 1%;
+  /* padding: 1%; */
 }
 
 .socialLinks>a {

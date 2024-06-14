@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "firebase": "^10.12.2",
     "next": "14.2.3",
     "normalize.css": "^8.0.1",

@@ -1,7 +1,7 @@
 .sectionFooter {
   position: fixed;
   /* top: calc((var(--image-border-width) + var(--footer-height) - (var(--main-padding) / 2)) * -1); */
-  bottom: calc((var(--image-border-width) + var(--footer-height) - var(--main-padding)) * 0.5);
+  bottom: var(--main-padding);
   left: 0;
   width: 100%;
   height: calc(var(--image-border-width));

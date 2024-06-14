@@ -9,11 +9,24 @@
   position: absolute;
   left: 0;
   top: 0;
-  /* height: 100%; */
-  aspect-ratio: var(--logo-aspect-ratio);
-  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+  translate: 0 0;
+  opacity: 0;
+  transition: translate var(--logo-animation-apeed) ease, opacity var(--logo-animation-apeed) ease;
 }
 
-.logo > img.monocle {
+img.monocle {
   filter: invert();
 }
+
+img.doghead {
+  
+}
+
+img.grooming {
+  
+}
+
+.logo.revealed > img {
+  opacity:1;
+}
+

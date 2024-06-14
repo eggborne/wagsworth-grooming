@@ -11,6 +11,8 @@ import { ContactInfo, ImageMetadata, NavItem } from "@/types/sections";
 import Image from "next/image";
 import ContactIcons from "./ContactIcons/ContactIcons";
 import SectionFooter from "./SectionFooter/SectionFooter";
+import classNames from "classnames";
+import { nextSectionFromPath } from "@/scripts/util";
 
 type HeaderProps = {
   navItems: NavItem[],
@@ -23,29 +25,28 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navFooterVisible, setNavFooterVisible] = useState(false);
-  
+
   const pathname = usePathname();
 
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     console.log('adding opacity to body');
     document.body.style.opacity = '1';
-  }, []);
-
-  useEffect(() => {
     const handleScroll = () => {
+      if (menuOpen) return;
       const scrollY = Math.ceil(window.scrollY);
       const notAtTop = scrollY > 0;
-      setScrolled(notAtTop);
+      setScrolled(notAtTop);      
       if (notAtTop) {
-        const pastYPoint = scrollY >= (document.body.scrollHeight - window.innerHeight);
+        let pastYPoint = scrollY >= Math.abs(document.body.scrollHeight - window.innerHeight);
+        if (navFooterVisible) {
+          pastYPoint = scrollY < Math.abs(document.body.scrollHeight - window.innerHeight);
+        }
         setNavFooterVisible(pastYPoint);
-      }      
+      }
     };
-
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -56,42 +57,55 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
     setNavFooterVisible(false);
   }, [pathname]);
 
+  // useEffect(() => {
+  //   setExpanded((pathname === '/' && !scrolled) && !menuOpen)
+  // }, [pathname, scrolled, menuOpen]);
+
   const closeNavIfLogoClicked = () => {
     if (menuOpen) {
       toggleMenu(false);
     }
   };
 
-  const headerExpanded = (((pathname === '/' && !scrolled)) && !menuOpen);
-  let headerClass = 'header' 
-  // headerClass += ((pathname !== '/') && scrolled && !menuOpen) ? ' scrolled' : '';
-  if (headerExpanded) {
-    headerClass += ' expanded';
-  }
+  const headerExpanded = pathname === '/' && !scrolled && !menuOpen;
 
-  const nextSectionIndex = navItems.findIndex((item) => item.href === pathname.slice(1));
-  // const nextSection = navItems[((nextSectionIndex + 1) === navItems.length) ? 0 : (nextSectionIndex + 1)];
-  const nextSection = (nextSectionIndex + 1) < navItems.length ? navItems[nextSectionIndex + 1] : null;
-  
+  const headerClasses = classNames({
+    'expanded': headerExpanded,
+    'scrolled': scrolled
+  });
+
+  // const nextSectionIndex = navItems.findIndex((item) => item.href === pathname.slice(1));
+  // const nextSection = (nextSectionIndex + 1) < navItems.length ? navItems[nextSectionIndex + 1] : null;
+
+  const nextSection = nextSectionFromPath(pathname, navItems);
+
+  console.log()
+
   return (
-    <header className={headerClass} >
-      <Link href='/' onClick={closeNavIfLogoClicked}>
-        <Logo logoImages={logoImages} />
-      </Link>
-      <ContactIcons
-        contactInfo={contactInfo}
-        expanded={headerExpanded}
-        // scrolled={!menuOpen && scrolled && pathname !== '/'}
-        scrolled={false}
-      />
-      <Hamburger onClick={toggleMenu} open={menuOpen} />
-      {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}
-      <NavMenu
-        navItems={navItems}
-        socialImages={socialImages}
-        open={menuOpen}
-        selectedNavItem={pathname}
-      />
+    <header className={headerClasses} >
+      {pathname !== '/admin' ?
+        <>
+          <Link href='/' onClick={closeNavIfLogoClicked}>
+            <Logo logoImages={logoImages} revealed={true} />
+          </Link>
+          <ContactIcons
+            contactInfo={contactInfo}
+            expanded={headerExpanded}
+            // scrolled={!menuOpen && scrolled && pathname !== '/'}
+            scrolled={scrolled}
+          />
+          <Hamburger onClick={toggleMenu} open={menuOpen} />
+          {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}
+          <NavMenu
+            navItems={navItems}
+            socialImages={socialImages}
+            open={menuOpen}
+            selectedNavItem={pathname}
+          />
+        </>
+        :
+        <div>admin header</div>
+      }
     </header>
   );
 };

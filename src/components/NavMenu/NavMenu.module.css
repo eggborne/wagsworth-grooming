@@ -1,11 +1,10 @@
 .navMenu {
   position: fixed;
+  width: 100vw;
   height: var(--actual-height);
   left: 0;
   padding-top: var(--header-height);
-  padding-bottom: var(--footer-height);
   background-color: var(--header-color);
-  width: 100vw;
   display: flex;
   flex-direction: column;
   transition: all 250ms ease;
@@ -13,7 +12,7 @@
 }
   
 .navMenu.closed {
-  opacity: 0;
+  opacity: 0 !important;
   pointer-events: none;
 }
     
@@ -23,12 +22,17 @@
   align-items: center;
   justify-content: center;
   gap: calc(var(--bone-height) + (var(--bone-knob-size) / 6));
+  gap: calc(
+    (var(--bone-height) / 2)
+    + var(--bone-knob-size)
+    - (var(--bone-knob-offset-y) * -8)
+    + 2dvh
+  );
   flex-grow: 1;
-  padding: 2rem 0;
+  /* padding: 1dvh 0; */
 }
 
 .navMenu a {
   text-decoration: none;
-  font-size: 1.25rem;
   font-family: 'Berkshire Swash', sans-serif;
 }

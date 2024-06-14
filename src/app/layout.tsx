@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header.client";
 import { fetchContactInfo, fetchImageMetadata, fetchNavList } from "@/scripts/db";
 import { NavItem, Section } from "@/types/sections";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
@@ -56,19 +57,14 @@ export default async function RootLayout({
   
   return (
     <html lang="en">
-      <body style={{
-        backgroundImage: `url(seamlesstile.jpg)`,
-      }}>
+      <body>
         <Header
           navItems={navItems}
           contactInfo={contactInfo}
           logoImages={logoImages}
           socialImages={socialImages}
         />
-        {children}
-        <footer>
-          {`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a>
-        </footer>
+        {children}        
       </body>
     </html>
   );

@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.wagsworth-editor.appspot.com', // Allow Firebase Storage URLs
       },
+      {
+        protocol: 'https',
+        hostname: 'images.dog.ceo',
+      },
     ],
   },
   // compiler: {

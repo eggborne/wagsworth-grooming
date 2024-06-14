@@ -1,6 +1,5 @@
 .questionSet {
   cursor: pointer;
-  margin: 1rem;
   background-color: salmon;
   padding: 0 calc(var(--main-padding));
   border-radius: var(--section-roundness);

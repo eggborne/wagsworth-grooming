@@ -1,7 +1,6 @@
 .navLink {
   position: relative;
-  min-width: max-content;
-  width: 7.5rem;
+  width: var(--bone-width);
   height: var(--bone-height);
   display: flex;
   align-items: center;
@@ -9,10 +8,13 @@
 }
 
 .label {
-  color: white;
-  z-index: 2;
+  /* color: white;
   text-shadow: var(--text-stroke);
+  letter-spacing: 0.025em; */
+  font-size: calc(var(--bone-height) / 3) !important;
+  color: var(--off-black);
   letter-spacing: 0.025em;
+  z-index: 2;
 }
 
 .navLink.selected {
@@ -20,7 +22,7 @@
 }
 
 .navLink.selected * {
-  color: rgb(210, 248, 210);
+  color: rgb(49, 69, 49);
   background-color: var(--bone-highlight-color);
 }
 

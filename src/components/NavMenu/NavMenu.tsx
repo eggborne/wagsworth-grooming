@@ -2,8 +2,9 @@ import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
 import { ImageMetadata, NavItem } from "@/types/sections";
-import Image from "next/image";
 import SocialLinks from "../SocialLinks/SocialLinks";
+import classNames from "classnames";
+import Footer from "../Footer";
 
 interface NavMenuProps {
   navItems: NavItem[];
@@ -13,9 +14,12 @@ interface NavMenuProps {
 };
 
 const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps) => {  
-  
+  const navMenuClasses = classNames([
+    styles.navMenu,
+    {[styles.closed]: !open}
+  ]);
   return (
-    <nav className={styles.navMenu + (!open ? " " + styles.closed : "")}>
+    <nav className={navMenuClasses}>
       <ul>
         {navItems.map(({ label, href }) => (
           <Link prefetch key={href} href={href}>
@@ -28,9 +32,8 @@ const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps
         ))}
       </ul>
       <SocialLinks socialImages={socialImages} />
-      {/* <footer className={styles.navFooter}>{`© ${new Date().getFullYear()} Wagsworth Grooming`} | website by <a href='https://github.com/eggborne'>mikedonovan.dev</a></footer> */}
+      <Footer />
     </nav>
-
   );
 };
 

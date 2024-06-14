@@ -1,11 +1,15 @@
 import { fetchContactInfo, fetchImageMetadata, fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 import SocialLinks from "@/components/SocialLinks/SocialLinks";
+import { ContactData } from "@/types/sections";
+import Image from "next/image";
+import Footer from "@/components/Footer";
+import Link from "next/link";
 
 const Contact = async () => {
 
   const [sectionData, contactInfo, socialImages] = await Promise.all([
-    fetchPageData('sections/contact'),
+    fetchPageData('sections/contact') as Promise<ContactData>,
     fetchContactInfo(),
     fetchImageMetadata('socialLinks')
   ]);
@@ -14,21 +18,37 @@ const Contact = async () => {
 
   return (
     <main>
-      <div className={`borderedSectionContainer last`}>
-        <div className={`borderedSection`}>
-          <h1>{'label' in sectionData && sectionData.label}</h1>
-          {'phone' in contactInfo && <div className={styles.contactSection}>
-            <address>
-              {contactInfo.streetAddress.map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))}
-            </address>
-
-            <iframe className={styles.googleMapFrame} src={googleMapsUrl} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title='google-map'></iframe>
-
+      <div className={styles.contactSection}>
+        {sectionData.bannerImage &&
+          <div className={styles.bannerImage}>
+            <Image
+              fill
+              src={sectionData.bannerImage.url}
+              alt={sectionData.label}
+            />
           </div>}
-          <SocialLinks socialImages={socialImages} />
+        <h1>{sectionData.label}</h1>
+        <div className={styles.contactInfo}>
+          <p>
+            <Link href={`tel:+1-${contactInfo.phone}`}>
+              {`(${contactInfo.phone.slice(0, 3)})-${contactInfo.phone.slice(3, 6)}-${contactInfo.phone.slice(6, 10)}`}
+            </Link>
+          </p>
+          <p>
+            <Link href={`mailto:${contactInfo.email}`}>
+              {contactInfo.email.split('@')[0]}<br />
+              @{contactInfo.email.split('@')[1]}
+            </Link>
+          </p>
         </div>
+        <address>
+          {contactInfo.streetAddress.map((line, index) => (
+            <span key={index}>{line}<br /></span>
+          ))}
+        </address>
+        <iframe className={styles.googleMapFrame} src={googleMapsUrl} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title='google-map'></iframe>
+        <SocialLinks socialImages={socialImages} />
+        <Footer />
       </div>
     </main>
   );

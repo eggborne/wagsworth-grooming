@@ -23,7 +23,7 @@ const ContactIcons = ({ contactInfo, expanded, scrolled }: ContactIconsProps) =>
         />
         <div className={styles.contactDetail + ' ' + styles.phone}>{`(${contactInfo.phone.slice(0, 3)})-${contactInfo.phone.slice(3, 6)}-${contactInfo.phone.slice(6, 10)}`}</div>
       </Link>
-      <Link href='mailto:john.c.breckinridge@altostrat.com'>
+      <Link href={`mailto:${contactInfo.email}`}>
         <Image
           src={'emailicon.svg'}
           alt={'phone icon'}
