@@ -1,4 +1,8 @@
 .logo {
+  --dog-head-start-translate: 0 10%;
+  --monocle-start-translate: 1% 4%;
+  --monocle-start-rotate: 45deg;
+  --grooming-start-translate: 2rem 0;
   position: relative;
   margin-left: 2%;
   height: 70%;
@@ -10,23 +14,55 @@
   left: 0;
   top: 0;
   translate: 0 0;
+  rotate: 0;
+  scale: 1;
+  opacity: 1;
+}
+
+.logo:not(.revealed) > img {
   opacity: 0;
-  transition: translate var(--logo-animation-apeed) ease, opacity var(--logo-animation-apeed) ease;
 }
 
 img.monocle {
+  transform-origin: 70% 50%;
   filter: invert();
 }
 
-img.doghead {
-  
+.logo > img.wagsworth {
+  transform-origin: 70% 50%;
+  transition: opacity 800ms ease, scale 1000ms ease;
+  transition-delay: 100ms;
 }
 
-img.grooming {
-  
+.logo > img.grooming {
+  transition: opacity 500ms ease, translate 500ms ease-out;
+  transition-delay: 600ms;
 }
 
-.logo.revealed > img {
-  opacity:1;
+.logo > img.doghead {
+  transition: opacity 500ms ease-out, translate 500ms ease-out;
+  transition-delay: 800ms;
+}
+
+.logo > img.monocle {
+  transition: opacity 300ms ease-out, translate 300ms ease-out, rotate 500ms ease-out;
+  transition-delay: 1300ms;
+}
+
+.logo:not(.revealed) > img.wagsworth {
+  scale: 1.1;
+}
+
+.logo:not(.revealed) > img.grooming {
+  translate: var(--grooming-start-translate);
+}
+
+.logo:not(.revealed) > img.doghead {
+  translate: var(--dog-head-start-translate);
+}
+
+.logo:not(.revealed) > img.monocle {
+  translate: var(--monocle-start-translate);
+  rotate: var(--monocle-start-rotate);
 }
 

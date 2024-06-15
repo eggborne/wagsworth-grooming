@@ -21,6 +21,7 @@ type HeaderProps = {
 };
 
 const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps) => {
+  const [loaded, setLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navFooterVisible, setNavFooterVisible] = useState(false);
@@ -30,6 +31,9 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoaded(true);
+    }, 20);
     console.log('adding opacity to body');
     document.body.style.opacity = '1';
     const handleScroll = () => {
@@ -78,7 +82,7 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
       {pathname !== '/admin' ?
         <>
           <Link href='/' onClick={closeNavIfLogoClicked}>
-            <Logo logoImages={logoImages} revealed={true} />
+            <Logo logoImages={logoImages} revealed={loaded} />
           </Link>
           <ContactIcons
             contactInfo={contactInfo}
@@ -96,7 +100,10 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
           />
         </>
         :
-        <div>admin header</div>
+        <>
+          <Logo logoImages={logoImages} revealed={true} />
+          <div>admin header</div>
+        </>
       }
     </header>
   );

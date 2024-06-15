@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 :root {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   --actual-height: 100dvh;
   --screen-ratio: calc(100vw / var(--actual-height));
   --header-height: 4rem;
@@ -31,13 +34,6 @@
   --bone-knob-size: calc(var(--bone-height) / 1);
   --bone-knob-offset-x: calc(var(--bone-height) / -5);
   --bone-knob-offset-y: calc(var(--bone-height) / -12);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-
-  --expansion-speed: 250ms;
-  --logo-animation-speed: 500ms;
 
   --section-roundness: calc(var(--main-padding) / 2);
 
@@ -59,9 +55,10 @@
     -0.035em 0 #000000,
     -0.035em 0.015em #000000,
     -0.035em 0.035em #000000,
-    0 0 0.05em black;
+    0 0 0.05em black
+  ;
 
-  /* colors */
+  /* user colors */
   --header-color: #131313;
   --header-color: #2f2938;
   --hamburger-color: #595454;
@@ -70,8 +67,14 @@
   --off-white: #c3c3c3;
   --off-black: #191919;
   --section-bg-color: #403543cc;
-  
   --panel-color: #ffffff18;
+
+  
+  /* user properties */
+  --main-font-size: 1.1rem;
+  --expansion-speed: 250ms;
+  --logo-animation-speed: 3000ms;
+  
 }
 
 * {
@@ -98,17 +101,17 @@ h2 {
 
 html {
   background-color: var(--off-black);
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  min-height: var(--actual-height);
-  width: 100%;
   background-image: url('/seamlesstile.jpg');
-  background-size: 90vmin;
+  background-size: 80vmin;
   color: var(--off-white);
-  font-size: 1.1rem;
+  font-size: var(--main-font-size);
   opacity: 0;
   transition: opacity 125ms ease;
 }
@@ -120,7 +123,8 @@ body:after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(transparent 2%, #050505 100%);
+  background: radial-gradient(#05050544 0%, #050505 90%);
+  /* background: radial-gradient(red 0%, blue 100%); */
 }
 
 main {

@@ -8,24 +8,25 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: top;
-  min-height: calc(var(--actual-height) - var(--header-height));
 }
 
 .contactSection h2 {
-  background-color: #00000099;
+  background-color: var(--section-bg-color);
   margin: 0;
   padding: 1.5rem 2rem;
-  font-size: 1.75rem;
+  font-size: 1.65rem !important;
   font-family: 'Berkshire Swash';
   text-align: center;
   font-weight: normal;
+  border-top-left-radius: var(--section-roundness);
+  border-top-right-radius: var(--section-roundness);
   text-shadow: var(--text-stroke);
 }
 
 .topArea {
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
+  padding: 2rem 0 2rem 0;
 }
 
 .contactInfo, .hoursInfo {
@@ -37,7 +38,7 @@
 }
 
 .contactInfo {
-  aspect-ratio: 1.3;
+  aspect-ratio: 1.4;
   background-color: #000000b1;
 }
 
@@ -57,7 +58,9 @@
 }
 
 .hoursInfo {
-  background-color: #403543;
+  background-color: #121212;
+  gap: 0.1rem;
+  margin-bottom: 1rem;
 }
 
 .dayDisplay {
@@ -66,18 +69,33 @@
   padding: 1rem;
 }
 
-.dayDisplay:not(last-of-type) {
-  border-bottom: 0.1rem solid #00000055;
+.dayDisplay:nth-of-type(even) {
+  background-color: #2f3832;
 }
 
-.dayDisplay:nth-of-type(even) {
-  background-color: #524655;
+.dayDisplay:nth-of-type(odd) {
+  background-color: #3d4941;
+}
+
+.dayDisplay:last-of-type, .googleMapFrame > iframe {
+  border-bottom-left-radius: var(--section-roundness);
+  border-bottom-right-radius: var(--section-roundness);
+}
+
+.dayDisplay.today {
+  border: 0.1rem solid rgba(26, 58, 24, 0.1);
+  background-color: rgba(139, 190, 139, 0.355);
 }
 
 .googleMapFrame {
-  margin-bottom: 1rem;
-  width: 100%;
-  aspect-ratio: 1;
+  position: relative;
+  align-self: center;
+  width: 90%;
+  margin-bottom: 0.5rem;
+}
+  
+.googleMapFrame > iframe {
   border: 0;
-  box-shadow: 0 0 12px #00000077;
+  width: 100%;
+  height: 90vmin;
 }

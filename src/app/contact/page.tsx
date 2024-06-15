@@ -6,6 +6,7 @@ import Image from "next/image";
 import Footer from "@/components/Footer";
 import ContactIcons from "@/components/ContactIcons/ContactIcons";
 import { militaryToStandardTime } from "@/scripts/util";
+import classNames from "classnames";
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -57,16 +58,24 @@ const Contact = async () => {
           </div>
         </div>
         <div className={styles.hoursInfo + ' shadowed-border'}>
-        <h2>Hours of Operation</h2>
-          {hoursArray.map(({day, hours}, d) =>
-            <div className={styles.dayDisplay} key={d}>
-              <div>{day}</div>
-              <div>{hours.open ? `${hours.open} - ${hours.close}` : `closed`}</div>
-            </div>
-          )}
+          <h2>Hours of Operation</h2>
+          {hoursArray.map(({ day, hours }, d) => {
+            const dayClasses = classNames(
+              styles.dayDisplay,
+              { [styles.today]: d === 4 }
+            )
+            return (
+              <div className={dayClasses} key={d}>
+                <div>{day}</div>
+                <div>{hours.open ? `${hours.open} - ${hours.close}` : `closed`}</div>
+              </div>
+            )
+          })}
         </div>
-        <h2>Find us</h2>
-        <iframe className={styles.googleMapFrame} src={googleMapsUrl} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title='google-map'></iframe>
+        <div className={styles.googleMapFrame}>
+          <h2>Find us</h2>
+          <iframe src={googleMapsUrl} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title='google-map'></iframe>
+        </div>
         <SocialLinks socialImages={socialImages} />
         <Footer />
       </div>
