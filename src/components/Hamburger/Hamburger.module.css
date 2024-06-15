@@ -35,7 +35,7 @@
 }
 
 .hamburger.open>.bar {
-  background-color: rgb(238, 88, 88);
+  background-color: #ee5858;
 }
 
 .hamburger.open>.bar:nth-child(1) {

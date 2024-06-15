@@ -15,7 +15,7 @@ const ServiceSlide = ({ slide, iconUrl }: ServiceSlideProps) => {
   return (
     <div
       key={slide.headline}
-      className={styles.slide}
+      className={styles.slide + ' shadowed-border'}
     >
       <div className={styles.slideHeader}>
         <h2>{slide.headline}</h2>

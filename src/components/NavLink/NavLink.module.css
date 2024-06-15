@@ -5,36 +5,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--off-black);
 }
 
 .label {
-  /* color: white;
-  text-shadow: var(--text-stroke);
-  letter-spacing: 0.025em; */
-  font-size: calc(var(--bone-height) / 3) !important;
-  color: var(--off-black);
-  letter-spacing: 0.025em;
+  /* font-size: calc(var(--bone-height) / 3); */
+  letter-spacing: 0.02em;
   z-index: 2;
 }
 
-.navLink.selected {
-  filter: drop-shadow(0 0 0.5rem #00000077);
+.navLink.selected .boneContainer {
+  filter: none;
+  background-color: var(--selected-nav-link-bg-color);
+  scale: 0.99;
 }
 
-.navLink.selected * {
-  color: rgb(49, 69, 49);
-  background-color: var(--bone-highlight-color);
-}
-
-.boneContainer, .boneKnob {
+.boneContainer,
+.boneKnob {
   position: absolute;
-  background-color: var(--bone-color);
 }
 
 .boneContainer {
   width: 100%;
   height: 100%;
   border-radius: 50%/10%;
+  background-color: var(--nav-link-bg-color);
+  filter: drop-shadow(0 0 2px #000000);
+  z-index: 1;
 }
 
 .boneKnob {
@@ -45,6 +42,7 @@
   translate: -50% -50%;
   left: calc(var(--bone-knob-offset-x) * -1);
   top: calc(var(--bone-knob-offset-y) * -1);
+  background-color: inherit;
 }
 
 .boneKnob:nth-of-type(2) {

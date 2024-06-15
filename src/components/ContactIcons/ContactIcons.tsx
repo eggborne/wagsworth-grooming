@@ -2,15 +2,27 @@ import { ContactInfo } from '@/types/sections';
 import styles from './ContactIcons.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import classNames from 'classnames';
 
 type ContactIconsProps = {
   contactInfo: ContactInfo,
   expanded: boolean,
   scrolled: boolean,
+  embedded: boolean,
 }
 
-const ContactIcons = ({ contactInfo, expanded, scrolled }: ContactIconsProps) => {
-  const contactIconsClasses = styles.contactIcons + ` ${expanded ? styles.expanded : ''} ${scrolled ? styles.scrolled : ''}`;
+const ContactIcons = ({ contactInfo, expanded, scrolled, embedded }: ContactIconsProps) => {
+  // const contactIconsClasses = styles.contactIcons + ` ${expanded ? styles.expanded : ''} ${scrolled ? styles.scrolled : ''}`;
+  const contactIconsClasses = classNames([
+    styles.contactIcons,
+    {
+      [styles.expanded]: expanded,
+      [styles.scrolled]: scrolled,
+      [styles.embedded]: embedded,
+    }
+  ])
+     +
+    ` ${expanded ? styles.expanded : ''} ${scrolled ? styles.scrolled : ''}`;
   return (
     <div className={contactIconsClasses}>
       <Link href={`tel:+1-${contactInfo.phone}`}>

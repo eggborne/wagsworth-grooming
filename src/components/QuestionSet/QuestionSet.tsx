@@ -12,7 +12,7 @@ type  QuestionSetProps = {
 const QuestionSet = ({ question, answer, key }: QuestionSetProps) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className={styles.questionSet + ' ' + (expanded ? styles.expanded : '')} key={key} onClick={() => setExpanded(!expanded)}>
+    <div className={styles.questionSet + ' shadowed-border ' + (expanded ? styles.expanded : '')} key={key} onClick={() => setExpanded(!expanded)}>
       <div className={styles.questionContainer}>
         <h3 className={styles.question}>{question}</h3>
         <button className={styles.expandButton}>△</button>

@@ -53,12 +53,8 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
 
   useEffect(() => {
     setMenuOpen(false);
-    setNavFooterVisible(false);
+    setNavFooterVisible(window.innerHeight === document.body.scrollHeight);
   }, [pathname]);
-
-  // useEffect(() => {
-  //   setExpanded((pathname === '/' && !scrolled) && !menuOpen)
-  // }, [pathname, scrolled, menuOpen]);
 
   const closeNavIfLogoClicked = () => {
     if (menuOpen) {
@@ -88,6 +84,7 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
             contactInfo={contactInfo}
             expanded={headerExpanded}
             scrolled={scrolled}
+            embedded={false}
           />
           <Hamburger onClick={toggleMenu} open={menuOpen} />
           {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}

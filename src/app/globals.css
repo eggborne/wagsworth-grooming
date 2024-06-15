@@ -21,11 +21,9 @@
   --gallery-width: 100vw;
   --gallery-height: 12rem;
 
-  --hamburger-color: #595454;
-
   --nav-space-y: calc(var(--actual-height) - (var(--header-height) * 2.5));
   --social-button-size: calc(var(--nav-space-y) / 12);
-  
+
   --bone-width: min(6dvh, 38vw);
   --bone-width: 18dvh;
   --bone-height: calc(var(--nav-space-y) / 11);
@@ -33,19 +31,11 @@
   --bone-knob-size: calc(var(--bone-height) / 1);
   --bone-knob-offset-x: calc(var(--bone-height) / -5);
   --bone-knob-offset-y: calc(var(--bone-height) / -12);
-  --bone-color: #b7b78f;
-  --bone-highlight-color: rgb(138, 176, 110);
-  --nav-link-color: #1b1717;
-  --header-color: #131313;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-size: 1rem;
 
-  --default-section-bg-color: rgba(60, 42, 67, 0.7);
-  --section-bg-color: var(--default-section-bg-color);
-  --off-white: #c3c3c3;
-  --off-black: #191919;
   --expansion-speed: 250ms;
   --logo-animation-speed: 500ms;
 
@@ -70,6 +60,18 @@
     -0.035em 0.015em #000000,
     -0.035em 0.035em #000000,
     0 0 0.05em black;
+
+  /* colors */
+  --header-color: #131313;
+  --header-color: #2f2938;
+  --hamburger-color: #595454;
+  --nav-link-bg-color: #b0c493;
+  --selected-nav-link-bg-color: #8ab06e;
+  --off-white: #c3c3c3;
+  --off-black: #191919;
+  --section-bg-color: #403543cc;
+  
+  --panel-color: #ffffff18;
 }
 
 * {
@@ -154,7 +156,7 @@ header>* {
 }
 
 /*  */
-header > a {
+header>a {
   display: flex;
   align-items: center;
 }
@@ -191,7 +193,7 @@ a {
   color: inherit;
 }
 
-footer > a {
+footer>a {
   font-size: inherit !important;
   font-weight: bold !important;
   color: #ffffff88;
@@ -220,6 +222,11 @@ footer > a {
   display: none;
 }
 
+.bannerImage img {
+  object-fit: cover;
+  object-position: top;
+}
+
 blockquote {
   background-color: #403948;
   padding: 1rem;
@@ -227,7 +234,14 @@ blockquote {
   margin: 0 1rem;
   font-style: italic;
   color: #bbb;
-  box-shadow: 0 0 0.25rem #00000088;
+  opacity: 0.9;
+  box-shadow: 0 0 0.75rem #00000055;
+  border: 1px solid black;
+}
+
+.shadowed-border {
+  box-shadow: 0 0 0.5rem #00000055;
+  border: 1px solid black;
 }
 
 article {

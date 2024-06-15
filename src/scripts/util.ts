@@ -6,6 +6,22 @@ const nextSectionFromPath = (pathname: string, navItems: NavItem[]): NavItem | n
   return nextSection;
 }
 
+function militaryToStandardTime(militaryTime: number): string {
+  if (!militaryTime) return '';
+  const hours = Math.floor(militaryTime / 100);
+  const minutes = militaryTime % 100;
+  let amPm = hours >= 12 ? 'pm' : 'am';
+  let standardHours = hours % 12;
+
+  // Handle midnight and noon
+  if (standardHours === 0) {
+    standardHours = 12;
+  }
+
+  return `${standardHours}:${minutes.toString().padStart(2, '0')}${amPm}`;
+}
+
 export {
   nextSectionFromPath,
+  militaryToStandardTime,
 };

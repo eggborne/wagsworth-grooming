@@ -14,8 +14,8 @@
           "email": "booking@wagsworthgrooming.com",
           "hours": {
             "Sunday": {
-              "open": null,
-              "close": null
+              "open": 0,
+              "close": 0
             },
             "Monday": {
               "open": 900,
@@ -38,8 +38,8 @@
               "close": 1730
             },
             "Saturday": {
-              "open": null,
-              "close": null
+              "open": 0,
+              "close": 0
             }
           },
           "phone": "9712245154",
@@ -57,6 +57,14 @@
           ]
         },
         "images": {
+          "contact": {
+            "building": {
+              "alt": "Wagsworth Grooming building",
+              "height": 1024,
+              "url": "https://firebasestorage.googleapis.com/v0/b/wagsworth-editor.appspot.com/o/contact%2Fbuilding.jpg?alt=media&token=bf3145ef-78b2-45e9-8545-e31830b0e05c",
+              "width": 894
+            }
+          },
           "gallery": {
             "doggo1": {
               "alt": "Some alt text",

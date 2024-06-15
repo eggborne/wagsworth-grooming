@@ -7,10 +7,17 @@ interface NavLinkProps {
 };
 
 const NavLink = ({ label, selected }: NavLinkProps) => {
+  const labelFontSize = `${label.length > 10 ?
+    'calc(var(--bone-height) / 2.75)'
+    :
+    'calc(var(--bone-height) / 2.5)'}`
+  ;
   return (
     <li className={styles.navLink + (selected ? ' ' + styles.selected : '')}>
       <div className={styles.label}
-        style={{ fontSize: `${label.length > 10 ? '1rem' : '1.2rem'}` }}
+        style={{
+          fontSize: labelFontSize
+        }}
       >{label}</div>
       <div className={styles.boneContainer}>
         <div className={styles.boneKnob}></div>

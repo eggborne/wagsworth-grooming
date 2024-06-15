@@ -36,6 +36,15 @@ interface ContactInfo {
     w: string,
   };
   email: string;
+  hours: {
+    Sunday: { open: number, close: number },
+    Monday: { open: number, close: number },
+    Tuesday: { open: number, close: number },
+    Wednesday: { open: number, close: number },
+    Thursday: { open: number, close: number },
+    Friday: { open: number, close: number },
+    Saturday: { open: number, close: number },
+  }
   phone: PhoneNumber;
   streetAddress: string[];
 }

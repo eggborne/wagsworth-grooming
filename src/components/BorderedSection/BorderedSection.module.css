@@ -1,6 +1,6 @@
 .borderedSectionContainer {
   background-color: var(--section-bg-color);
-  padding: var(--hamburger-margin);
+  padding: var(--hamburger-margin);  
   margin: var(--hamburger-margin);
   border-radius: var(--section-roundness);
 }
@@ -13,7 +13,7 @@
   border-image-width: var(--image-border-width);
   margin: 0;
   padding: calc(var(--main-padding) / 2);
-  padding-bottom: var(--image-border-width);
+  padding-bottom: calc(var(--image-border-width) + 1rem);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -26,5 +26,6 @@
 }
 
 .borderedSection h2 {
+  margin: 1rem 0;
   font-size: calc(var(--image-border-width) / 2.75) !important;
 }

@@ -44,8 +44,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  console.log('Layout rendering!!!!');
-
   const [navItems, contactInfo, socialImages, logoImages] = await Promise.all([
     fetchNavList(),
     fetchContactInfo(),
