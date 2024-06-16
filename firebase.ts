@@ -1,10 +1,7 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
+import { EmailAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
-// import { getAnalytics } from "firebase/analytics";
-
-console.log('>>>>>> executing firebase.js')
-console.log('getApps().length', getApps().length);
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,14 +11,13 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-  // measurementId: "G-3YPJ2Z7LXL"
 };
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+console.log('FIREBASE.js running using config:', firebaseConfig);
 
+const app = !getApps.length ? initializeApp(firebaseConfig) : getApp();
 const database = getDatabase(app);
 const storage = getStorage(app);
-// const analytics = getAnalytics(app);
 
 if (process.env.NODE_ENV === 'development') {
   console.warn('using emulator for DB and storage')

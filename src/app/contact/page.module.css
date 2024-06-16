@@ -83,8 +83,8 @@
 }
 
 .dayDisplay.today {
-  border: 0.1rem solid rgba(26, 58, 24, 0.1);
-  background-color: rgba(139, 190, 139, 0.355);
+  border: 0.1rem solid rgba(165, 215, 162, 0.1);
+  background-color: rgba(116, 222, 116, 0.379);
 }
 
 .googleMapFrame {

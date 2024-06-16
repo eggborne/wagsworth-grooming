@@ -62,7 +62,7 @@ const Contact = async () => {
           {hoursArray.map(({ day, hours }, d) => {
             const dayClasses = classNames(
               styles.dayDisplay,
-              { [styles.today]: d === 4 }
+              { [styles.today]: d === new Date().getDay() }
             )
             return (
               <div className={dayClasses} key={d}>

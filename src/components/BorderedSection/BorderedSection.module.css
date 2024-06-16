@@ -2,6 +2,7 @@
   background-color: var(--section-bg-color);
   padding: var(--hamburger-margin);  
   margin: var(--hamburger-margin);
+  margin-top: 0;
   border-radius: var(--section-roundness);
 }
 

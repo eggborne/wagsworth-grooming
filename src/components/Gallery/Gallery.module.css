@@ -14,10 +14,12 @@
 
 .galleryControl > .prevButton {
   rotate: 90deg;
+  scale: 0.65;
 }
 
 .galleryControl > .nextButton {
   rotate: -90deg;
+  scale: 0.65;
 }
 
 .galleryWindow {

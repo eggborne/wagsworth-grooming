@@ -10,6 +10,7 @@ type LogoProps = {
 
 const Logo = ({ logoImages, revealed }: LogoProps) => {
   const logoClasses = classNames([
+    'logo',
     styles.logo,
     {
       [styles.revealed]: revealed       
@@ -24,7 +25,7 @@ const Logo = ({ logoImages, revealed }: LogoProps) => {
           key={i}
           src={image.url}
           priority
-          sizes="(max-width: 768px) 80vw, (max-width: 1200px) 40vw, 20vw"
+          sizes="(max-width: 768px) 80vw"
           alt={image.alt}
           className={styles[Object.keys(logoImages)[i]]}
         />

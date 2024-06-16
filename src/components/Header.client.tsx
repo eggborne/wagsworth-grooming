@@ -5,7 +5,7 @@ import Logo from "./Logo/Logo";
 import NavMenu from "./NavMenu/NavMenu";
 import Hamburger from "./Hamburger/Hamburger";
 // import styles from "./Header.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ContactInfo, ImageMetadata, NavItem } from "@/types/sections";
 import ContactIcons from "./ContactIcons/ContactIcons";
@@ -30,15 +30,14 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
 
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoaded(true);
-    }, 20);
-    console.log('adding opacity to body');
+  useLayoutEffect(() => {
+    setLoaded(true);
     document.body.style.opacity = '1';
+    console.log('added opacity to body');
+
     const handleScroll = () => {
       if (menuOpen) return;
-      const scrollY = Math.ceil(window.scrollY);
+      const scrollY = window.scrollY;
       const notAtTop = scrollY > 0;
       setScrolled(notAtTop);
       if (notAtTop) {
@@ -50,8 +49,16 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
       }
     };
     window.addEventListener('scroll', handleScroll);
+
+    const setActualHeight = () => {
+      document.documentElement.style.setProperty('--actual-height', `${window.innerHeight}px`);
+    };
+    window.addEventListener('resize', setActualHeight);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', setActualHeight);
+      console.log('removed event listeners on Header unmount')
     };
   }, []);
 
@@ -70,41 +77,30 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
 
   const headerClasses = classNames({
     'expanded': headerExpanded,
-    'scrolled': scrolled
+    'scrolled': scrolled,
   });
 
   const nextSection = nextSectionFromPath(pathname, navItems);
 
-  console.log()
-
   return (
     <header className={headerClasses} >
-      {pathname !== '/admin' ?
-        <>
-          <Link href='/' onClick={closeNavIfLogoClicked}>
-            <Logo logoImages={logoImages} revealed={loaded} />
-          </Link>
-          <ContactIcons
-            contactInfo={contactInfo}
-            expanded={headerExpanded}
-            scrolled={scrolled}
-            embedded={false}
-          />
-          <Hamburger onClick={toggleMenu} open={menuOpen} />
-          {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}
-          <NavMenu
-            navItems={navItems}
-            socialImages={socialImages}
-            open={menuOpen}
-            selectedNavItem={pathname}
-          />
-        </>
-        :
-        <>
-          <Logo logoImages={logoImages} revealed={true} />
-          <div>admin header</div>
-        </>
-      }
+      <Link href='/' onClick={closeNavIfLogoClicked}>
+        <Logo logoImages={logoImages} revealed={loaded} />
+      </Link>
+      <ContactIcons
+        contactInfo={contactInfo}
+        expanded={headerExpanded}
+        scrolled={scrolled}
+        embedded={false}
+      />
+      <Hamburger onClick={toggleMenu} open={menuOpen} />
+      {nextSection && <SectionFooter navInfo={nextSection} showing={navFooterVisible} />}
+      <NavMenu
+        navItems={navItems}
+        socialImages={socialImages}
+        open={menuOpen}
+        selectedNavItem={pathname}
+      />
     </header>
   );
 };

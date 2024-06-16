@@ -5,6 +5,7 @@
   --grooming-start-translate: 2rem 0;
   position: relative;
   margin-left: 2%;
+  margin-top: 6.5%;
   height: 70%;
   aspect-ratio: var(--logo-aspect-ratio);
 }
