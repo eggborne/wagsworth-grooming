@@ -2,12 +2,7 @@
 
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: '127.0.0.1', // Allow localhost
-        port: '9199',          // Your Firebase emulator port
-      },
+    remotePatterns: [     
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com', // Add Firebase Storage domain
@@ -15,6 +10,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.wagsworth-editor.appspot.com', // Allow Firebase Storage URLs
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebase-backend-beis.onrender.com', // Allow firebase-backend API
       },
       {
         protocol: 'https',

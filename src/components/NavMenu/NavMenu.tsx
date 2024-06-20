@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./NavMenu.module.css";
 import NavLink from "../NavLink/NavLink";
-import { ImageMetadata, NavItem } from "@/types/sections";
+import { ImageMetadata, NavItem } from "@/types";
 import SocialLinks from "../SocialLinks/SocialLinks";
 import classNames from "classnames";
 import Footer from "../Footer";
@@ -13,10 +13,10 @@ interface NavMenuProps {
   selectedNavItem: string;
 };
 
-const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps) => {  
+const NavMenu = ({ navItems, socialImages, open, selectedNavItem }: NavMenuProps) => {
   const navMenuClasses = classNames([
     styles.navMenu,
-    {[styles.closed]: !open}
+    { [styles.closed]: !open }
   ]);
   return (
     <nav className={navMenuClasses}>

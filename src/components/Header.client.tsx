@@ -5,9 +5,9 @@ import Logo from "./Logo/Logo";
 import NavMenu from "./NavMenu/NavMenu";
 import Hamburger from "./Hamburger/Hamburger";
 // import styles from "./Header.module.css";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ContactInfo, ImageMetadata, NavItem } from "@/types/sections";
+import { ContactInfo, ImageMetadata, NavItem } from "../types";
 import ContactIcons from "./ContactIcons/ContactIcons";
 import SectionFooter from "./SectionFooter/SectionFooter";
 import classNames from "classnames";
@@ -30,23 +30,24 @@ const Header = ({ navItems, contactInfo, logoImages, socialImages }: HeaderProps
 
   const toggleMenu = (newState: boolean) => setMenuOpen(newState);
 
+  const menuOpenRef = useRef(menuOpen);
+  const navFooterVisibleRef = useRef(navFooterVisible);
+
   useLayoutEffect(() => {
     setLoaded(true);
     document.body.style.opacity = '1';
     console.log('added opacity to body');
 
     const handleScroll = () => {
-      if (menuOpen) return;
-      const scrollY = window.scrollY;
+      if (menuOpenRef.current) return;
+      const scrollY = Math.ceil(window.scrollY);
       const notAtTop = scrollY > 0;
       setScrolled(notAtTop);
-      if (notAtTop) {
-        let pastYPoint = scrollY >= Math.abs(document.body.scrollHeight - window.innerHeight);
-        if (navFooterVisible) {
-          pastYPoint = scrollY < Math.abs(document.body.scrollHeight - window.innerHeight);
-        }
-        setNavFooterVisible(pastYPoint);
+      let pastYPoint = scrollY >= Math.abs(document.body.scrollHeight - window.innerHeight);
+      if (navFooterVisibleRef.current) {
+        pastYPoint = scrollY < Math.abs(document.body.scrollHeight - window.innerHeight);
       }
+      setNavFooterVisible(pastYPoint);      
     };
     window.addEventListener('scroll', handleScroll);
 

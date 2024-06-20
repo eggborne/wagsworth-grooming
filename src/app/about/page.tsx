@@ -1,15 +1,16 @@
 import BorderedSection from "@/components/BorderedSection/BorderedSection";
-import { fetchPageData } from "@/scripts/db";
-import { AboutData } from "@/types/sections";
+import { AboutData } from "@/types";
+import { getSiteData } from "@/scripts/api";
+import Image from "next/image";
 
 const About = async () => {
 
-  const sectionData = await fetchPageData('/sections/about') as AboutData;
+  const sectionData = await getSiteData<AboutData>('WagsworthSiteID', 'liveData/sections/about');
 
   return (
     <BorderedSection>
       {sectionData.bannerImage && <div className={'bannerImage'}>
-        <img src={sectionData.bannerImage.url} alt={sectionData.label} />
+        <Image fill src={sectionData.bannerImage.url} alt={sectionData.label} />
       </div>}
       <h1>{sectionData.label}</h1>
       <article>

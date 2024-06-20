@@ -1,6 +1,6 @@
 import styles from "./SocialLinks.module.css";
 import Image from "next/image";
-import { ImageMetadata } from "@/types/sections";
+import { ImageMetadata } from "@/types";
 
 interface SocialLinksProps {
   socialImages: Record<string, ImageMetadata>;

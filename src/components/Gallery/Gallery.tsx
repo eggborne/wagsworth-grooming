@@ -2,7 +2,7 @@
 
 import styles from './Gallery.module.css';
 import Image from 'next/image';
-import { ImageMetadata } from '@/types/sections';
+import { ImageMetadata } from '@/types';
 import { useState } from 'react';
 
 type GalleryProps = {
@@ -33,7 +33,7 @@ const Gallery = ({ galleryImages }: GalleryProps) => {
       <div className={styles.galleryControl}>
         <div onClick={prevImage} className={styles.prevButton + ' caret'}></div>
       </div>
-      <div className={styles.galleryWindow}>        
+      <div className={styles.galleryWindow}>
         {Object.values(galleryImages).map(({ url, alt, width, height }, i) => (
           <div className={styles.galleryImageContainer + ' ' + (imageShowing === i ? styles.showing : '')}
             key={i}

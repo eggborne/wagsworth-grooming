@@ -1,4 +1,4 @@
-import { ContactInfo } from '@/types/sections';
+import { ContactInfo } from '@/types';
 import styles from './ContactIcons.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,7 +21,7 @@ const ContactIcons = ({ contactInfo, expanded, scrolled, embedded }: ContactIcon
       [styles.embedded]: embedded,
     }
   ])
-     +
+    +
     ` ${expanded ? styles.expanded : ''} ${scrolled ? styles.scrolled : ''}`;
   return (
     <div className={contactIconsClasses}>

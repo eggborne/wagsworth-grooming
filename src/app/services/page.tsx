@@ -1,18 +1,19 @@
-import { fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 import ServiceSlide from "@/components/ServiceSlide/ServiceSlide";
 import BorderedSection from "@/components/BorderedSection/BorderedSection";
-import { ServicesData } from "@/types/sections";
+import { ServicesData } from "@/types";
 import Note from "@/components/Note/Note";
+import { getSiteData } from "@/scripts/api";
+import Image from "next/image";
 
 const Services = async () => {
 
-  const sectionData = await fetchPageData('sections/services') as ServicesData;
+  const sectionData = await getSiteData<ServicesData>('WagsworthSiteID', 'liveData/sections/services');
 
   return (
     <BorderedSection>
       {sectionData.bannerImage && <div className={'bannerImage'}>
-        <img src={sectionData.bannerImage.url} alt={sectionData.label} />
+        <Image fill src={sectionData.bannerImage.url} alt={sectionData.label} />
       </div>}
       <h1>{sectionData.label}</h1>
       <Note>{sectionData.note}</Note>

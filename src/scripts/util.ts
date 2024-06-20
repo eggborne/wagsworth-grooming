@@ -1,4 +1,4 @@
-import { NavItem } from "@/types/sections";
+import { NavItem } from "../types";
 
 const nextSectionFromPath = (pathname: string, navItems: NavItem[]): NavItem | null => {
   const nextSectionIndex = navItems.findIndex((item) => item.href === pathname.slice(1));

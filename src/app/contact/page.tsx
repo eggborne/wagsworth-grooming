@@ -1,21 +1,20 @@
-import { fetchContactInfo, fetchImageMetadata, fetchPageData } from "@/scripts/db";
 import styles from "./page.module.css";
 import SocialLinks from "@/components/SocialLinks/SocialLinks";
-import { ContactData } from "@/types/sections";
+import { ContactData, ContactInfo, ImageMetadata } from "@/types";
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import ContactIcons from "@/components/ContactIcons/ContactIcons";
 import { militaryToStandardTime } from "@/scripts/util";
 import classNames from "classnames";
+import { getSiteData } from "@/scripts/api";
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const Contact = async () => {
-
   const [sectionData, contactInfo, socialImages] = await Promise.all([
-    fetchPageData('sections/contact') as Promise<ContactData>,
-    fetchContactInfo(),
-    fetchImageMetadata('socialLinks')
+    getSiteData<ContactData>('WagsworthSiteID', 'liveData/sections/contact'),
+    getSiteData<ContactInfo>('WagsworthSiteID', 'liveData/contactInfo'),
+    getSiteData<Record<string, ImageMetadata>>('WagsworthSiteID', 'liveData/images/socialLinks'),
   ]);
 
   const hoursArray = Object.values(contactInfo.hours).map((hours, h) => {

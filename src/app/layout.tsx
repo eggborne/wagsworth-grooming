@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header.client";
-import { fetchContactInfo, fetchImageMetadata, fetchNavList } from "@/scripts/db";
+import { getNavItems, getSiteData } from "@/scripts/api";
+import { ContactInfo, ImageMetadata } from "@/types";
 
 export const metadata: Metadata = {
   title: "Wagsworth Grooming | Professional Dog Grooming in Tualatin, Oregon",
@@ -45,10 +46,10 @@ export default async function RootLayout({
 }>) {
 
   const [navItems, contactInfo, socialImages, logoImages] = await Promise.all([
-    fetchNavList(),
-    fetchContactInfo(),
-    fetchImageMetadata('socialLinks'),
-    fetchImageMetadata('logo'),
+    getNavItems(),
+    getSiteData<ContactInfo>('WagsworthSiteID', 'liveData/contactInfo'),
+    getSiteData<Record<string, ImageMetadata>>('WagsworthSiteID', 'liveData/images/socialLinks'),
+    getSiteData<Record<string, ImageMetadata>>('WagsworthSiteID', 'liveData/images/logo'),
   ]);
   
   return (

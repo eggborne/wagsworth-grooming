@@ -15,19 +15,15 @@ interface Slide {
   backgroundColor: Color;
 }
 
-interface Requirement {
+interface HeadLineBodySet {
   headline: string;
   bodyText: Paragraph[];
-}
-
-interface Question {
-  question: string;
-  answer: Paragraph[];
 }
 
 interface HomePageData {
   bannerText: string;
   introContent: Paragraph[];
+  pageTitle: string;
 }
 
 interface ContactInfo {
@@ -69,11 +65,42 @@ interface SectionData {
   note?: Paragraph[];
   order: number;
   bannerImage?: ImageMetadata;
+  pageTitle: string;
   textContent?: Paragraph[];
+}
+
+interface SiteContentData {
+  contactInfo: ContactInfo;
+  homePage: HomePageData;
+  images: {
+    gallery: Record<string, ImageMetadata>;
+    logo: Record<string, ImageMetadata>;
+    socialLinks: Record<string, ImageMetadata>;
+    ui: Record<string, ImageMetadata>;
+  };
+  metaInfo: SiteMetaInfo,
+  sections: {
+    [key: string]: SectionData | ServicesData | AboutData | FAQsData | RequirementsData | ContactData;
+  };
+  style: Record<string, string | number>;
+  theme: string;
+}
+
+interface UserData {
+  email: string;
+  sites: {
+    lastEdited: number,
+    siteID: string,
+    siteName: string,
+    siteUrl: string,
+  }[];
+  username: string;
+  uid: string;
 }
 
 interface ServicesData extends SectionData {
   pricedServices: PricedService[];
+  pricedServicesLabel: string;
   slides: Slide[];
 }
 
@@ -82,16 +109,23 @@ interface AboutData extends SectionData {
 }
 
 interface FAQsData extends SectionData {
-  questions: Question[];
+  questions: HeadLineBodySet[];
 }
 
 interface RequirementsData extends SectionData {
-  requirements: Requirement[];
+  requirements: HeadLineBodySet[];
 }
 
 interface ContactData extends SectionData { }
 
+interface SiteMetaInfo {
+  siteName: string,
+  siteUrl: string,
+  siteID: string,
+  lastEdited: number,
+}
+
 export type {
-  ServicesData, AboutData, FAQsData, RequirementsData, ContactData,
-  HomePageData, ContactInfo, SectionData, NavItem, ImageMetadata
+  SiteMetaInfo, ServicesData, AboutData, FAQsData, RequirementsData, ContactData,
+  HomePageData, ContactInfo, SectionData, NavItem, ImageMetadata, UserData, SiteContentData
 };

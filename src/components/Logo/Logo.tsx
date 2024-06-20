@@ -1,4 +1,4 @@
-import { ImageMetadata } from '@/types/sections';
+import { ImageMetadata } from '@/types';
 import styles from './Logo.module.css';
 import Image from 'next/image';
 import classNames from 'classnames';
@@ -13,7 +13,7 @@ const Logo = ({ logoImages, revealed }: LogoProps) => {
     'logo',
     styles.logo,
     {
-      [styles.revealed]: revealed       
+      [styles.revealed]: revealed
     }
   ]);
 

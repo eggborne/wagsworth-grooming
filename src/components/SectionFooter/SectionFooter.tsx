@@ -1,4 +1,4 @@
-import { NavItem } from '@/types/sections';
+import { NavItem } from '@/types';
 import styles from './SectionFooter.module.css';
 import Link from 'next/link';
 
